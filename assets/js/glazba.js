@@ -141,17 +141,18 @@ var RASPORED = [
           '</a>';
       }).join('');
 
-      /* na touch uređajima nema hovera — fotka izvođača se otkrije
-         sama dok kartica ulazi u ekran, i sakrije kad izađe */
-      var touchOnly = window.matchMedia('(hover: none)').matches;
-      if (touchOnly && 'IntersectionObserver' in window) {
-        var revealObserver = new IntersectionObserver(function(entries){
-          entries.forEach(function(entry){
-            entry.target.classList.toggle('is-revealed', entry.isIntersecting);
+      /* na touch uređajima nema hovera — prvi dodir okrene karticu i
+         pokaže fotku izvođača, drugi dodir vodi na stranicu glazbe */
+      if (window.matchMedia('(hover: none)').matches) {
+        var cards = homeGigs.querySelectorAll('.home-gig');
+        cards.forEach(function(card){
+          card.addEventListener('click', function(e){
+            if (!card.classList.contains('is-flipped')) {
+              e.preventDefault();
+              cards.forEach(function(c){ if (c !== card) c.classList.remove('is-flipped'); });
+              card.classList.add('is-flipped');
+            }
           });
-        }, { threshold: 0.65 });
-        homeGigs.querySelectorAll('.home-gig').forEach(function(card){
-          revealObserver.observe(card);
         });
       }
     }

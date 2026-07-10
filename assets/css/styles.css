@@ -290,21 +290,6 @@ a{ color: inherit; text-decoration: none; }
 }
 .hero-actions{ display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
 
-.scroll-cue{
-  position: absolute; bottom: 1.75rem; left: 50%; transform: translateX(-50%);
-  width: 22px; height: 34px; border: 1px solid rgba(244,236,219,0.4); border-radius: 999px;
-}
-.scroll-cue span{
-  position: absolute; top: 6px; left: 50%; transform: translateX(-50%);
-  width: 3px; height: 6px; border-radius: 2px; background: var(--gold-soft);
-  animation: cue 1.8s ease-in-out infinite;
-}
-@keyframes cue{
-  0%{ opacity: 1; top: 6px; }
-  70%{ opacity: 0; top: 18px; }
-  100%{ opacity: 0; top: 6px; }
-}
-
 /* staged reveal on load */
 .reveal-1, .reveal-2, .reveal-3, .reveal-4, .reveal-5{
   opacity: 0; transform: translateY(14px);
@@ -529,11 +514,26 @@ a{ color: inherit; text-decoration: none; }
 }
 .home-gig:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.5); }
 .home-gig:hover .home-gig-bg,
-.home-gig.is-revealed .home-gig-bg{ opacity: 1; transform: scale(1); }
+.home-gig.is-flipped .home-gig-bg{ opacity: 1; transform: scale(1); }
 .home-gig:hover .home-gig-day,
-.home-gig.is-revealed .home-gig-day{ color: rgba(244,236,219,0.9); }
+.home-gig.is-flipped .home-gig-day{ color: rgba(244,236,219,0.9); }
 .home-gig:hover .home-gig-time,
-.home-gig.is-revealed .home-gig-time{ color: var(--gold-soft); }
+.home-gig.is-flipped .home-gig-time{ color: var(--gold-soft); }
+
+/* mobitel: prvi dodir okrene "ploču" (rotacija oko osi, fotka se
+   pojavi na pola okreta), drugi dodir prati link */
+@media (hover: none){
+  .home-gig.is-flipped{
+    animation: gigFlip 0.55s ease;
+    border-color: rgba(201,160,99,0.5);
+  }
+  .home-gig.is-flipped .home-gig-bg{ transition-delay: 0.2s; }
+}
+@keyframes gigFlip{
+  0%{ transform: perspective(700px) rotateY(0); }
+  50%{ transform: perspective(700px) rotateY(90deg); }
+  100%{ transform: perspective(700px) rotateY(0); }
+}
 .home-gig.is-tonight{ border-color: rgba(53,180,238,0.5); }
 .home-gig-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.55); }
 .home-gig-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
@@ -668,11 +668,13 @@ a{ color: inherit; text-decoration: none; }
 .visit-icon-badge{
   display: inline-flex; align-items: center; justify-content: center;
   width: 52px; height: 52px; border-radius: 14px; margin-bottom: 1.25rem;
-  background: rgba(201,160,99,0.1); border: 1px solid rgba(201,160,99,0.25);
+  background: linear-gradient(160deg, var(--gold-soft), var(--gold) 70%);
+  border: none;
+  box-shadow: 0 10px 24px -10px rgba(201,160,99,0.65), inset 0 1px 0 rgba(255,255,255,0.35);
 }
 .visit-icon{
-  width: 24px; height: 24px; fill: none; stroke: var(--gold);
-  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+  width: 26px; height: 26px; fill: none; stroke: var(--ink);
+  stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round;
 }
 .visit-col-title{
   font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;

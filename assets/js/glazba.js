@@ -23,7 +23,7 @@ var IZVODJACI = [
     ime: 'DJ Maks',
     tip: 'DJ',
     zanr: 'House · Disco · Funk',
-    opis: 'Rezident vikend-programa. Setovi koji kreću lagano uz kavu i koktele, a završe s punim šankom i plesom.',
+    opis: 'Osječki DJ s više od deset godina iskustva za pultom. Odrastao na disco i funk pločama, a danas ih spaja sa suvremenim house zvukom u setove koji se pamte.',
     foto: 'assets/images/glazba/dj-maks.webp',
     instagram: ''
   },
@@ -32,7 +32,7 @@ var IZVODJACI = [
     ime: 'DJ Lorena',
     tip: 'DJ',
     zanr: 'R&B · Hip-hop · Pop remixi',
-    opis: 'Donosi urbani zvuk u Hedonist — poznata po prijelazima koje nitko ne primijeti dok cijeli kafić ne zapjeva.',
+    opis: 'DJ-ica mlađe generacije specijalizirana za R&B i hip-hop. Iza sebe ima nastupe po klubovima diljem Slavonije i vlastite remixe regionalnih hitova.',
     foto: 'assets/images/glazba/dj-lorena.webp',
     instagram: ''
   },
@@ -41,7 +41,7 @@ var IZVODJACI = [
     ime: 'Akustični duo Vinil',
     tip: 'Akustika',
     zanr: 'Pop-rock klasici · Domaće balade',
-    opis: 'Gitara i vokal, bez struje i bez žurbe. Njihove verzije domaćih klasika redovito produže večer za sat-dva.',
+    opis: 'Dvojac na gitari i vokalu, aktivan od 2018. Sviraju domaće i strane pop-rock klasike u vlastitim akustičnim aranžmanima, od Azre do Oasisa.',
     foto: 'assets/images/glazba/akusticni-duo-vinil.webp',
     instagram: ''
   },
@@ -50,7 +50,7 @@ var IZVODJACI = [
     ime: 'Ivan — gitara i vokal',
     tip: 'Akustika',
     zanr: 'Singer-songwriter · Rock balade',
-    opis: 'Jedan čovjek, jedna gitara i repertoar od tri desetljeća. Svirke uz koje se naruči još jedna runda.',
+    opis: 'Kantautor i gitarist s repertoarom koji pokriva tri desetljeća rock i pop balada. Nastupa solo, uz akustičnu gitaru i vlastite obrade poznatih pjesama.',
     foto: 'assets/images/glazba/ivan-gitara.webp',
     instagram: ''
   },
@@ -59,7 +59,7 @@ var IZVODJACI = [
     ime: 'DJ Tin',
     tip: 'DJ',
     zanr: 'Tech-house · Melodic techno',
-    opis: 'Za večeri kad Hedonist ide korak dublje u noć. Njegovi setovi grade atmosferu polako i ne puštaju je.',
+    opis: 'Producent i DJ posvećen melodičnom technu. Objavljuje vlastite mixeve i redovito nastupa na klupskim večerima diljem regije.',
     foto: 'assets/images/glazba/dj-tin.webp',
     instagram: ''
   }

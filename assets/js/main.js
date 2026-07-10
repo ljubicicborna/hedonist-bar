@@ -145,6 +145,46 @@
     });
   }
 
+  /* ---- prijelaz među stranicama: zavjesa s monogramom prekrije ekran
+     prije odlaska, a nova stranica se otvori već pokrivena pa se
+     zavjesa digne — klasično "bijelo učitavanje" se nikad ne vidi ---- */
+  var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var veil = document.createElement('div');
+  veil.className = 'page-veil';
+  veil.setAttribute('aria-hidden', 'true');
+  veil.innerHTML = '<img src="assets/images/monogram.png" alt="" width="76" height="76">';
+  document.body.appendChild(veil);
+
+  if (sessionStorage.getItem('veil') === '1') {
+    sessionStorage.removeItem('veil');
+    if (!reducedMotion) {
+      document.body.classList.add('veil-out');
+      requestAnimationFrame(function(){
+        requestAnimationFrame(function(){
+          document.body.classList.add('veil-leave');
+          setTimeout(function(){ document.body.classList.remove('veil-out', 'veil-leave'); }, 650);
+        });
+      });
+    }
+  }
+
+  document.addEventListener('click', function(e){
+    if (reducedMotion || e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    var link = e.target.closest ? e.target.closest('a[href]') : null;
+    if (!link || link.target === '_blank' || link.hasAttribute('download')) return;
+    var url = new URL(link.href, location.href);
+    if (url.origin !== location.origin) return;
+    if (url.pathname === location.pathname) return; /* sidrenje unutar stranice */
+    e.preventDefault();
+    sessionStorage.setItem('veil', '1');
+    document.body.classList.add('veil-in');
+    setTimeout(function(){ location.href = link.href; }, 430);
+  }, true);
+
+  window.addEventListener('pageshow', function(ev){
+    if (ev.persisted) document.body.classList.remove('veil-in', 'veil-out', 'veil-leave');
+  });
+
   document.querySelectorAll('.philosophy, .menu, .daytime, .home-gigs, .atmosphere, .visit, .reserve').forEach(function(el){
     el.classList.add('will-reveal');
   });

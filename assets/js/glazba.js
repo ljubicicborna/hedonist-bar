@@ -140,13 +140,6 @@ var RASPORED = [
             '<span class="home-gig-time">' + r.vrijeme + ' h' + (isTonight ? ' · večeras' : '') + '</span>' +
           '</a>';
       }).join('');
-
-      /* hover: otkrij fotku izvođača i zavibriraj cijelu stranicu;
-         čim miš ode, sve stane */
-      homeGigs.querySelectorAll('.home-gig').forEach(function(card){
-        card.addEventListener('mouseenter', function(){ document.body.classList.add('is-vibing'); });
-        card.addEventListener('mouseleave', function(){ document.body.classList.remove('is-vibing'); });
-      });
     }
   }
 

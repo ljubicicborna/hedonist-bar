@@ -140,6 +140,20 @@ var RASPORED = [
             '<span class="home-gig-time">' + r.vrijeme + ' h' + (isTonight ? ' · večeras' : '') + '</span>' +
           '</a>';
       }).join('');
+
+      /* na touch uređajima nema hovera — fotka izvođača se otkrije
+         sama dok kartica ulazi u ekran, i sakrije kad izađe */
+      var touchOnly = window.matchMedia('(hover: none)').matches;
+      if (touchOnly && 'IntersectionObserver' in window) {
+        var revealObserver = new IntersectionObserver(function(entries){
+          entries.forEach(function(entry){
+            entry.target.classList.toggle('is-revealed', entry.isIntersecting);
+          });
+        }, { threshold: 0.65 });
+        homeGigs.querySelectorAll('.home-gig').forEach(function(card){
+          revealObserver.observe(card);
+        });
+      }
     }
   }
 

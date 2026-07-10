@@ -342,8 +342,8 @@ a{ color: inherit; text-decoration: none; }
 .marquee-group{
   display: flex;
   align-items: center;
-  gap: 0.9rem;
-  padding-right: 0.9rem;
+  gap: 1.6rem;
+  padding-right: 1.6rem;
   flex: none;
 }
 .marquee-track span{
@@ -480,7 +480,8 @@ a{ color: inherit; text-decoration: none; }
 .daytime-inner{ max-width: 46ch; }
 .daytime-copy{ color: rgba(244,236,219,0.78); margin: 0 0 2rem; }
 .daytime-inset{
-  width: 220px; height: 165px; object-fit: cover;
+  /* matches the photo's 4:5 aspect so the drinks aren't cropped */
+  width: 248px; height: 310px; object-fit: cover;
   border-radius: 10px; border: var(--edge);
   filter: saturate(1.08) contrast(1.04);
   box-shadow: 0 24px 48px -20px rgba(0,0,0,0.8), 0 6px 16px -6px rgba(0,0,0,0.55);
@@ -489,7 +490,7 @@ a{ color: inherit; text-decoration: none; }
 .daytime-inset:hover{ transform: scale(1.03); }
 @media (max-width: 640px){
   .daytime-overlay{ background: linear-gradient(180deg, rgba(23,17,13,0.55) 0%, rgba(23,17,13,0.92) 60%, var(--ink) 100%); }
-  .daytime-inset{ width: 165px; height: 124px; }
+  .daytime-inset{ width: 188px; height: 235px; }
 }
 
 /* ================= Uživo ovaj tjedan (početna) ================= */

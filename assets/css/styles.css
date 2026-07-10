@@ -738,7 +738,7 @@ a{ color: inherit; text-decoration: none; }
 .footer-copy{
   width: 100%; margin: 1.5rem 0 0; padding-top: 1.35rem;
   border-top: 1px solid rgba(201,160,99,0.12);
-  font-size: 0.75rem; letter-spacing: 0.02em; color: rgba(244,236,219,0.4);
+  font-size: 0.75rem; letter-spacing: 0.02em; color: rgba(244,236,219,0.58);
   text-align: center;
 }
 

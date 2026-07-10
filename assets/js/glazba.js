@@ -24,7 +24,7 @@ var IZVODJACI = [
     tip: 'DJ',
     zanr: 'House · Disco · Funk',
     opis: 'Rezident vikend-programa. Setovi koji kreću lagano uz kavu i koktele, a završe s punim šankom i plesom.',
-    foto: '',
+    foto: 'assets/images/glazba/dj-maks.webp',
     instagram: ''
   },
   {
@@ -33,7 +33,7 @@ var IZVODJACI = [
     tip: 'DJ',
     zanr: 'R&B · Hip-hop · Pop remixi',
     opis: 'Donosi urbani zvuk u Hedonist — poznata po prijelazima koje nitko ne primijeti dok cijeli kafić ne zapjeva.',
-    foto: '',
+    foto: 'assets/images/glazba/dj-lorena.webp',
     instagram: ''
   },
   {
@@ -42,7 +42,7 @@ var IZVODJACI = [
     tip: 'Akustika',
     zanr: 'Pop-rock klasici · Domaće balade',
     opis: 'Gitara i vokal, bez struje i bez žurbe. Njihove verzije domaćih klasika redovito produže večer za sat-dva.',
-    foto: '',
+    foto: 'assets/images/glazba/akusticni-duo-vinil.webp',
     instagram: ''
   },
   {
@@ -51,7 +51,7 @@ var IZVODJACI = [
     tip: 'Akustika',
     zanr: 'Singer-songwriter · Rock balade',
     opis: 'Jedan čovjek, jedna gitara i repertoar od tri desetljeća. Svirke uz koje se naruči još jedna runda.',
-    foto: '',
+    foto: 'assets/images/glazba/ivan-gitara.webp',
     instagram: ''
   },
   {
@@ -60,7 +60,7 @@ var IZVODJACI = [
     tip: 'DJ',
     zanr: 'Tech-house · Melodic techno',
     opis: 'Za večeri kad Hedonist ide korak dublje u noć. Njegovi setovi grade atmosferu polako i ne puštaju je.',
-    foto: '',
+    foto: 'assets/images/glazba/dj-tin.webp',
     instagram: ''
   }
 ];

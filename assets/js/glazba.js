@@ -81,7 +81,8 @@ var RASPORED = [
 (function(){
   var gigList = document.getElementById('gig-list');
   var artistGrid = document.getElementById('artist-grid');
-  if (!gigList && !artistGrid) return;
+  var homeGigs = document.getElementById('home-gigs');
+  if (!gigList && !artistGrid && !homeGigs) return;
 
   var DANI = ['Nedjelja', 'Ponedjeljak', 'Utorak', 'Srijeda', 'Četvrtak', 'Petak', 'Subota'];
   var MJESECI = ['sij', 'velj', 'ožu', 'tra', 'svi', 'lip', 'srp', 'kol', 'ruj', 'lis', 'stu', 'pro'];
@@ -104,21 +105,43 @@ var RASPORED = [
     return '<span class="' + cls + ' artist-avatar" aria-hidden="true">' + initials(artist.ime) + '</span>';
   }
 
+  /* ---- tekući tjedan (pon–ned) iz tablice ---- */
+  var now = new Date();
+  var todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+  var monday = new Date(now);
+  monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
+  monday.setHours(0,0,0,0);
+  var sunday = new Date(monday);
+  sunday.setDate(monday.getDate() + 6);
+  sunday.setHours(23,59,59,999);
+
+  var thisWeek = RASPORED.filter(function(r){
+    var d = new Date(r.datum + 'T12:00:00');
+    return d >= monday && d <= sunday && byId[r.izvodjac];
+  }).sort(function(a,b){ return a.datum === b.datum ? (a.vrijeme < b.vrijeme ? -1 : 1) : (a.datum < b.datum ? -1 : 1); });
+
+  /* ---- kompaktna traka na početnoj ---- */
+  if (homeGigs) {
+    var section = document.getElementById('uzivo');
+    var upcoming = thisWeek.filter(function(r){ return r.datum >= todayStr; });
+    if (upcoming.length && section) {
+      section.removeAttribute('hidden');
+      homeGigs.innerHTML = upcoming.map(function(r){
+        var a = byId[r.izvodjac];
+        var d = new Date(r.datum + 'T12:00:00');
+        var isTonight = r.datum === todayStr;
+        return '' +
+          '<a class="home-gig' + (isTonight ? ' is-tonight' : '') + '" href="glazba.html">' +
+            '<span class="home-gig-day">' + DANI[d.getDay()] + ' ' + d.getDate() + '.' + (d.getMonth()+1) + '.</span>' +
+            '<span class="home-gig-name">' + a.ime + '</span>' +
+            '<span class="home-gig-time">' + r.vrijeme + ' h' + (isTonight ? ' · večeras' : '') + '</span>' +
+          '</a>';
+      }).join('');
+    }
+  }
+
   /* ---- Ovaj tjedan ---- */
   if (gigList) {
-    var now = new Date();
-    var todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
-    var monday = new Date(now);
-    monday.setDate(now.getDate() - ((now.getDay() + 6) % 7));
-    monday.setHours(0,0,0,0);
-    var sunday = new Date(monday);
-    sunday.setDate(monday.getDate() + 6);
-    sunday.setHours(23,59,59,999);
-
-    var thisWeek = RASPORED.filter(function(r){
-      var d = new Date(r.datum + 'T12:00:00');
-      return d >= monday && d <= sunday && byId[r.izvodjac];
-    }).sort(function(a,b){ return a.datum === b.datum ? (a.vrijeme < b.vrijeme ? -1 : 1) : (a.datum < b.datum ? -1 : 1); });
 
     if (!thisWeek.length) {
       gigList.innerHTML = '<p class="gig-empty">Ovaj tjedan nema najavljenih svirki — raspored za vikend objavljujemo na ' +

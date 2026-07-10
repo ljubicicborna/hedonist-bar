@@ -1,0 +1,13 @@
+{
+  "name": "Hedonist Bar Osijek",
+  "short_name": "Hedonist",
+  "description": "Kava, kokteli i živa glazba — Vukovarska cesta 31, Osijek.",
+  "start_url": "/",
+  "display": "browser",
+  "background_color": "#17110d",
+  "theme_color": "#17110d",
+  "icons": [
+    { "src": "/assets/images/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" },
+    { "src": "/assets/images/monogram.png", "sizes": "555x555", "type": "image/png", "purpose": "any" }
+  ]
+}

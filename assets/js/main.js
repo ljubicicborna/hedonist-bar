@@ -145,7 +145,24 @@
     });
   }
 
-  document.querySelectorAll('.philosophy, .menu, .daytime, .atmosphere, .visit, .reserve').forEach(function(el){
+  /* ---- "natrag na vrh" gumb, pojavi se nakon dva ekrana scrolla ---- */
+  var toTop = document.createElement('button');
+  toTop.className = 'to-top';
+  toTop.setAttribute('aria-label', 'Natrag na vrh');
+  toTop.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+  toTop.addEventListener('click', function(){ window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  document.body.appendChild(toTop);
+  var toTopTicking = false;
+  window.addEventListener('scroll', function(){
+    if (toTopTicking) return;
+    toTopTicking = true;
+    requestAnimationFrame(function(){
+      toTop.classList.toggle('is-visible', window.scrollY > window.innerHeight * 2);
+      toTopTicking = false;
+    });
+  }, { passive: true });
+
+  document.querySelectorAll('.philosophy, .menu, .daytime, .home-gigs, .atmosphere, .visit, .reserve').forEach(function(el){
     el.classList.add('will-reveal');
   });
 

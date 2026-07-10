@@ -19,6 +19,7 @@
 <meta name="twitter:card" content="summary_large_image">
 <link rel="icon" type="image/png" href="assets/images/monogram.png">
 <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
@@ -164,6 +165,16 @@
     </div>
   </section>
 
+  <section class="home-gigs" id="uzivo" hidden>
+    <div class="section-inner">
+      <div class="home-gigs-head">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Uživo ovaj tjedan</p>
+        <a href="glazba.html" class="home-gigs-link">Cijeli program <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="home-gigs-row" id="home-gigs"></div>
+    </div>
+  </section>
+
   <section class="atmosphere" id="atmosfera">
     <div class="section-inner">
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Atmosfera</p>
@@ -176,7 +187,7 @@
         koktela, a ljubazno osoblje i ugodna terasa čine ga omiljenim mjestom za predah nedaleko
         od samog centra grada.
       </p>
-      <div class="atmosphere-gallery">
+      <div class="atmosphere-gallery" role="region" aria-label="Galerija atmosfere, horizontalno pomicanje" tabindex="0">
         <img src="assets/images/gallery/latte-art.webp" alt="Barista drži šalicu kave s latte-art uzorkom." loading="lazy" width="1100" height="1100">
         <img src="assets/images/gallery/pouring-shot.webp" alt="Barmen toči piće u čašicu, u pozadini šareno svjetlo." loading="lazy" width="1100" height="1100">
         <img src="assets/images/gallery/cocktail-flight.webp" alt="Šest različitih koktela poredanih na stolu na terasi." loading="lazy" width="1200" height="1200">
@@ -272,5 +283,6 @@
 </footer>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/glazba.js"></script>
 </body>
 </html>

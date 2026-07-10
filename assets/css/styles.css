@@ -456,6 +456,42 @@ a{ color: inherit; text-decoration: none; }
   .daytime-inset{ width: 165px; height: 124px; }
 }
 
+/* ================= Uživo ovaj tjedan (početna) ================= */
+.home-gigs{
+  background: var(--panel-2);
+  border-top: 1px solid rgba(201,160,99,0.18);
+  border-bottom: 1px solid rgba(201,160,99,0.18);
+  padding: 2.5rem 0;
+}
+.home-gigs-head{
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  margin-bottom: 1.4rem;
+}
+.home-gigs-head .eyebrow{ margin: 0; }
+.home-gigs-link{
+  font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--gold-soft); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 0.4em; min-height: 44px;
+}
+.home-gigs-link:hover{ color: var(--azure); }
+.home-gigs-row{ display: flex; gap: 1rem; flex-wrap: wrap; }
+.home-gig{
+  display: flex; flex-direction: column; gap: 0.15rem;
+  background: var(--panel); border: var(--edge); border-radius: 12px;
+  padding: 0.85rem 1.25rem; min-width: 180px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+.home-gig:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.5); }
+.home-gig.is-tonight{ border-color: rgba(53,180,238,0.5); }
+.home-gig-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.55); }
+.home-gig-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; }
+.home-gig-time{ font-size: 0.82rem; color: var(--gold-soft); }
+.home-gig.is-tonight .home-gig-time{ color: var(--azure); }
+@media (max-width: 560px){
+  .home-gigs-row{ flex-direction: column; }
+  .home-gig{ min-width: 0; }
+}
+
 /* ================= Atmosphere ================= */
 .atmosphere{ background: var(--ink); padding: 6.5rem 0; }
 .atmosphere-copy{ max-width: 62ch; color: rgba(244,236,219,0.72); margin: 0 0 2.5rem; }
@@ -709,6 +745,22 @@ a{ color: inherit; text-decoration: none; }
 .reserve .section-title{ margin: 0 auto 0.75rem; }
 .reserve-copy{ color: rgba(244,236,219,0.75); margin: 0 auto 2.75rem; }
 .reserve .hero-actions{ margin: 0 auto; }
+
+/* ================= Natrag na vrh ================= */
+.to-top{
+  position: fixed; right: 1.25rem; bottom: 1.25rem; z-index: 90;
+  width: 46px; height: 46px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(23,17,13,0.82); color: var(--gold-soft);
+  border: 1px solid rgba(201,160,99,0.4);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  cursor: pointer; font-size: 1.1rem;
+  opacity: 0; pointer-events: none; transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.to-top.is-visible{ opacity: 1; pointer-events: auto; transform: translateY(0); }
+.to-top:hover{ border-color: var(--azure); color: var(--azure); }
+.to-top svg{ width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* ================= Footer ================= */
 .site-footer{ position: relative; background: var(--panel-2); padding: 2.5rem 0; }

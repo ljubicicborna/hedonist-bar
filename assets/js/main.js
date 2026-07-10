@@ -85,7 +85,7 @@
   if (statusEl) {
     var HOURS = {
       0: { open: 480, close: 1380 },  // Ned 8–23
-      1: null,                        // Pon zatvoreno
+      1: { open: 420, close: 1380 },  // Pon 7–23
       2: { open: 420, close: 1380 },  // Uto 7–23
       3: { open: 420, close: 1380 },  // Sri 7–23
       4: { open: 420, close: 1440 },  // Čet 7–0

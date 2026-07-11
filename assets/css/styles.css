@@ -498,22 +498,38 @@ a{ color: inherit; text-decoration: none; }
   border-bottom: 1px solid rgba(201,160,99,0.18);
   padding: 2.5rem 0;
 }
-.home-gigs-head{
-  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
-  margin-bottom: 1.4rem;
-}
+.home-gigs-head{ margin-bottom: 1.4rem; }
 .home-gigs-head .eyebrow{ margin: 0; }
 .home-gigs-title{ margin: 0.3rem 0 0; font-size: clamp(1.3rem, 2.2vw, 1.7rem); }
-.home-jobs-row{ margin-top: 1rem; }
-.home-jobs-row:empty{ display: none; }
-.home-jobs-row .job-ad-card{ max-width: 480px; }
-.home-gigs-link{
-  font-size: 0.8rem; letter-spacing: 0.08em; text-transform: uppercase;
-  color: var(--gold-soft); white-space: nowrap;
-  display: inline-flex; align-items: center; gap: 0.4em; min-height: 44px;
+
+/* gig tiles i job tiles dijele isti red i istu visinu — .home-gigs-slot i
+   .home-jobs-slot su "nevidljivi" (display:contents) omoti oko onoga što
+   glazba.js ubaci u njih, tako da svaka strana i dalje samostalno crta
+   svoj dio bez da jedna piše preko druge, a rezultat izgleda kao jedan red */
+.home-novosti-row{ display: flex; gap: 1rem; flex-wrap: wrap; }
+.home-gigs-slot, .home-jobs-slot{ display: contents; }
+
+.home-job{
+  position: relative;
+  display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;
+  background: var(--panel); border: var(--edge); border-radius: 12px;
+  padding: 0.9rem 1.1rem; min-width: 220px; max-width: 280px; min-height: 168px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.home-gigs-link:hover{ color: var(--azure); }
-.home-gigs-row{ display: flex; gap: 1rem; flex-wrap: wrap; }
+.home-job:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.55); }
+.home-job-badge{
+  align-self: flex-start;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--gold-soft); background: rgba(201,160,99,0.1); border: 1px solid rgba(201,160,99,0.3);
+  border-radius: 999px; padding: 0.25em 0.8em;
+}
+.home-job-title{ font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; line-height: 1.35; margin: 0; flex: 1; }
+.home-job-wage{ font-size: 0.82rem; font-weight: 600; color: var(--azure); }
+.home-job-cta{ font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--gold-soft); }
+.home-job-cta:hover{ color: var(--azure); }
+@media (max-width: 560px){
+  .home-job{ min-width: 0; max-width: none; }
+}
 .home-gig{
   position: relative; overflow: hidden;
   display: flex; flex-direction: column; gap: 0.15rem; justify-content: flex-end;
@@ -974,21 +990,6 @@ body.veil-out.veil-leave .page-veil img{
 .site-footer{ position: relative; background: var(--panel-2); padding: 2.5rem 0; }
 
 /* diskretni gumb u kutu za ulaz u uređivanje (/admin.html) */
-.edit-corner{
-  position: absolute; right: 0.75rem; bottom: 0.75rem;
-  width: 38px; height: 38px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  opacity: 0.32;
-  transition: opacity 0.25s ease, background-color 0.25s ease;
-}
-.edit-corner svg{
-  width: 17px; height: 17px; fill: none;
-  stroke: var(--gold-soft); stroke-width: 1.7;
-  stroke-linecap: round; stroke-linejoin: round;
-}
-.edit-corner:hover, .edit-corner:focus-visible{
-  opacity: 1; background: rgba(201,160,99,0.14);
-}
 .site-footer::before{
   content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
   background: linear-gradient(90deg, transparent, rgba(201,160,99,0.5) 50%, transparent);

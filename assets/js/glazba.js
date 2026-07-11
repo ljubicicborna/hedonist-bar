@@ -208,14 +208,12 @@ var REZERVA = {
         if (section) section.removeAttribute('hidden');
         homeJobs.innerHTML = active.map(function(p){
           return '' +
-            '<article class="job-ad-card">' +
-              '<div class="job-ad-head">' +
-                '<span class="job-ad-badge">' + esc(p.vrsta || 'Posao') + '</span>' +
-                (p.satnica ? '<span class="job-ad-wage">' + esc(p.satnica) + ' €/h</span>' : '') +
-              '</div>' +
-              '<h3 class="job-ad-title">' + esc(p.naslov) + '</h3>' +
-              '<a class="job-ad-cta" href="zaposlenje.html#job-form">Prijavi se <span aria-hidden="true">→</span></a>' +
-            '</article>';
+            '<a class="home-job" href="zaposlenje.html#job-form">' +
+              '<span class="home-job-badge">' + esc(p.vrsta || 'Posao') + '</span>' +
+              '<h3 class="home-job-title">' + esc(p.naslov) + '</h3>' +
+              (p.satnica ? '<span class="home-job-wage">' + esc(p.satnica) + ' €/h</span>' : '') +
+              '<span class="home-job-cta">Prijavi se <span aria-hidden="true">→</span></span>' +
+            '</a>';
         }).join('');
       })
       .catch(function(){ /* nema oglasa, sekcija ostaje kakva jest */ });

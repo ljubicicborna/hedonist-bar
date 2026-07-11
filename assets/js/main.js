@@ -4,6 +4,28 @@
      which reads as the page scrolling by itself */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+  /* ---- tajni pristup CMS-u: drži (700ms) logo gore lijevo na naslovnoj
+     da otvoriš /admin.html — nema vidljivog gumba za uređivanje na sajtu ---- */
+  var navMark = document.querySelector('.nav-mark');
+  if (navMark && navMark.getAttribute('href') === '#top') {
+    var pressTimer = null;
+    var longPressed = false;
+    navMark.addEventListener('mousedown', function(){
+      longPressed = false;
+      pressTimer = setTimeout(function(){ longPressed = true; location.href = 'admin.html'; }, 700);
+    });
+    navMark.addEventListener('touchstart', function(){
+      longPressed = false;
+      pressTimer = setTimeout(function(){ longPressed = true; location.href = 'admin.html'; }, 700);
+    }, { passive: true });
+    ['mouseup', 'mouseleave', 'touchend', 'touchcancel'].forEach(function(ev){
+      navMark.addEventListener(ev, function(){ clearTimeout(pressTimer); });
+    });
+    navMark.addEventListener('click', function(e){
+      if (longPressed) e.preventDefault();
+    });
+  }
+
   var nav = document.getElementById('site-nav');
   var toggle = document.getElementById('nav-toggle');
   if (toggle && nav) {

@@ -79,4 +79,11 @@
     .then(function(r){ if (!r.ok) throw new Error('api'); return r.json(); })
     .then(render)
     .catch(function(){ /* sekcija ostaje sakrivena */ });
+
+  if (new URLSearchParams(location.search).has('poslano')) {
+    var success = document.getElementById('job-success');
+    var form = document.getElementById('job-form');
+    if (success) success.hidden = false;
+    if (form) form.hidden = true;
+  }
 })();

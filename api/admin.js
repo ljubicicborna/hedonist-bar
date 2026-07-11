@@ -26,6 +26,39 @@ function authorized(req) {
   return crypto.timingSafeEqual(a, b);
 }
 
+/* najbolje-moguća zaštita od pogađanja lozinke: pamti neuspjele pokušaje
+   po IP-u dok je serverless instanca topla (nije savršeno kroz hladne
+   startove/više instanci, ali čini brute-force skriptu nepraktičnom) */
+const LOGIN_ATTEMPTS = new Map();
+const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
+const RATE_LIMIT_MAX = 8;
+
+function clientIp(req) {
+  const fwd = String(req.headers['x-forwarded-for'] || '');
+  return fwd.split(',')[0].trim() || req.socket.remoteAddress || 'unknown';
+}
+
+function rateLimited(ip) {
+  const now = Date.now();
+  const entry = LOGIN_ATTEMPTS.get(ip);
+  if (!entry || now - entry.since > RATE_LIMIT_WINDOW_MS) return false;
+  return entry.count >= RATE_LIMIT_MAX;
+}
+
+function recordFailure(ip) {
+  const now = Date.now();
+  const entry = LOGIN_ATTEMPTS.get(ip);
+  if (!entry || now - entry.since > RATE_LIMIT_WINDOW_MS) {
+    LOGIN_ATTEMPTS.set(ip, { count: 1, since: now });
+  } else {
+    entry.count += 1;
+  }
+}
+
+function clearFailures(ip) {
+  LOGIN_ATTEMPTS.delete(ip);
+}
+
 function slugify(s) {
   return String(s).toLowerCase()
     .replace(/[čć]/g, 'c').replace(/đ/g, 'd').replace(/š/g, 's').replace(/ž/g, 'z')
@@ -143,10 +176,17 @@ export default async function handler(req, res) {
     res.setHeader('Allow', 'POST');
     return res.status(405).json({ error: 'method-not-allowed' });
   }
+  const ip = clientIp(req);
+  if (rateLimited(ip)) {
+    res.setHeader('Retry-After', String(Math.ceil(RATE_LIMIT_WINDOW_MS / 1000)));
+    return res.status(429).json({ error: 'too-many-attempts' });
+  }
   if (!authorized(req)) {
+    recordFailure(ip);
     await new Promise(function (ok) { setTimeout(ok, 600); });
     return res.status(401).json({ error: 'unauthorized' });
   }
+  clearFailures(ip);
 
   const body = req.body || {};
 

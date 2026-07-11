@@ -7,7 +7,11 @@ import crypto from 'node:crypto';
 
 /* svako spremanje = nova nepromjenjiva datoteka (CDN je ne može servirati
    staru); zadnjih nekoliko verzija se čuva kao povijest, ostale se brišu */
-const DATA_PREFIX = 'cms/data/glazba-';
+const PREFIXES = {
+  glazba: 'cms/data/glazba-',
+  cjenik: 'cms/data/cjenik-',
+  tekstovi: 'cms/data/tekstovi-'
+};
 const KEEP_VERSIONS = 5;
 const FOTO_PREFIX = 'cms/foto/';
 const MAX_FOTO_BYTES = 3 * 1024 * 1024;
@@ -25,6 +29,65 @@ function slugify(s) {
   return String(s).toLowerCase()
     .replace(/[čć]/g, 'c').replace(/đ/g, 'd').replace(/š/g, 's').replace(/ž/g, 'z')
     .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'foto';
+}
+
+function validateCjenik(data) {
+  if (!data || !Array.isArray(data.kategorije)) return 'Cjenik nije u očekivanom obliku.';
+  for (const c of data.kategorije) {
+    if (!c || typeof c.id !== 'string' || !c.id || typeof c.naziv !== 'string' || !c.naziv.trim()) {
+      return 'Svaka kategorija mora imati id i naziv.';
+    }
+    if (!Array.isArray(c.grupe)) return 'Kategorija "' + c.naziv + '" nema grupe.';
+    for (const g of c.grupe) {
+      if (!g || typeof g.naziv !== 'string' || !Array.isArray(g.stavke)) return 'Grupa u "' + c.naziv + '" nije ispravna.';
+      for (const s of g.stavke) {
+        if (!s || typeof s.naziv !== 'string' || !s.naziv.trim()) return 'Stavka bez naziva u grupi "' + g.naziv + '".';
+        if (!/^\d{1,3},\d{2}$/.test(s.cijena || '')) {
+          return 'Cijena za "' + s.naziv + '" mora biti u obliku 2,20 — upisano je "' + (s.cijena || '') + '".';
+        }
+      }
+    }
+  }
+  return null;
+}
+
+function cleanCjenik(data) {
+  return {
+    kategorije: data.kategorije.map(function (c) {
+      return {
+        id: String(c.id),
+        naziv: String(c.naziv).trim(),
+        grupe: c.grupe.map(function (g) {
+          return {
+            naziv: String(g.naziv || '').trim(),
+            ikona: String(g.ikona || '').trim(),
+            stavke: g.stavke.map(function (s) {
+              return {
+                naziv: String(s.naziv).trim(),
+                opis: String(s.opis || '').trim(),
+                cijena: String(s.cijena).trim()
+              };
+            })
+          };
+        })
+      };
+    })
+  };
+}
+
+function validateTekstovi(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return 'Tekstovi nisu u očekivanom obliku.';
+  for (const k of Object.keys(data)) {
+    if (typeof data[k] !== 'string') return 'Tekst "' + k + '" nije tekst.';
+    if (data[k].length > 2000) return 'Tekst "' + k + '" je predug.';
+  }
+  return null;
+}
+
+function cleanTekstovi(data) {
+  const out = {};
+  for (const k of Object.keys(data)) out[String(k).slice(0, 80)] = String(data[k]).trim();
+  return out;
 }
 
 function validateData(data) {
@@ -65,27 +128,43 @@ export default async function handler(req, res) {
     }
 
     if (body.action === 'save') {
-      const err = validateData(body.data);
-      if (err) return res.status(400).json({ error: err });
-      const clean = {
-        izvodjaci: body.data.izvodjaci.map(function (a) {
-          return {
-            id: String(a.id),
-            ime: String(a.ime).trim(),
-            tip: String(a.tip || '').trim(),
-            zanr: String(a.zanr || '').trim(),
-            opis: String(a.opis || '').trim(),
-            foto: String(a.foto || '').trim(),
-            instagram: String(a.instagram || '').trim()
-          };
-        }),
-        raspored: body.data.raspored.map(function (r) {
-          return { datum: r.datum, vrijeme: r.vrijeme, izvodjac: r.izvodjac };
-        }).sort(function (x, y) {
-          return x.datum === y.datum ? (x.vrijeme < y.vrijeme ? -1 : 1) : (x.datum < y.datum ? -1 : 1);
-        })
-      };
-      await put(DATA_PREFIX + Date.now() + '.json', JSON.stringify(clean, null, 2), {
+      const vrsta = body.vrsta || 'glazba';
+      const prefix = PREFIXES[vrsta];
+      if (!prefix) return res.status(400).json({ error: 'unknown-vrsta' });
+
+      let clean;
+      if (vrsta === 'glazba') {
+        const err = validateData(body.data);
+        if (err) return res.status(400).json({ error: err });
+        clean = {
+          izvodjaci: body.data.izvodjaci.map(function (a) {
+            return {
+              id: String(a.id),
+              ime: String(a.ime).trim(),
+              tip: String(a.tip || '').trim(),
+              zanr: String(a.zanr || '').trim(),
+              opis: String(a.opis || '').trim(),
+              foto: String(a.foto || '').trim(),
+              instagram: String(a.instagram || '').trim()
+            };
+          }),
+          raspored: body.data.raspored.map(function (r) {
+            return { datum: r.datum, vrijeme: r.vrijeme, izvodjac: r.izvodjac };
+          }).sort(function (x, y) {
+            return x.datum === y.datum ? (x.vrijeme < y.vrijeme ? -1 : 1) : (x.datum < y.datum ? -1 : 1);
+          })
+        };
+      } else if (vrsta === 'cjenik') {
+        const err = validateCjenik(body.data);
+        if (err) return res.status(400).json({ error: err });
+        clean = cleanCjenik(body.data);
+      } else {
+        const err = validateTekstovi(body.data);
+        if (err) return res.status(400).json({ error: err });
+        clean = cleanTekstovi(body.data);
+      }
+
+      await put(prefix + Date.now() + '.json', JSON.stringify(clean, null, 2), {
         access: 'public',
         addRandomSuffix: false,
         cacheControlMaxAge: 31536000,
@@ -93,7 +172,7 @@ export default async function handler(req, res) {
       });
       /* obriši starije verzije, zadrži zadnjih KEEP_VERSIONS */
       try {
-        const { blobs } = await list({ prefix: DATA_PREFIX });
+        const { blobs } = await list({ prefix: prefix });
         blobs.sort(function (a, b) { return a.pathname < b.pathname ? 1 : -1; });
         await Promise.all(blobs.slice(KEEP_VERSIONS).map(function (b) { return del(b.url); }));
       } catch (e) { /* čišćenje nije kritično */ }

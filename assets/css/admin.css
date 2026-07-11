@@ -85,6 +85,70 @@ textarea{ resize: vertical; min-height: 84px; }
   border-radius: 999px; padding: 0.35rem 0.9rem; font-size: 0.85rem;
 }
 
+/* ---- birač stranice ---- */
+.pagebar{
+  max-width: 860px; margin: 0 auto; width: 100%;
+  padding: 1.1rem 1rem 0;
+  display: flex; align-items: center; gap: 0.8rem;
+}
+.pagebar label{
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em;
+  color: rgba(244,236,219,0.55); flex: none;
+}
+.pagebar select{
+  font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
+  color: var(--gold-soft); background: var(--panel-2);
+  border: 1px solid rgba(201,160,99,0.4); border-radius: 12px;
+  padding: 0.65rem 0.9rem;
+}
+
+/* ---- blok s tekstovima ---- */
+.text-block{ margin-top: 2rem; }
+.block-title{ font-size: 1.05rem; color: var(--gold-soft); margin: 0 0 0.8rem; }
+.text-fields{ display: grid; gap: 0.9rem; }
+
+/* ---- cjenik ---- */
+.cat{
+  background: var(--panel); border: var(--edge); border-radius: 14px;
+  margin-bottom: 0.7rem; overflow: hidden;
+}
+.cat > summary{
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 0.9rem 1rem;
+  font-family: var(--font-display); font-weight: 600;
+}
+.cat > summary::-webkit-details-marker{ display: none; }
+.cat > summary::after{ content: '▾'; color: var(--gold-soft); transition: transform 0.2s ease; }
+.cat[open] > summary::after{ transform: rotate(180deg); }
+.cat-sum-count{ font-family: var(--font-ui); font-weight: 400; font-size: 0.82rem; color: rgba(244,236,219,0.5); margin-left: auto; }
+.cat-body{ padding: 0 1rem 1rem; display: grid; gap: 1rem; }
+.grp{
+  border: 1px solid rgba(201,160,99,0.16); border-radius: 12px;
+  padding: 0.7rem; display: grid; gap: 0.5rem; background: rgba(23,17,13,0.35);
+}
+.grp-head{ display: flex; gap: 0.5rem; align-items: center; }
+.grp-head input{ flex: 1; min-width: 0; }
+.grp-head select{ width: auto; flex: none; }
+.itms{ display: grid; gap: 0.4rem; }
+.itm{ display: grid; grid-template-columns: 1fr 86px 34px; gap: 0.4rem; align-items: center; }
+.itm input[data-if="opis"]{ grid-column: 1 / -1; font-size: 0.88rem; color: rgba(244,236,219,0.8); }
+.itm .cij{ text-align: right; }
+.itm .row-x, .grp-head .row-x{ position: static; transform: none; flex: none; }
+@media (min-width: 640px){
+  .itm{ grid-template-columns: minmax(140px, 1fr) minmax(160px, 1.2fr) 90px 34px; }
+  .itm input[data-if="opis"]{ grid-column: auto; }
+}
+.btn-mini{
+  background: none; border: 1px dashed rgba(201,160,99,0.45); color: var(--gold-soft);
+  border-radius: 999px; padding: 0.35rem 1rem; font-size: 0.85rem; justify-self: start;
+}
+.cat-actions{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.cat-del{
+  background: none; border: none; color: #e08b8b; font-size: 0.88rem;
+  text-decoration: underline; padding: 0.2rem;
+}
+
 /* ---- tabovi ---- */
 .tabs{
   display: flex; gap: 0.5rem; padding: 1rem 1rem 0;
@@ -96,6 +160,8 @@ textarea{ resize: vertical; min-height: 84px; }
   font-family: var(--font-display); font-weight: 600; font-size: 0.95rem;
 }
 .tab.is-active{ background: var(--panel-2); color: var(--gold-soft); border-bottom-color: transparent; }
+/* tabovi unutar panela ne trebaju vlastiti razmak — .wrap ga već daje */
+.panel .tabs{ padding: 0; margin: 0 0 1.2rem; }
 
 .wrap{ max-width: 860px; margin: 0 auto; padding: 1.2rem 1rem 7rem; }
 .hint{ color: rgba(244,236,219,0.55); font-size: 0.92rem; margin: 0 0 1.2rem; }

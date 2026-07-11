@@ -403,6 +403,29 @@ a{ color: inherit; text-decoration: none; }
   .philosophy-photo{ max-height: 280px; order: -1; margin-bottom: 0.5rem; }
 }
 
+/* ================= Lokacija: priča o susjedstvu ================= */
+.story{ padding: 6rem 0; }
+.story:nth-child(odd){ background: var(--ink); }
+.story:nth-child(even){ background: var(--panel); }
+.story-grid{ display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3.5rem; align-items: center; }
+.story-reverse .story-grid{ grid-template-columns: 0.9fr 1.1fr; }
+.story-reverse .story-grid > img{ order: -1; }
+.story-copy{ max-width: 58ch; color: rgba(244,236,219,0.78); font-size: 1.02rem; line-height: 1.65; margin: 0 0 1rem; }
+.story-credit{ margin: 0; font-size: 0.72rem; color: rgba(244,236,219,0.4); }
+.story-credit a{ color: rgba(244,236,219,0.55); text-decoration: underline; }
+.story-photo{
+  width: 100%; height: 100%; max-height: 420px; object-fit: cover;
+  border-radius: 10px; border: var(--edge);
+  box-shadow: 0 20px 40px -20px rgba(23,17,13,0.5);
+}
+@media (max-width: 860px){
+  .story{ padding: 4rem 0; }
+  .story-grid, .story-reverse .story-grid{ grid-template-columns: 1fr; text-align: center; }
+  .story-reverse .story-grid > img{ order: -1; }
+  .story-photo{ max-height: 260px; }
+  .story-copy{ margin-left: auto; margin-right: auto; }
+}
+
 /* ================= Menu ================= */
 .menu{ background: var(--panel); padding: 6.5rem 0; }
 .menu-grid{ display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 3rem; align-items: center; }

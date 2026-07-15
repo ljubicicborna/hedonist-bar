@@ -1,6 +1,6 @@
 /* Javni API: vraća oglase za posao (sekcija "Otvorene pozicije" na
    zaposlenje.html). Uređuje se na /admin.html; svako spremanje je nova
-   nepromjenjiva datoteka cms/data/oglasi-<timestamp>.json (vidi api/glazba.js). */
+   nepromjenjiva datoteka cms/data/oglasi-<timestamp>.json (vidi api/admin.js). */
 
 import { list } from '@vercel/blob';
 

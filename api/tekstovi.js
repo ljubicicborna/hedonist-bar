@@ -1,7 +1,7 @@
 /* Javni API: vraća uredive tekstove stranica (ključ → tekst).
    Elementi u HTML-u označeni s data-cms="ključ" dobiju ovaj sadržaj.
    Uređuje se na /admin.html; spremanje = nova nepromjenjiva datoteka
-   cms/data/tekstovi-<timestamp>.json (vidi api/glazba.js). */
+   cms/data/tekstovi-<timestamp>.json (vidi api/admin.js). */
 
 import { list } from '@vercel/blob';
 

@@ -1,23 +1,20 @@
 /* =====================================================================
    ADMIN — uređivanje sadržaja (/admin.html)
    Birač stranice gore odlučuje što se uređuje:
-   - Živa glazba  → raspored + izvođači (+ uvodni tekst)
    - Cjenik       → kategorije/grupe/stavke s cijenama (+ uvodni tekst)
    - Početna      → glavni tekstovi
    - Zapošljavanje→ tekstovi
-   Sve se čita s /api/glazba, /api/cjenik, /api/tekstovi, a sprema preko
+   Sve se čita s /api/cjenik, /api/tekstovi, /api/oglasi, a sprema preko
    /api/admin (lozinka u headeru x-admin-key).
 ===================================================================== */
 (function(){
   var API = '/api/admin';
 
-  var state = { glazba: null, cjenik: null, tekstovi: null, oglasi: null };
-  var dirty = { glazba: false, cjenik: false, tekstovi: false, oglasi: false };
+  var state = { cjenik: null, tekstovi: null, oglasi: null };
+  var dirty = { cjenik: false, tekstovi: false, oglasi: false };
 
   var loginView = document.getElementById('login-view');
   var appView = document.getElementById('app-view');
-  var gigsEl = document.getElementById('gigs');
-  var artistsEl = document.getElementById('artists');
   var catsEl = document.getElementById('cjenik-cats');
   var oglasiEl = document.getElementById('oglasi');
   var saveBtn = document.getElementById('save');
@@ -25,9 +22,6 @@
 
   /* koje tekst-polje pripada kojoj stranici: [ključ, oznaka, vrsta polja] */
   var TEKST_POLJA = {
-    glazba: [
-      ['glazba.uvod', 'Uvodni tekst na vrhu stranice', 'textarea']
-    ],
     cjenik: [
       ['cjenik.uvod', 'Uvodni tekst na vrhu stranice', 'textarea']
     ],
@@ -44,7 +38,7 @@
     ]
   };
 
-  var PAGE_URLS = { glazba: '/glazba.html', cjenik: '/cjenik.html', pocetna: '/', zaposlenje: '/zaposlenje.html' };
+  var PAGE_URLS = { cjenik: '/cjenik.html', pocetna: '/', zaposlenje: '/zaposlenje.html' };
 
   function key(){ return sessionStorage.getItem('hedonistAdminKey') || ''; }
 
@@ -63,7 +57,7 @@
     statusEl.className = 'save-status' + (cls ? ' ' + cls : '');
   }
 
-  function anyDirty(){ return dirty.glazba || dirty.cjenik || dirty.tekstovi || dirty.oglasi; }
+  function anyDirty(){ return dirty.cjenik || dirty.tekstovi || dirty.oglasi; }
 
   function markDirty(vrsta){
     dirty[vrsta] = true;
@@ -73,13 +67,6 @@
 
   function esc(s){
     return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  function initials(name){
-    var parts = String(name || '?').replace(/^DJ\s+/i, '').split(/[\s—-]+/).filter(Boolean);
-    var out = parts[0] ? parts[0][0] : '?';
-    if (parts[1]) out += parts[1][0];
-    return out.toUpperCase();
   }
 
   function todayStr(){
@@ -92,7 +79,7 @@
   var viewLink = document.getElementById('view-link');
   function showPanel(){
     var page = pagePick.value;
-    ['glazba', 'cjenik', 'pocetna', 'zaposlenje'].forEach(function(p){
+    ['cjenik', 'pocetna', 'zaposlenje'].forEach(function(p){
       document.getElementById('panel-' + p).hidden = p !== page;
     });
     viewLink.href = PAGE_URLS[page];
@@ -117,163 +104,6 @@
     if (!k) return;
     state.tekstovi[k] = e.target.value;
     markDirty('tekstovi');
-  });
-
-  /* ================= GLAZBA: RASPORED ================= */
-  /* NAPOMENA: raspored se namjerno NE sortira dok se uređuje — red ne smije
-     skočiti na drugo mjesto usred upisivanja. Server ga sortira pri spremanju. */
-  function renderGigs(){
-    var today = todayStr();
-    gigsEl.innerHTML = state.glazba.raspored.map(function(r, i){
-      var isPast = r.datum && r.datum < today;
-      var options = state.glazba.izvodjaci.map(function(a){
-        return '<option value="' + esc(a.id) + '"' + (a.id === r.izvodjac ? ' selected' : '') + '>' + esc(a.ime) + '</option>';
-      }).join('');
-      return '<div class="gig-row' + (isPast ? ' is-past' : '') + '" data-i="' + i + '">' +
-        (isPast ? '<span class="gig-past-tag">odsvirano</span>' : '') +
-        '<input type="date" data-f="datum" value="' + esc(r.datum) + '">' +
-        '<input type="time" data-f="vrijeme" value="' + esc(r.vrijeme) + '">' +
-        '<select data-f="izvodjac">' + options + '</select>' +
-        '<button type="button" class="row-x" data-del="' + i + '" aria-label="Obriši svirku">✕</button>' +
-      '</div>';
-    }).join('') || '<p class="hint">Nema unesenih svirki — dodaj prvu gumbom ispod.</p>';
-  }
-
-  gigsEl.addEventListener('input', function(e){
-    var row = e.target.closest('.gig-row');
-    if (!row) return;
-    var r = state.glazba.raspored[Number(row.getAttribute('data-i'))];
-    r[e.target.getAttribute('data-f')] = e.target.value;
-    markDirty('glazba');
-  });
-  gigsEl.addEventListener('click', function(e){
-    var del = e.target.closest('[data-del]');
-    if (!del) return;
-    state.glazba.raspored.splice(Number(del.getAttribute('data-del')), 1);
-    markDirty('glazba');
-    renderGigs();
-  });
-  document.getElementById('add-gig').addEventListener('click', function(){
-    if (!state.glazba.izvodjaci.length) { alert('Prvo dodaj barem jednog izvođača.'); return; }
-    state.glazba.raspored.push({ datum: todayStr(), vrijeme: '21:00', izvodjac: state.glazba.izvodjaci[0].id });
-    markDirty('glazba');
-    renderGigs();
-    var rows = gigsEl.querySelectorAll('.gig-row');
-    if (rows.length) rows[rows.length - 1].scrollIntoView({ block: 'center' });
-  });
-
-  /* ================= GLAZBA: IZVOĐAČI ================= */
-  var TIPOVI = ['DJ', 'Akustika', 'Bend', 'Ostalo'];
-
-  function fotoHTML(a){
-    if (a.foto) return '<img class="artist-foto" src="' + esc(a.foto) + '" alt="">';
-    return '<span class="artist-foto-ph">' + esc(initials(a.ime)) + '</span>';
-  }
-
-  function renderArtists(){
-    artistsEl.innerHTML = state.glazba.izvodjaci.map(function(a, i){
-      var tipOpts = TIPOVI.map(function(t){
-        return '<option' + (t === a.tip ? ' selected' : '') + '>' + t + '</option>';
-      }).join('');
-      return '<article class="artist-card" data-i="' + i + '">' +
-        '<div class="artist-top">' +
-          '<span class="foto-slot">' + fotoHTML(a) + '</span>' +
-          '<div class="foto-btns">' +
-            '<label class="btn-foto">Promijeni sliku<input type="file" accept="image/*" data-foto="' + i + '"></label>' +
-            '<span class="foto-note">Sama se izreže na kvadrat</span>' +
-          '</div>' +
-        '</div>' +
-        '<div class="field-grid">' +
-          '<div class="field"><label>Ime / naziv</label><input data-f="ime" value="' + esc(a.ime) + '"></div>' +
-          '<div class="field"><label>Tip</label><select data-f="tip">' + tipOpts + '</select></div>' +
-          '<div class="field"><label>Žanr</label><input data-f="zanr" value="' + esc(a.zanr) + '" placeholder="npr. House · Disco"></div>' +
-          '<div class="field"><label>Instagram (link, nije obavezno)</label><input data-f="instagram" value="' + esc(a.instagram) + '" placeholder="https://instagram.com/..."></div>' +
-          '<div class="field field-wide"><label>Opis</label><textarea data-f="opis">' + esc(a.opis) + '</textarea></div>' +
-        '</div>' +
-        '<button type="button" class="artist-del" data-del-artist="' + i + '">Obriši izvođača</button>' +
-      '</article>';
-    }).join('') || '<p class="hint">Nema izvođača — dodaj prvog gumbom ispod.</p>';
-  }
-
-  artistsEl.addEventListener('input', function(e){
-    var card = e.target.closest('.artist-card');
-    if (!card || !e.target.getAttribute('data-f')) return;
-    var a = state.glazba.izvodjaci[Number(card.getAttribute('data-i'))];
-    a[e.target.getAttribute('data-f')] = e.target.value;
-    markDirty('glazba');
-  });
-
-  artistsEl.addEventListener('click', function(e){
-    var del = e.target.closest('[data-del-artist]');
-    if (!del) return;
-    var i = Number(del.getAttribute('data-del-artist'));
-    var a = state.glazba.izvodjaci[i];
-    var used = state.glazba.raspored.some(function(r){ return r.izvodjac === a.id; });
-    if (used) { alert('"' + a.ime + '" ima svirke u rasporedu — prvo ih obriši, pa onda izvođača.'); return; }
-    if (!confirm('Obrisati izvođača "' + a.ime + '"?')) return;
-    if (/\.public\.blob\.vercel-storage\.com\/cms\/foto\//.test(a.foto || '')) {
-      api({ action: 'delete-foto', url: a.foto }); /* čišćenje u pozadini */
-    }
-    state.glazba.izvodjaci.splice(i, 1);
-    markDirty('glazba');
-    renderArtists();
-    renderGigs();
-  });
-
-  document.getElementById('add-artist').addEventListener('click', function(){
-    state.glazba.izvodjaci.push({ id: 'izv-' + Date.now(), ime: '', tip: 'DJ', zanr: '', opis: '', foto: '', instagram: '' });
-    markDirty('glazba');
-    renderArtists();
-    renderGigs();
-    var cards = artistsEl.querySelectorAll('.artist-card');
-    if (cards.length) {
-      cards[cards.length - 1].scrollIntoView({ block: 'center' });
-      var first = cards[cards.length - 1].querySelector('input[data-f="ime"]');
-      if (first) first.focus();
-    }
-  });
-
-  /* slika: smanji + izreži na kvadrat 800×800 pa pošalji odmah */
-  artistsEl.addEventListener('change', function(e){
-    var input = e.target.closest('input[data-foto]');
-    if (!input || !input.files || !input.files[0]) return;
-    var i = Number(input.getAttribute('data-foto'));
-    var a = state.glazba.izvodjaci[i];
-    var file = input.files[0];
-    var card = input.closest('.artist-card');
-    var slot = card.querySelector('.foto-slot');
-    slot.style.opacity = '0.4';
-
-    var img = new Image();
-    img.onload = function(){
-      URL.revokeObjectURL(img.src);
-      var S = 800;
-      var c = document.createElement('canvas');
-      c.width = S; c.height = S;
-      var ctx = c.getContext('2d');
-      var side = Math.min(img.naturalWidth, img.naturalHeight);
-      ctx.drawImage(img, (img.naturalWidth - side) / 2, (img.naturalHeight - side) / 2, side, side, 0, 0, S, S);
-      var dataUrl = c.toDataURL('image/webp', 0.85);
-      if (dataUrl.indexOf('data:image/webp') !== 0) dataUrl = c.toDataURL('image/jpeg', 0.85);
-
-      var old = a.foto;
-      api({ action: 'upload-foto', ime: a.ime || 'izvodjac', dataUrl: dataUrl }).then(function(res){
-        slot.style.opacity = '';
-        if (!res.ok) { alert(res.data.error || 'Slanje slike nije uspjelo.'); return; }
-        a.foto = res.data.url;
-        if (/\.public\.blob\.vercel-storage\.com\/cms\/foto\//.test(old || '')) {
-          api({ action: 'delete-foto', url: old });
-        }
-        slot.innerHTML = fotoHTML(a);
-        markDirty('glazba');
-      }).catch(function(){
-        slot.style.opacity = '';
-        alert('Slanje slike nije uspjelo — provjeri internet pa pokušaj ponovno.');
-      });
-    };
-    img.onerror = function(){ slot.style.opacity = ''; alert('Ovu sliku nije moguće otvoriti.'); };
-    img.src = URL.createObjectURL(file);
-    input.value = '';
   });
 
   /* ================= ZAPOŠLJAVANJE: OGLASI ================= */
@@ -474,9 +304,6 @@
 
   /* ================= SPREMANJE ================= */
   function validateBeforeSave(){
-    if (dirty.glazba && state.glazba.izvodjaci.some(function(a){ return !String(a.ime).trim(); })) {
-      return 'Svaki izvođač mora imati ime.';
-    }
     if (dirty.oglasi && state.oglasi.pozicije.some(function(p){ return !String(p.naslov).trim(); })) {
       return 'Svaki oglas mora imati naslov.';
     }
@@ -503,7 +330,6 @@
     if (err) { alert(err); return; }
 
     var queue = [];
-    if (dirty.glazba) queue.push('glazba');
     if (dirty.cjenik) queue.push('cjenik');
     if (dirty.tekstovi) queue.push('tekstovi');
     if (dirty.oglasi) queue.push('oglasi');
@@ -540,18 +366,10 @@
     if (anyDirty()) { e.preventDefault(); e.returnValue = ''; }
   });
 
-  /* ================= TABOVI (glazba), PRIJAVA, START ================= */
-  document.querySelectorAll('.tab').forEach(function(btn){
-    btn.addEventListener('click', function(){
-      document.querySelectorAll('.tab').forEach(function(b){ b.classList.toggle('is-active', b === btn); });
-      document.getElementById('tab-raspored').hidden = btn.getAttribute('data-tab') !== 'raspored';
-      document.getElementById('tab-izvodjaci').hidden = btn.getAttribute('data-tab') !== 'izvodjaci';
-    });
-  });
-
+  /* ================= PRIJAVA, START ================= */
   document.getElementById('logout').addEventListener('click', function(){
     if (anyDirty() && !confirm('Imaš nespremljene promjene — svejedno se odjaviti?')) return;
-    dirty = { glazba: false, cjenik: false, tekstovi: false, oglasi: false };
+    dirty = { cjenik: false, tekstovi: false, oglasi: false };
     sessionStorage.removeItem('hedonistAdminKey');
     location.reload();
   });
@@ -576,17 +394,13 @@
 
   function loadAndShow(){
     return Promise.all([
-      getJSON('/api/glazba', { izvodjaci: [], raspored: [] }),
       getJSON('/api/cjenik', { kategorije: [] }),
       getJSON('/api/tekstovi', {}),
       getJSON('/api/oglasi', SEED_OGLASI)
     ]).then(function(res){
-      state.glazba = { izvodjaci: res[0].izvodjaci || [], raspored: res[0].raspored || [] };
-      state.cjenik = { kategorije: res[1].kategorije || [] };
-      state.tekstovi = res[2] && typeof res[2] === 'object' ? res[2] : {};
-      state.oglasi = { pozicije: (res[3] && res[3].pozicije) || [] };
-      renderGigs();
-      renderArtists();
+      state.cjenik = { kategorije: res[0].kategorije || [] };
+      state.tekstovi = res[1] && typeof res[1] === 'object' ? res[1] : {};
+      state.oglasi = { pozicije: (res[2] && res[2].pozicije) || [] };
       renderCjenik(-1);
       renderTexts();
       renderOglasi();

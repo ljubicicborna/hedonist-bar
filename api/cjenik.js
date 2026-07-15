@@ -1,6 +1,6 @@
 /* Javni API: vraća cjenik (kategorije → grupe → stavke).
    Uređuje se na /admin.html; svako spremanje je nova nepromjenjiva
-   datoteka cms/data/cjenik-<timestamp>.json (vidi api/glazba.js). */
+   datoteka cms/data/cjenik-<timestamp>.json (vidi api/admin.js). */
 
 import { list } from '@vercel/blob';
 

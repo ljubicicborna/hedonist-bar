@@ -36,14 +36,13 @@
       <strong>Hedonist</strong>
       <span>uređivanje stranice</span>
     </div>
-    <a class="topbar-link" id="view-link" href="/glazba.html" target="_blank" rel="noopener">Pogledaj stranicu ↗</a>
+    <a class="topbar-link" id="view-link" href="/cjenik.html" target="_blank" rel="noopener">Pogledaj stranicu ↗</a>
     <button id="logout" class="topbar-out" type="button">Odjava</button>
   </header>
 
   <nav class="pagebar" aria-label="Odabir stranice">
     <label for="page-pick">Uređuješ stranicu</label>
     <select id="page-pick">
-      <option value="glazba">Živa glazba</option>
       <option value="cjenik">Cjenik</option>
       <option value="pocetna">Početna</option>
       <option value="zaposlenje">Zapošljavanje</option>
@@ -51,29 +50,6 @@
   </nav>
 
   <main class="wrap">
-
-    <!-- ŽIVA GLAZBA -->
-    <div class="panel" id="panel-glazba">
-      <nav class="tabs" aria-label="Sekcije">
-        <button type="button" class="tab is-active" data-tab="raspored">Raspored svirki</button>
-        <button type="button" class="tab" data-tab="izvodjaci">Izvođači</button>
-      </nav>
-      <section id="tab-raspored">
-        <p class="hint">Na stranici se sami prikažu samo termini koji padaju u tekući tjedan (pon–ned).
-        Buduće tjedne slobodno upiši unaprijed — pojavit će se kad im dođe vrijeme. Stare svirke možeš obrisati ili ostaviti kao arhivu.</p>
-        <div id="gigs" class="gig-rows"></div>
-        <button id="add-gig" class="btn-add" type="button">+ Dodaj svirku</button>
-      </section>
-      <section id="tab-izvodjaci" hidden>
-        <p class="hint">Ovi izvođači se prikazuju u popisu na stranici Živa glazba. Slika se sama smanji i izreže na kvadrat — samo odaberi fotografiju s mobitela ili računala.</p>
-        <div id="artists" class="artist-cards"></div>
-        <button id="add-artist" class="btn-add" type="button">+ Dodaj izvođača</button>
-      </section>
-      <section class="text-block">
-        <h2 class="block-title">Tekstovi stranice</h2>
-        <div class="text-fields" data-texts="glazba"></div>
-      </section>
-    </div>
 
     <!-- CJENIK -->
     <div class="panel" id="panel-cjenik" hidden>

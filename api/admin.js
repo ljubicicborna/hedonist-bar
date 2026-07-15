@@ -8,14 +8,11 @@ import crypto from 'node:crypto';
 /* svako spremanje = nova nepromjenjiva datoteka (CDN je ne može servirati
    staru); zadnjih nekoliko verzija se čuva kao povijest, ostale se brišu */
 const PREFIXES = {
-  glazba: 'cms/data/glazba-',
   cjenik: 'cms/data/cjenik-',
   tekstovi: 'cms/data/tekstovi-',
   oglasi: 'cms/data/oglasi-'
 };
 const KEEP_VERSIONS = 5;
-const FOTO_PREFIX = 'cms/foto/';
-const MAX_FOTO_BYTES = 3 * 1024 * 1024;
 
 function authorized(req) {
   const expected = process.env.ADMIN_PASSWORD || '';
@@ -57,12 +54,6 @@ function recordFailure(ip) {
 
 function clearFailures(ip) {
   LOGIN_ATTEMPTS.delete(ip);
-}
-
-function slugify(s) {
-  return String(s).toLowerCase()
-    .replace(/[čć]/g, 'c').replace(/đ/g, 'd').replace(/š/g, 's').replace(/ž/g, 'z')
-    .replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40) || 'foto';
 }
 
 function validateCjenik(data) {
@@ -151,26 +142,6 @@ function cleanOglasi(data) {
   };
 }
 
-function validateData(data) {
-  if (!data || !Array.isArray(data.izvodjaci) || !Array.isArray(data.raspored)) {
-    return 'Podaci nisu u očekivanom obliku.';
-  }
-  const ids = new Set();
-  for (const a of data.izvodjaci) {
-    if (!a || typeof a.id !== 'string' || !a.id || typeof a.ime !== 'string' || !a.ime.trim()) {
-      return 'Svaki izvođač mora imati id i ime.';
-    }
-    if (ids.has(a.id)) return 'Dvostruki id izvođača: ' + a.id;
-    ids.add(a.id);
-  }
-  for (const r of data.raspored) {
-    if (!r || !/^\d{4}-\d{2}-\d{2}$/.test(r.datum || '')) return 'Svirka ima neispravan datum.';
-    if (!/^\d{1,2}:\d{2}$/.test(r.vrijeme || '')) return 'Svirka ima neispravno vrijeme.';
-    if (!ids.has(r.izvodjac)) return 'Svirka pokazuje na nepostojećeg izvođača.';
-  }
-  return null;
-}
-
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     res.setHeader('Allow', 'POST');
@@ -196,33 +167,12 @@ export default async function handler(req, res) {
     }
 
     if (body.action === 'save') {
-      const vrsta = body.vrsta || 'glazba';
+      const vrsta = body.vrsta || 'cjenik';
       const prefix = PREFIXES[vrsta];
       if (!prefix) return res.status(400).json({ error: 'unknown-vrsta' });
 
       let clean;
-      if (vrsta === 'glazba') {
-        const err = validateData(body.data);
-        if (err) return res.status(400).json({ error: err });
-        clean = {
-          izvodjaci: body.data.izvodjaci.map(function (a) {
-            return {
-              id: String(a.id),
-              ime: String(a.ime).trim(),
-              tip: String(a.tip || '').trim(),
-              zanr: String(a.zanr || '').trim(),
-              opis: String(a.opis || '').trim(),
-              foto: String(a.foto || '').trim(),
-              instagram: String(a.instagram || '').trim()
-            };
-          }),
-          raspored: body.data.raspored.map(function (r) {
-            return { datum: r.datum, vrijeme: r.vrijeme, izvodjac: r.izvodjac };
-          }).sort(function (x, y) {
-            return x.datum === y.datum ? (x.vrijeme < y.vrijeme ? -1 : 1) : (x.datum < y.datum ? -1 : 1);
-          })
-        };
-      } else if (vrsta === 'cjenik') {
+      if (vrsta === 'cjenik') {
         const err = validateCjenik(body.data);
         if (err) return res.status(400).json({ error: err });
         clean = cleanCjenik(body.data);
@@ -248,31 +198,6 @@ export default async function handler(req, res) {
         blobs.sort(function (a, b) { return a.pathname < b.pathname ? 1 : -1; });
         await Promise.all(blobs.slice(KEEP_VERSIONS).map(function (b) { return del(b.url); }));
       } catch (e) { /* čišćenje nije kritično */ }
-      return res.status(200).json({ ok: true });
-    }
-
-    if (body.action === 'upload-foto') {
-      const m = /^data:(image\/(?:webp|jpeg|png));base64,(.+)$/.exec(String(body.dataUrl || ''));
-      if (!m) return res.status(400).json({ error: 'Slika mora biti webp, jpeg ili png.' });
-      const buf = Buffer.from(m[2], 'base64');
-      if (buf.length > MAX_FOTO_BYTES) return res.status(400).json({ error: 'Slika je prevelika (max 3 MB).' });
-      const ext = m[1] === 'image/webp' ? 'webp' : (m[1] === 'image/png' ? 'png' : 'jpg');
-      const pathname = FOTO_PREFIX + slugify(body.ime || 'izvodjac') + '-' + Date.now() + '.' + ext;
-      const blob = await put(pathname, buf, {
-        access: 'public',
-        addRandomSuffix: false,
-        cacheControlMaxAge: 31536000,
-        contentType: m[1]
-      });
-      return res.status(200).json({ ok: true, url: blob.url });
-    }
-
-    if (body.action === 'delete-foto') {
-      const url = String(body.url || '');
-      if (!/^https:\/\/[a-z0-9]+\.public\.blob\.vercel-storage\.com\/cms\/foto\//.test(url)) {
-        return res.status(400).json({ error: 'Može se obrisati samo slika iz CMS-a.' });
-      }
-      await del(url);
       return res.status(200).json({ ok: true });
     }
 

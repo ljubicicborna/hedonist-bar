@@ -743,10 +743,9 @@ a{ color: inherit; text-decoration: none; }
 }
 .map-static img{
   width: 100%; height: 100%; object-fit: cover; display: block;
-  filter: sepia(0.65) saturate(0.55) brightness(0.78) hue-rotate(-10deg) contrast(1.05);
-  transition: transform 0.35s ease, filter 0.35s ease;
+  transition: transform 0.35s ease;
 }
-.map-static:hover img{ transform: scale(1.03); filter: sepia(0.3) saturate(0.85) brightness(0.95) hue-rotate(-6deg); }
+.map-static:hover img{ transform: scale(1.03); }
 .map-static::before, .map-static::after{
   content: ''; position: absolute; z-index: 2; pointer-events: none;
   width: 22px; height: 22px;

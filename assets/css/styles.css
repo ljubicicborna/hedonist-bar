@@ -529,14 +529,33 @@ a{ color: inherit; text-decoration: none; }
    novosti.js ubaci u njih, tako da svaka strana crta svoj dio neovisno */
 .home-novosti-row{ display: flex; gap: 1rem; flex-wrap: wrap; }
 .home-gigs-slot, .home-jobs-slot{ display: contents; }
+@media (max-width: 560px){
+  /* two narrow shrink-to-fit cards side by side wasted half the row on
+     small phones — stack them full-width instead so nothing is cramped */
+  .home-novosti-row{ flex-direction: column; gap: 0.75rem; }
+}
 
+/* event/job cards carry their own photo — blurred and veiled the same
+   way the hero photo is, so the card still reads as text-first but
+   ties visually to what it's actually advertising */
 .home-job{
   position: relative;
+  overflow: hidden;
   display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;
-  background: var(--panel); border: var(--edge); border-radius: 12px;
+  border: var(--edge); border-radius: 12px;
   padding: 0.9rem 1.1rem; min-width: 220px; max-width: 280px; min-height: 168px;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
+.home-job::before{
+  content: ''; position: absolute; inset: -8px; z-index: 0; pointer-events: none;
+  background: url("../images/gallery/pouring-shot-bar.jpg") center / cover;
+  filter: blur(3px) brightness(0.6) saturate(1.05);
+}
+.home-job::after{
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(165deg, rgba(36,26,19,0.86), rgba(23,17,13,0.9));
+}
+.home-job > *{ position: relative; z-index: 2; }
 .home-job:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.55); }
 .home-job-badge{
   align-self: flex-start;
@@ -549,22 +568,32 @@ a{ color: inherit; text-decoration: none; }
 .home-job-cta{ font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--gold-soft); }
 .home-job-cta:hover{ color: var(--azure); }
 @media (max-width: 560px){
-  .home-job{ min-width: 0; max-width: none; }
+  .home-job{ min-width: 0; max-width: none; min-height: 0; padding: 0.8rem 1rem; }
 }
 .home-night{
   position: relative;
+  overflow: hidden;
   display: flex; flex-direction: column; gap: 0.3rem; justify-content: center;
-  background: linear-gradient(165deg, rgba(61,46,32,0.9), rgba(36,26,19,0.94));
   border: var(--edge); border-radius: 12px;
   padding: 0.9rem 1.25rem; min-width: 200px; min-height: 168px;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
+.home-night::before{
+  content: ''; position: absolute; inset: -8px; z-index: 0; pointer-events: none;
+  background: url("../images/gallery/novosti-monogram-crowd.jpg") center / cover;
+  filter: blur(3px) brightness(0.55) saturate(1.1);
+}
+.home-night::after{
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: linear-gradient(165deg, rgba(61,46,32,0.82), rgba(36,26,19,0.88));
+}
+.home-night > *{ position: relative; z-index: 2; }
 .home-night:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.5); }
 .home-night-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.55); }
 .home-night-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: rgba(244,236,219,0.95); }
 .home-night-tag{ font-size: 0.82rem; color: var(--gold-soft); }
 @media (max-width: 560px){
-  .home-night{ min-width: 0; }
+  .home-night{ min-width: 0; min-height: 0; padding: 0.8rem 1.1rem; }
 }
 
 /* ================= Atmosphere ================= */
@@ -1203,5 +1232,22 @@ body.veil-out.veil-leave .page-veil img{
 
 @media (max-width: 700px){
   .price-items{ grid-template-columns: 1fr; }
+}
+
+/* ================= Mobile: less scrolling, same content =================
+   these sections carry desktop-scale vertical padding (6.5–9.5rem) that
+   was never trimmed for phones, so the page reads as mostly empty space
+   between sections on a small screen — cut it roughly in half */
+@media (max-width: 560px){
+  .philosophy{ padding: 3.5rem 0; }
+  .menu{ padding: 3.5rem 0; }
+  .daytime{ padding: 3.5rem 0; }
+  .atmosphere{ padding: 3.5rem 0; }
+  .visit{ padding: 3.5rem 0; }
+  .reserve{ padding: 4.5rem 0; }
+  .job-openings{ padding: 3rem 0 1rem; }
+  .job-section{ padding: 3rem 0 3.5rem; }
+  .price-hero{ padding: 6rem 0 2.5rem; }
+  .legal{ padding: 2.5rem 0 3.5rem; }
 }
 

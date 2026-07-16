@@ -501,7 +501,6 @@ a{ color: inherit; text-decoration: none; }
 .daytime-inner{ max-width: 46ch; }
 .daytime-copy{ color: rgba(244,236,219,0.78); margin: 0 0 2rem; }
 .daytime-inset{
-  /* matches the photo's 4:5 aspect so the drinks aren't cropped */
   width: 248px; height: 310px; object-fit: cover;
   border-radius: 10px; border: var(--edge);
   filter: saturate(1.08) contrast(1.04);
@@ -535,27 +534,47 @@ a{ color: inherit; text-decoration: none; }
   .home-novosti-row{ flex-direction: column; gap: 0.75rem; }
 }
 
-/* event/job cards carry their own photo — blurred and veiled the same
-   way the hero photo is, so the card still reads as text-first but
-   ties visually to what it's actually advertising */
+/* same mosaic-to-carousel gallery as .atmosphere-gallery, kept as its
+   own class since main.js's dot-observer only tracks one gallery */
+.novosti-gallery{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.1rem;
+  margin-top: 1.5rem;
+}
+.novosti-gallery img{
+  width: 100%; height: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+  border-radius: 10px;
+  border: var(--edge);
+  filter: saturate(1.05) contrast(1.03);
+  transition: transform 0.5s ease;
+}
+.novosti-gallery{ overflow: visible; }
+.novosti-gallery img:hover{ transform: scale(1.035); }
+@media (max-width: 760px){
+  .novosti-gallery{
+    display: flex; grid-template-columns: unset;
+    overflow-x: auto; scroll-snap-type: x mandatory;
+    gap: 0.9rem; margin: 1.5rem -1.75rem 0; padding: 0 1.75rem 0.25rem;
+    -webkit-overflow-scrolling: touch; scrollbar-width: none;
+  }
+  .novosti-gallery::-webkit-scrollbar{ display: none; }
+  .novosti-gallery img{
+    flex: 0 0 78%; width: 78%; height: 340px;
+    scroll-snap-align: center;
+  }
+}
+@media (max-width: 480px){
+  .novosti-gallery img{ flex-basis: 86%; width: 86%; height: 300px; }
+}
+
 .home-job{
   position: relative;
-  overflow: hidden;
   display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;
-  border: var(--edge); border-radius: 12px;
+  background: var(--panel); border: var(--edge); border-radius: 12px;
   padding: 0.9rem 1.1rem; min-width: 220px; max-width: 280px; min-height: 168px;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.home-job::before{
-  content: ''; position: absolute; inset: -8px; z-index: 0; pointer-events: none;
-  background: url("../images/gallery/pouring-shot-bar.jpg") center / cover;
-  filter: blur(3px) brightness(0.6) saturate(1.05);
-}
-.home-job::after{
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(165deg, rgba(36,26,19,0.86), rgba(23,17,13,0.9));
-}
-.home-job > *{ position: relative; z-index: 2; }
 .home-job:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.55); }
 .home-job-badge{
   align-self: flex-start;
@@ -572,22 +591,12 @@ a{ color: inherit; text-decoration: none; }
 }
 .home-night{
   position: relative;
-  overflow: hidden;
   display: flex; flex-direction: column; gap: 0.3rem; justify-content: center;
+  background: linear-gradient(165deg, rgba(61,46,32,0.9), rgba(36,26,19,0.94));
   border: var(--edge); border-radius: 12px;
   padding: 0.9rem 1.25rem; min-width: 200px; min-height: 168px;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
-.home-night::before{
-  content: ''; position: absolute; inset: -8px; z-index: 0; pointer-events: none;
-  background: url("../images/gallery/novosti-monogram-crowd.jpg") center / cover;
-  filter: blur(3px) brightness(0.55) saturate(1.1);
-}
-.home-night::after{
-  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
-  background: linear-gradient(165deg, rgba(61,46,32,0.82), rgba(36,26,19,0.88));
-}
-.home-night > *{ position: relative; z-index: 2; }
 .home-night:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.5); }
 .home-night-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.55); }
 .home-night-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: rgba(244,236,219,0.95); }

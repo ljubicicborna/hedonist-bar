@@ -5,6 +5,35 @@
 ===================================================================== */
 (function(){
   var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+  var IMG = 'assets/images/gallery/';
+
+  /* nema CMS polja za sliku uz događaj/oglas, pa se svakoj kartici slika
+     bira po ključnim riječima iz njenog vlastitog teksta -- tako svaka
+     dobije sliku "u skladu s njom", a ne istu sliku kao sve ostale */
+  var GIG_IMAGES = [
+    { test: /party|house/i, src: 'disco-ball-bar.jpg' },
+    { test: /music|glazb|dj\b|ex-yu/i, src: 'dj-set-motion.jpg' }
+  ];
+  var GIG_FALLBACK = 'monogram-bottles-disco.jpg';
+  function pickGigImage(d){
+    var haystack = (d.naziv || '') + ' ' + (d.opis || '');
+    for (var i = 0; i < GIG_IMAGES.length; i++) { if (GIG_IMAGES[i].test.test(haystack)) return GIG_IMAGES[i].src; }
+    return GIG_FALLBACK;
+  }
+
+  /* "vrsta" je tip zaposlenja (Stalno/Studentski), ne uloga -- slika se
+     zato bira po naslovu oglasa (npr. "Tražimo barmena/icu") */
+  var JOB_IMAGES = [
+    { test: /barmen|šank/i, src: 'bartender-crafting.jpg' },
+    { test: /konobar/i, src: 'terrace-people.jpg' },
+    { test: /kuhar|kuhinj/i, src: 'novosti-pouring-shots.jpg' }
+  ];
+  var JOB_FALLBACK = 'pouring-shot-bar.jpg';
+  function pickJobImage(p){
+    var haystack = p.naslov || '';
+    for (var i = 0; i < JOB_IMAGES.length; i++) { if (JOB_IMAGES[i].test.test(haystack)) return JOB_IMAGES[i].src; }
+    return JOB_FALLBACK;
+  }
 
   /* rezerva ako API/CMS zataji — ne treba je ručno održavati */
   var REZERVA_DOGADJAJI = { dogadjaji: [
@@ -26,6 +55,7 @@
     homeGigs.innerHTML = active.map(function(d){
       return '' +
         '<div class="home-night">' +
+          '<img class="home-night-photo" src="' + IMG + pickGigImage(d) + '" alt="" aria-hidden="true" loading="lazy">' +
           '<span class="home-night-day">' + esc(d.dan) + '</span>' +
           '<span class="home-night-name">' + esc(d.naziv) + '</span>' +
           (d.opis ? '<span class="home-night-tag">' + esc(d.opis) + '</span>' : '') +
@@ -43,6 +73,7 @@
         homeJobs.innerHTML = active.map(function(p){
           return '' +
             '<a class="home-job" href="zaposlenje.html#job-form">' +
+              '<img class="home-job-photo" src="' + IMG + pickJobImage(p) + '" alt="" aria-hidden="true" loading="lazy">' +
               '<span class="home-job-badge">' + esc(p.vrsta || 'Posao') + '</span>' +
               '<h3 class="home-job-title">' + esc(p.naslov) + '</h3>' +
               (p.satnica ? '<span class="home-job-wage">' + esc(p.satnica) + ' €/h</span>' : '') +

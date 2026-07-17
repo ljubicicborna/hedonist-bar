@@ -482,7 +482,15 @@ a{ color: inherit; text-decoration: none; }
   .cjenik-link{ max-width: none; }
 }
 
-/* ================= Daytime band ================= */
+/* ================= Daytime band =================
+   one section, two states: day and night photos are stacked and
+   crossfade on top of each other, the copy panel underneath swaps with
+   them, all driven by a single [data-mode] attribute on the section so
+   the CSS never has to be told twice. assets/js/daynight.js only ever
+   touches that one attribute (plus the aria bookkeeping); an inline
+   bootstrap script (in the HTML, right inside the section) sets it
+   before first paint from local time / a saved preference so there's
+   no flash of the wrong side on load. */
 .daytime{
   position: relative;
   padding: 6.5rem 0;
@@ -492,7 +500,11 @@ a{ color: inherit; text-decoration: none; }
   position: absolute; inset: 0;
   width: 100%; height: 100%; object-fit: cover;
   z-index: -2;
+  opacity: 0;
+  transition: opacity 0.9s ease;
 }
+.daytime[data-mode="day"] .daytime-photo-day{ opacity: 1; }
+.daytime[data-mode="night"] .daytime-photo-night{ opacity: 1; }
 .daytime-overlay{
   position: absolute; inset: 0;
   background: linear-gradient(100deg, rgba(23,17,13,0.94) 0%, rgba(23,17,13,0.8) 42%, rgba(23,17,13,0.35) 100%);
@@ -508,9 +520,67 @@ a{ color: inherit; text-decoration: none; }
   transition: transform 0.4s ease;
 }
 .daytime-inset:hover{ transform: scale(1.03); }
+
+/* the switch: two labels flanking a pill track, a round thumb that
+   slides between them. click either label, click/drag the track, or
+   focus + arrow keys — all three land on the same setMode() call. */
+.daynight-switch{
+  display: inline-flex; align-items: center; gap: 0.65rem;
+  margin-bottom: 1.85rem;
+  font-family: var(--font-ui); font-size: 0.8rem; font-weight: 600; letter-spacing: 0.03em;
+}
+.daynight-btn{
+  display: inline-flex; align-items: center; gap: 0.4em;
+  background: none; border: none; padding: 0.2em 0; margin: 0; cursor: pointer;
+  color: rgba(244,236,219,0.5);
+  transition: color 0.25s ease;
+}
+.daynight-btn:hover{ color: rgba(244,236,219,0.85); }
+.daynight-btn[aria-pressed="true"]{ color: var(--gold-soft); }
+.daynight-icon{ width: 15px; height: 15px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.daynight-track{
+  position: relative; flex: none;
+  width: 50px; height: 27px;
+  background: rgba(23,17,13,0.65);
+  border: 1px solid rgba(201,160,99,0.35);
+  border-radius: 999px;
+  cursor: pointer;
+  touch-action: none;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+.daytime[data-mode="night"] .daynight-track{ background: rgba(53,180,238,0.14); border-color: rgba(53,180,238,0.4); }
+.daynight-thumb{
+  position: absolute; top: 2px; left: 2px;
+  width: 21px; height: 21px; border-radius: 50%;
+  background: linear-gradient(155deg, var(--gold-soft), var(--gold));
+  box-shadow: 0 2px 6px rgba(0,0,0,0.45);
+  transition: transform 0.32s cubic-bezier(0.4,0,0.2,1);
+}
+.daytime[data-mode="night"] .daynight-thumb{
+  transform: translateX(23px);
+  background: linear-gradient(155deg, #bfe8fb, var(--azure));
+}
+
+/* panels: only one exists in the layout at a time (the hidden one is
+   display:none, not just invisible) so the section never reserves
+   space for both a video and a photo card at once. */
+.daytime-panel{ display: none; }
+.daytime[data-mode="day"] .daytime-panel[data-panel="day"],
+.daytime[data-mode="night"] .daytime-panel[data-panel="night"]{
+  display: block;
+  animation: daytimeFadeIn 0.5s ease;
+}
+@keyframes daytimeFadeIn{
+  from{ opacity: 0; transform: translateY(8px); }
+  to{ opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 640px){
   .daytime-overlay{ background: linear-gradient(180deg, rgba(23,17,13,0.55) 0%, rgba(23,17,13,0.92) 60%, var(--ink) 100%); }
   .daytime-inset{ width: 188px; height: 235px; }
+}
+@media (prefers-reduced-motion: reduce){
+  .daytime-panel{ animation: none !important; }
 }
 
 /* ================= Uživo ovaj tjedan (početna) ================= */
@@ -543,41 +613,57 @@ a{ color: inherit; text-decoration: none; }
 }
 .home-gallery-link:hover{ color: var(--azure); gap: 0.75em; }
 
-.home-job{
+/* event/job cards: a dark panel with a circular photo medallion bleeding
+   off the top corner, matched per-item by novosti.js (not the same stock
+   photo repeated on every card). A radial foil sits between the photo and
+   the text so the medallion stays clearly a photo without ever fighting
+   the text for contrast. */
+.home-job, .home-night{
   position: relative;
-  display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;
-  background: var(--panel); border: var(--edge); border-radius: 12px;
-  padding: 0.9rem 1.1rem; min-width: 220px; max-width: 280px; min-height: 168px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
+  overflow: hidden;
+  display: flex; flex-direction: column; justify-content: flex-end; gap: 0.35rem;
+  background: linear-gradient(165deg, rgba(61,46,32,0.92), rgba(26,19,13,0.97));
+  border: var(--edge); border-radius: 16px;
+  padding: 1.1rem 1.2rem 1rem; min-width: 210px; min-height: 218px;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
-.home-job:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.55); }
+.home-job{ max-width: 280px; }
+.home-job-photo, .home-night-photo{
+  position: absolute; z-index: 0;
+  top: -20%; right: -16%;
+  width: 80%; aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: saturate(1.08) contrast(1.03);
+  transition: transform 0.4s ease;
+}
+.home-job::after, .home-night::after{
+  content: ''; position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background: radial-gradient(circle at 82% 12%, rgba(23,17,13,0.22) 0%, rgba(23,17,13,0.58) 48%, rgba(23,17,13,0.94) 76%);
+}
+.home-job-badge, .home-job-title, .home-job-wage, .home-job-cta,
+.home-night-day, .home-night-name, .home-night-tag{ position: relative; z-index: 2; }
+.home-job:hover, .home-night:hover{
+  transform: translateY(-3px);
+  border-color: rgba(201,160,99,0.55);
+  box-shadow: 0 14px 30px -16px rgba(0,0,0,0.6);
+}
+.home-job:hover .home-job-photo, .home-night:hover .home-night-photo{ transform: scale(1.05); }
 .home-job-badge{
   align-self: flex-start;
   font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--gold-soft); background: rgba(201,160,99,0.1); border: 1px solid rgba(201,160,99,0.3);
+  color: var(--gold-soft); background: rgba(23,17,13,0.55); border: 1px solid rgba(201,160,99,0.3);
   border-radius: 999px; padding: 0.25em 0.8em;
 }
-.home-job-title{ font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; line-height: 1.35; margin: 0; flex: 1; }
+.home-job-title{ font-family: var(--font-display); font-weight: 600; font-size: 0.98rem; line-height: 1.35; margin: 0; flex: 1; text-shadow: 0 2px 10px rgba(0,0,0,0.65); }
 .home-job-wage{ font-size: 0.82rem; font-weight: 600; color: var(--azure); }
 .home-job-cta{ font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; color: var(--gold-soft); }
 .home-job-cta:hover{ color: var(--azure); }
-@media (max-width: 560px){
-  .home-job{ min-width: 0; max-width: none; min-height: 0; padding: 0.8rem 1rem; }
-}
-.home-night{
-  position: relative;
-  display: flex; flex-direction: column; gap: 0.3rem; justify-content: center;
-  background: linear-gradient(165deg, rgba(61,46,32,0.9), rgba(36,26,19,0.94));
-  border: var(--edge); border-radius: 12px;
-  padding: 0.9rem 1.25rem; min-width: 200px; min-height: 168px;
-  transition: transform 0.2s ease, border-color 0.2s ease;
-}
-.home-night:hover{ transform: translateY(-2px); border-color: rgba(201,160,99,0.5); }
-.home-night-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.55); }
-.home-night-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: rgba(244,236,219,0.95); }
+.home-night-day{ font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(244,236,219,0.72); }
+.home-night-name{ font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: rgba(244,236,219,0.98); text-shadow: 0 2px 10px rgba(0,0,0,0.65); }
 .home-night-tag{ font-size: 0.82rem; color: var(--gold-soft); }
 @media (max-width: 560px){
-  .home-night{ min-width: 0; min-height: 0; padding: 0.8rem 1.1rem; }
+  .home-job, .home-night{ min-width: 0; max-width: none; min-height: 190px; padding: 1rem 1.1rem 0.9rem; }
 }
 
 /* ================= Atmosphere ================= */
@@ -1218,46 +1304,79 @@ body.veil-out.veil-leave .page-veil img{
   .price-items{ grid-template-columns: 1fr; }
 }
 
-/* ================= Galerija (dedicated page) ================= */
-.gallery-page{ background: var(--ink); padding: 5rem 0; overflow: hidden; }
-.gallery-marquee{
-  overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent);
-}
-.gallery-marquee-track{
+/* ================= Galerija (dedicated page) =================
+   a true 3x3 grid: three rows of three square tiles. each tile is a
+   sealed "window" cycling through 3 photos every 3.5s -- row 1 and 3
+   flip upward, row 2 flips downward, so the whole grid reads as a
+   living mosaic rather than nine tiles doing the same thing at once.
+   translateY(%) resolves against the flipping strip's own height, so
+   with exactly 3 stacked photos (no filler duplicates) `steps(3)` +
+   `-66.6667%` cycles cleanly on its own. */
+/* the whole page IS the grid — no title, no copy, nav up top and the
+   mosaic fills the rest of the viewport (and gracefully scrolls instead
+   of clipping on short screens; a 3x3 grid of real photos can't be
+   forced into every viewport height without cropping tiles). */
+.gallery-page{
+  background: var(--ink);
+  min-height: calc(100svh - var(--nav-h, 72px));
   display: flex;
-  width: max-content;
-  gap: 1.5rem;
-  animation: galleryMarquee 50s linear infinite;
+  align-items: center;
+  padding: 1.5rem 0;
 }
-.gallery-marquee:hover .gallery-marquee-track{ animation-play-state: paused; }
-.gallery-marquee-track img{
-  flex: none;
-  width: 340px; height: 440px; object-fit: cover;
-  border-radius: 14px; border: var(--edge);
-  filter: saturate(1.05) contrast(1.03);
+.gallery-grid{
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  /* a 3x3 grid of equal-gap square tiles is always exactly as tall as it
+     is wide, so capping width by the shorter of "available width" and
+     "available height below the nav" keeps all 9 tiles on screen on
+     both wide-short (laptop) and narrow-tall (phone) viewports without
+     ever needing to scroll to see the whole mosaic. */
+  width: min(920px, 92vw, calc(100svh - var(--nav-h, 72px) - 3rem));
+  margin: 0 auto;
+}
+.gallery-row{
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+}
+.gallery-tile{
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 14px;
+  border: var(--edge);
   box-shadow: 0 20px 40px -20px rgba(0,0,0,0.6);
-  transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
-.gallery-marquee-track img:hover{
-  transform: scale(1.06);
-  box-shadow: 0 28px 52px -18px rgba(0,0,0,0.7);
-  position: relative; z-index: 2;
+.gallery-tile-strip{ display: flex; flex-direction: column; }
+.gallery-tile-strip img{
+  flex: none;
+  width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
+  filter: saturate(1.05) contrast(1.03);
 }
-@keyframes galleryMarquee{
-  from{ transform: translateX(0); }
-  to{ transform: translateX(-50%); }
+.gallery-tile-strip.up{ animation: galleryFlip 10.5s steps(3) infinite; }
+.gallery-tile-strip.down{ animation: galleryFlip 10.5s steps(3) infinite reverse; }
+/* jump-end steps(n) only ever holds at eased fractions 0/n .. (n-1)/n, never
+   at a held 1.0 -- so `to` has to be the full -100% for every plateau to
+   land exactly on a whole frame; using -(n-1)/n here (a natural-looking but
+   wrong guess) makes every step land mid-image instead. */
+@keyframes galleryFlip{
+  from{ transform: translateY(0); }
+  to{ transform: translateY(-100%); }
 }
 @media (prefers-reduced-motion: reduce){
-  .gallery-marquee-track{ animation: none; overflow-x: auto; }
+  .gallery-tile-strip{ animation: none; }
 }
-@media (max-width: 860px){
-  .gallery-marquee-track img{ width: 260px; height: 340px; }
-}
-@media (max-width: 560px){
-  .gallery-page{ padding: 3rem 0; }
-  .gallery-marquee-track img{ width: 200px; height: 260px; }
+@media (max-width: 640px){
+  /* 2x3 instead of 3x3 -- three columns of photos reads as cramped on a
+     phone, so each row drops its third tile rather than shrinking all
+     three (the flip direction per row is unaffected). */
+  .gallery-page{ padding: 1.2rem 0; }
+  /* 2 columns x 3 rows is taller than wide (~1.5x) rather than square,
+     so the height-based cap has to divide by that ratio instead of
+     reusing the square-grid math from the desktop 3x3 layout above. */
+  .gallery-grid{ gap: 0.7rem; width: min(94vw, calc((100svh - var(--nav-h, 64px) - 2.4rem) / 1.5)); }
+  .gallery-row{ grid-template-columns: repeat(2, 1fr); gap: 0.7rem; }
+  .gallery-tile:nth-child(3){ display: none; }
 }
 
 /* ================= Mobile: less scrolling, same content =================

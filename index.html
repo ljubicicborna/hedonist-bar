@@ -24,7 +24,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=14">
+<link rel="stylesheet" href="assets/css/styles.css?v=15">
 <script src="assets/js/cms-nazivi.js?v=1"></script>
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">
@@ -189,18 +189,59 @@
     </div>
   </section>
 
-  <section class="daytime" id="dan">
-    <img class="daytime-photo" src="assets/images/gallery/terrace-facade.jpg" alt="Terasa Hedonista danju, ispred zgrade na Vukovarskoj." loading="lazy">
+  <section class="daytime" id="dan" data-mode="day">
+    <img class="daytime-photo daytime-photo-day" src="assets/images/gallery/terrace-facade.jpg" alt="" aria-hidden="true" loading="lazy">
+    <img class="daytime-photo daytime-photo-night" src="assets/images/gallery/bar-interior-glow.jpg" alt="" aria-hidden="true" loading="lazy">
     <div class="daytime-overlay" aria-hidden="true"></div>
     <div class="section-inner daytime-inner">
-      <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Po danu</p>
-      <h2 class="section-title">Ista adresa, druga priča ujutro</h2>
-      <p class="daytime-copy" data-cms="pocetna.podanu">
-        Od 7 ujutro Hedonist je kavana s terasom — pravimo izvrsnu kavu, uz sok od naranče i mirno jutro.
-      </p>
-      <video class="daytime-inset" autoplay loop muted playsinline preload="metadata" poster="assets/images/gallery/kava-priprema-poster.jpg" aria-label="Barista pravi latte art, ulijevajući mlijeko u kavu.">
-        <source src="assets/videos/kava-priprema.mp4" type="video/mp4">
-      </video>
+
+      <div class="daynight-switch" role="group" aria-label="Prikaz: po danu ili po noći">
+        <button type="button" class="daynight-btn" data-mode="day" aria-pressed="true">
+          <svg class="daynight-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.6"/><path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7"/></svg>
+          <span>Danju</span>
+        </button>
+        <span class="daynight-track" tabindex="0" role="switch" aria-checked="false" aria-label="Prikaz po noći">
+          <span class="daynight-thumb" aria-hidden="true"></span>
+        </span>
+        <button type="button" class="daynight-btn" data-mode="night" aria-pressed="false">
+          <svg class="daynight-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.2 14.7A8.1 8.1 0 1 1 9.3 3.8a6.6 6.6 0 0 0 10.9 10.9Z"/></svg>
+          <span>Noću</span>
+        </button>
+      </div>
+
+      <script>(function(){
+        try{
+          var sec = document.currentScript.closest('section');
+          var saved = localStorage.getItem('hedonistDayNight');
+          var mode = (saved === 'day' || saved === 'night') ? saved : ((new Date().getHours() >= 7 && new Date().getHours() < 19) ? 'day' : 'night');
+          sec.setAttribute('data-mode', mode);
+          var btns = sec.querySelectorAll('.daynight-btn');
+          for (var i = 0; i < btns.length; i++) { btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-mode') === mode ? 'true' : 'false'); }
+          var track = sec.querySelector('.daynight-track');
+          if (track) track.setAttribute('aria-checked', mode === 'night' ? 'true' : 'false');
+        } catch (e) {}
+      })();</script>
+
+      <div class="daytime-panel" data-panel="day">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Po danu</p>
+        <h2 class="section-title">Ista adresa, druga priča ujutro</h2>
+        <p class="daytime-copy" data-cms="pocetna.podanu">
+          Od 7 ujutro Hedonist je kavana s terasom — pravimo izvrsnu kavu, uz sok od naranče i mirno jutro.
+        </p>
+        <video class="daytime-inset" autoplay loop muted playsinline preload="metadata" poster="assets/images/gallery/kava-priprema-poster.jpg" aria-label="Barista pravi latte art, ulijevajući mlijeko u kavu.">
+          <source src="assets/videos/kava-priprema.mp4" type="video/mp4">
+        </video>
+      </div>
+
+      <div class="daytime-panel" data-panel="night">
+        <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Po noći</p>
+        <h2 class="section-title">Kad padne mrak, priča se mijenja</h2>
+        <p class="daytime-copy">
+          Navečer Hedonist postaje bar s karakterom — autorski kokteli, hladno pivo i, petkom i subotom, DJ koji drži atmosferu do kasno u noć.
+        </p>
+        <img class="daytime-inset daytime-inset-photo" src="assets/images/gallery/dj-set-motion.jpg" alt="DJ mikser s vučenim svjetlosnim tragovima u Hedonistu navečer." loading="lazy">
+      </div>
+
     </div>
   </section>
 
@@ -330,6 +371,7 @@
 </footer>
 
 <script src="assets/js/main.js?v=10"></script>
-<script src="assets/js/novosti.js?v=2"></script>
+<script src="assets/js/novosti.js?v=3"></script>
+<script src="assets/js/daynight.js?v=1"></script>
 </body>
 </html>

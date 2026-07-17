@@ -1,11 +1,15 @@
 /* =====================================================================
    Dan / noć prekidač (početna, sekcija #dan) — sav vizualni prijelaz
    (fotografije, panel s tekstom, položaj klizača) vodi se preko jednog
-   [data-mode] atributa na sekciji (vidi styles.css). Ovdje se samo:
-   - sinkroniziraju aria-atributi s tim stanjem,
-   - pamti ručni odabir posjetitelja (localStorage), inače ostaje
-     početno stanje koje je inline skripta u HTML-u već postavila
-     prema stvarnom lokalnom vremenu (prije prvog crtanja),
+   [data-mode] atributa na sekciji (vidi styles.css). Ova skripta:
+   - postavi početno stanje prema zapamćenom odabiru (localStorage),
+     inače prema stvarnom lokalnom vremenu (7–19 h = dan). To MORA biti
+     ovdje, u vanjskoj datoteci: produkcijski CSP (vercel.json) nema
+     'unsafe-inline' za skripte, pa se inline <script> u HTML-u na
+     produkciji uopće ne izvrši — lokalno radi, live šuti. Sekcija je
+     duboko ispod prvog ekrana, pa izvršavanje na kraju body-ja stigne
+     davno prije nego što je posjetitelj može vidjeti.
+   - drži aria-atribute u skladu s [data-mode],
    - omogući prebacivanje klikom, povlačenjem/swipeom i tipkovnicom.
 ===================================================================== */
 (function(){
@@ -29,8 +33,13 @@
     try { localStorage.setItem(STORAGE_KEY, mode); } catch (e) { /* privatno pregledavanje i sl. */ }
   }
 
-  /* uskladi aria stanje s onim što je inline bootstrap skripta već postavila */
-  applyAria(section.getAttribute('data-mode') === 'night' ? 'night' : 'day');
+  /* početno stanje: zapamćeni odabir ako postoji, inače po satu */
+  var saved = null;
+  try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+  var hour = new Date().getHours();
+  var initial = (saved === 'day' || saved === 'night') ? saved : ((hour >= 7 && hour < 19) ? 'day' : 'night');
+  section.setAttribute('data-mode', initial);
+  applyAria(initial);
 
   buttons.forEach(function(b){
     b.addEventListener('click', function(){ setMode(b.getAttribute('data-mode')); });

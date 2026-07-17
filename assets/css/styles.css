@@ -1307,11 +1307,8 @@ body.veil-out.veil-leave .page-veil img{
 /* ================= Galerija (dedicated page) =================
    a true 3x3 grid: three rows of three square tiles. each tile is a
    sealed "window" cycling through 3 photos every 3.5s -- row 1 and 3
-   flip upward, row 2 flips downward, so the whole grid reads as a
-   living mosaic rather than nine tiles doing the same thing at once.
-   translateY(%) resolves against the flipping strip's own height, so
-   with exactly 3 stacked photos (no filler duplicates) `steps(3)` +
-   `-66.6667%` cycles cleanly on its own. */
+   glide upward, row 2 glides downward, so the whole grid reads as a
+   living mosaic rather than nine tiles doing the same thing at once. */
 /* the whole page IS the grid — no title, no copy, nav up top and the
    mosaic fills the rest of the viewport (and gracefully scrolls instead
    of clipping on short screens; a 3x3 grid of real photos can't be
@@ -1353,15 +1350,24 @@ body.veil-out.veil-leave .page-veil img{
   width: 100%; aspect-ratio: 1 / 1; object-fit: cover;
   filter: saturate(1.05) contrast(1.03);
 }
-.gallery-tile-strip.up{ animation: galleryFlip 10.5s steps(3) infinite; }
-.gallery-tile-strip.down{ animation: galleryFlip 10.5s steps(3) infinite reverse; }
-/* jump-end steps(n) only ever holds at eased fractions 0/n .. (n-1)/n, never
-   at a held 1.0 -- so `to` has to be the full -100% for every plateau to
-   land exactly on a whole frame; using -(n-1)/n here (a natural-looking but
-   wrong guess) makes every step land mid-image instead. */
-@keyframes galleryFlip{
-  from{ transform: translateY(0); }
-  to{ transform: translateY(-100%); }
+/* visible glide, not an instant swap: each strip holds a photo ~2.9s,
+   then slides 0.6s to the next. The strip carries 4 frames -- its 3
+   photos plus a copy of the first -- so the cycle ends on a pixel-perfect
+   twin of where it started and the loop never visibly "rewinds".
+   Percent pairs below are (2.9s, 3.5s), (6.4s, 7.0s), (9.9s, 10.5s) of
+   the 10.5s cycle; each frame is 25% of the 4-frame strip's height.
+   The easing declared on a keyframe applies to the segment leaving it,
+   so putting it on the hold-end keyframes eases exactly the slides. */
+.gallery-tile-strip.up{ animation: galleryGlide 10.5s infinite; }
+.gallery-tile-strip.down{ animation: galleryGlide 10.5s infinite reverse; }
+@keyframes galleryGlide{
+  0%      { transform: translateY(0); }
+  27.62%  { transform: translateY(0);    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  33.33%  { transform: translateY(-25%); }
+  60.95%  { transform: translateY(-25%); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  66.67%  { transform: translateY(-50%); }
+  94.29%  { transform: translateY(-50%); animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1); }
+  100%    { transform: translateY(-75%); }
 }
 @media (prefers-reduced-motion: reduce){
   .gallery-tile-strip{ animation: none; }

@@ -17,6 +17,9 @@
 <meta property="og:image:width" content="1280">
 <meta property="og:image:height" content="719">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Lokacija — Hedonist Bar Osijek">
+<meta name="twitter:description" content="Hedonist Bar djeluje u Eurodomu na Vukovarskoj cesti 31, na granici osječke Tvrđe i modernog centra grada.">
+<meta name="twitter:image" content="https://hedonist-bar.vercel.app/assets/images/gallery/eurodom.jpg">
 <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
 <link rel="icon" type="image/png" href="assets/images/monogram.png">
 <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
@@ -55,6 +58,34 @@
   ]
 }
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Početna", "item": "https://hedonist-bar.vercel.app/" },
+    { "@type": "ListItem", "position": 2, "name": "Lokacija", "item": "https://hedonist-bar.vercel.app/lokacija.html" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Kako doći do Hedonist bara u Osijeku?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Hedonist se nalazi u sklopu Eurodoma na Vukovarskoj cesti 31, uz glavne gradske prometnice, s podzemnom garažom u istoj zgradi." }
+    },
+    {
+      "@type": "Question",
+      "name": "Je li Hedonist blizu osječke Tvrđe?",
+      "acceptedAnswer": { "@type": "Answer", "text": "Da, Hedonist je kratka šetnja od barokne Tvrđe, na granici stare gradske jezgre i modernog centra Osijeka." }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 
@@ -84,7 +115,7 @@
 <main id="main">
 
   <section class="price-hero">
-    <img class="price-hero-photo" src="assets/images/gallery/eurodom.jpg" alt="" aria-hidden="true">
+    <img class="price-hero-photo" src="assets/images/gallery/eurodom.jpg" alt="" aria-hidden="true" fetchpriority="high">
     <div class="price-hero-overlay" aria-hidden="true"></div>
     <div class="section-inner">
       <p class="eyebrow"><span class="dot" aria-hidden="true"></span>Lokacija</p>

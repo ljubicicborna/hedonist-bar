@@ -59,7 +59,7 @@
       var ld = {
         '@context': 'https://schema.org',
         '@type': 'Menu',
-        name: 'Cjenik — Hedonist Bar Osijek',
+        name: 'Katalog ponude — Hedonist Bar Osijek',
         url: 'https://hedonist-bar.vercel.app/cjenik.html',
         hasMenuSection: data.kategorije.map(function(c){
           return {
@@ -67,7 +67,9 @@
             name: c.naziv,
             hasMenuItem: c.grupe.reduce(function(items, g){
               return items.concat(g.stavke.map(function(s){
-                return { '@type': 'MenuItem', name: s.naziv };
+                var item = { '@type': 'MenuItem', name: s.naziv };
+                if (s.opis) item.description = s.opis;
+                return item;
               }));
             }, [])
           };

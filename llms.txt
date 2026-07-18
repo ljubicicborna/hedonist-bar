@@ -1,0 +1,23 @@
+# Hedonist Bar Osijek
+
+> Moderan, urbani bar u Osijeku, Hrvatska — kava, kokteli, pivo, vino i žestoka pića, s DJ-em ili glazbom uživo petkom i subotom navečer. Bez rezervacije.
+
+Hedonist djeluje u Eurodomu, na Vukovarskoj cesti 31, 31000 Osijek — na granici barokne Tvrđe i modernog centra grada. Radno vrijeme: pon–sri 7–23 h, čet–pet 7–00 h, subota 8–00 h, nedjelja 8–23 h. Alkoholna pića i duhanski proizvodi ne prodaju se osobama mlađim od 18 godina.
+
+## Stranice
+
+- [Početna](https://hedonist-bar.vercel.app/): O baru, atmosfera, DJ vikendom, radno vrijeme.
+- [Katalog ponude](https://hedonist-bar.vercel.app/cjenik.html): Cijeli katalog — kave, bezalkoholna pića, pivo, vino, žestoka pića, kokteli, cigarete i cigare, sa sastojcima za svaku stavku.
+- [Galerija](https://hedonist-bar.vercel.app/galerija.html): Fotografije interijera, terase i atmosfere.
+- [Lokacija](https://hedonist-bar.vercel.app/lokacija.html): Adresa, karta, radno vrijeme, kako doći.
+- [Zapošljavanje](https://hedonist-bar.vercel.app/zaposlenje.html): Otvorene pozicije, prijava.
+- [Politika privatnosti](https://hedonist-bar.vercel.app/privatnost.html): Pravne informacije, impressum (UGO INVEST d.o.o.).
+
+## Kontakt i društvene mreže
+
+- Instagram: https://www.instagram.com/hedonistbarosijek/
+- Facebook: https://www.facebook.com/HedonistBarOsijek/
+
+## Napomena
+
+Cijene se ne prikazuju javno na web stranici; katalog prikazuje ponudu i sastojke. Za cijene i rezervacije skupina, posjetite bar ili kontaktirajte putem društvenih mreža.

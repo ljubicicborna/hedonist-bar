@@ -392,7 +392,7 @@
       }, 0);
       if (total > 0) {
         menuCounter.setAttribute('data-count-to', total);
-        if (cjenikLinkCount) cjenikLinkCount.textContent = 'Kave, kokteli, pivo, vino i žestica — preko ' + total + ' stavki';
+        if (cjenikLinkCount) cjenikLinkCount.textContent = 'Kave, kokteli, pivo, vino i žestica — ' + total + ' stavki';
       }
     }).catch(function(){ /* ostaje rezervni broj iz HTML-a */ }).then(setupCounters);
   } else {

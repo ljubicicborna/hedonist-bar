@@ -16,26 +16,6 @@ const PREFIXES = {
   nazivi: 'cms/data/nazivi-'
 };
 const KEEP_VERSIONS = 5;
-const LANGS = ['hr', 'en', 'de'];
-
-/* Prevedena polja (naziv, opis, tekstovi…) spremaju se kao { hr, en, de }.
-   normLang prihvaća i stari plain-string oblik (rezerva) i normalizira sve
-   u { hr, en, de } s praznim stringom za jezike koji nisu prevedeni. */
-function normLang(v, maxLen) {
-  var out = { hr: '', en: '', de: '' };
-  if (typeof v === 'string') {
-    out.hr = v.slice(0, maxLen);
-    return out;
-  }
-  if (v && typeof v === 'object') {
-    for (const l of LANGS) out[l] = String(v[l] || '').trim().slice(0, maxLen);
-  }
-  return out;
-}
-function langHr(v) {
-  if (typeof v === 'string') return v;
-  return (v && typeof v === 'object') ? String(v.hr || '') : '';
-}
 
 function authorized(req) {
   const expected = process.env.ADMIN_PASSWORD || '';
@@ -82,14 +62,14 @@ function clearFailures(ip) {
 function validateCjenik(data) {
   if (!data || !Array.isArray(data.kategorije)) return 'Cjenik nije u očekivanom obliku.';
   for (const c of data.kategorije) {
-    if (!c || typeof c.id !== 'string' || !c.id || !langHr(c.naziv).trim()) {
-      return 'Svaka kategorija mora imati id i naziv (barem na hrvatskom).';
+    if (!c || typeof c.id !== 'string' || !c.id || typeof c.naziv !== 'string' || !c.naziv.trim()) {
+      return 'Svaka kategorija mora imati id i naziv.';
     }
-    if (!Array.isArray(c.grupe)) return 'Kategorija "' + langHr(c.naziv) + '" nema grupe.';
+    if (!Array.isArray(c.grupe)) return 'Kategorija "' + c.naziv + '" nema grupe.';
     for (const g of c.grupe) {
-      if (!g || !Array.isArray(g.stavke)) return 'Grupa u "' + langHr(c.naziv) + '" nije ispravna.';
+      if (!g || typeof g.naziv !== 'string' || !Array.isArray(g.stavke)) return 'Grupa u "' + c.naziv + '" nije ispravna.';
       for (const s of g.stavke) {
-        if (!s || !langHr(s.naziv).trim()) return 'Stavka bez naziva u grupi "' + langHr(g.naziv) + '".';
+        if (!s || typeof s.naziv !== 'string' || !s.naziv.trim()) return 'Stavka bez naziva u grupi "' + g.naziv + '".';
       }
     }
   }
@@ -101,15 +81,15 @@ function cleanCjenik(data) {
     kategorije: data.kategorije.map(function (c) {
       return {
         id: String(c.id),
-        naziv: normLang(c.naziv, 120),
+        naziv: String(c.naziv).trim(),
         grupe: c.grupe.map(function (g) {
           return {
-            naziv: normLang(g.naziv, 120),
+            naziv: String(g.naziv || '').trim(),
             ikona: String(g.ikona || '').trim(),
             stavke: g.stavke.map(function (s) {
               return {
-                naziv: normLang(s.naziv, 160),
-                opis: normLang(s.opis, 300)
+                naziv: String(s.naziv).trim(),
+                opis: String(s.opis || '').trim()
               };
             })
           };
@@ -122,30 +102,25 @@ function cleanCjenik(data) {
 function validateTekstovi(data) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) return 'Tekstovi nisu u očekivanom obliku.';
   for (const k of Object.keys(data)) {
-    const v = data[k];
-    if (typeof v !== 'string' && (typeof v !== 'object' || v === null)) return 'Tekst "' + k + '" nije tekst.';
-    for (const l of LANGS) {
-      if (String((v && v[l]) || (l === 'hr' && typeof v === 'string' ? v : '')).length > 2000) {
-        return 'Tekst "' + k + '" je predug.';
-      }
-    }
+    if (typeof data[k] !== 'string') return 'Tekst "' + k + '" nije tekst.';
+    if (data[k].length > 2000) return 'Tekst "' + k + '" je predug.';
   }
   return null;
 }
 
 function cleanTekstovi(data) {
   const out = {};
-  for (const k of Object.keys(data)) out[String(k).slice(0, 80)] = normLang(data[k], 2000);
+  for (const k of Object.keys(data)) out[String(k).slice(0, 80)] = String(data[k]).trim();
   return out;
 }
 
 function validateOglasi(data) {
   if (!data || !Array.isArray(data.pozicije)) return 'Oglasi nisu u očekivanom obliku.';
   for (const p of data.pozicije) {
-    if (!p || typeof p.id !== 'string' || !p.id || !langHr(p.naslov).trim()) {
-      return 'Svaki oglas mora imati id i naslov (barem na hrvatskom).';
+    if (!p || typeof p.id !== 'string' || !p.id || typeof p.naslov !== 'string' || !p.naslov.trim()) {
+      return 'Svaki oglas mora imati id i naslov.';
     }
-    if (!/^\d{4}-\d{2}-\d{2}$/.test(p.datum || '')) return 'Oglas "' + langHr(p.naslov) + '" ima neispravan datum.';
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(p.datum || '')) return 'Oglas "' + p.naslov + '" ima neispravan datum.';
   }
   return null;
 }
@@ -155,10 +130,10 @@ function cleanOglasi(data) {
     pozicije: data.pozicije.map(function (p) {
       return {
         id: String(p.id),
-        naslov: normLang(p.naslov, 160),
+        naslov: String(p.naslov).trim(),
         vrsta: String(p.vrsta || '').trim(),
         satnica: String(p.satnica || '').trim(),
-        opis: normLang(p.opis, 800),
+        opis: String(p.opis || '').trim(),
         datum: p.datum,
         aktivno: !!p.aktivno
       };
@@ -169,10 +144,10 @@ function cleanOglasi(data) {
 function validateDogadjaji(data) {
   if (!data || !Array.isArray(data.dogadjaji)) return 'Događaji nisu u očekivanom obliku.';
   for (const d of data.dogadjaji) {
-    if (!d || typeof d.id !== 'string' || !d.id || !langHr(d.naziv).trim()) {
-      return 'Svaki događaj mora imati id i naziv (barem na hrvatskom).';
+    if (!d || typeof d.id !== 'string' || !d.id || typeof d.naziv !== 'string' || !d.naziv.trim()) {
+      return 'Svaki događaj mora imati id i naziv.';
     }
-    if (!d.dan || typeof d.dan !== 'string' || !d.dan.trim()) return 'Događaj "' + langHr(d.naziv) + '" nema dan.';
+    if (!d.dan || typeof d.dan !== 'string' || !d.dan.trim()) return 'Događaj "' + d.naziv + '" nema dan.';
   }
   return null;
 }
@@ -183,8 +158,8 @@ function cleanDogadjaji(data) {
       return {
         id: String(d.id),
         dan: String(d.dan || '').trim(),
-        naziv: normLang(d.naziv, 120),
-        opis: normLang(d.opis, 300),
+        naziv: String(d.naziv || '').trim(),
+        opis: String(d.opis || '').trim(),
         aktivno: !!d.aktivno
       };
     })
@@ -218,20 +193,15 @@ function cleanSlike(data) {
 function validateNazivi(data) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) return 'Nazivi nisu u očekivanom obliku.';
   for (const k of Object.keys(data)) {
-    const v = data[k];
-    if (typeof v !== 'string' && (typeof v !== 'object' || v === null)) return 'Naziv "' + k + '" nije tekst.';
-    for (const l of LANGS) {
-      if (String((v && v[l]) || (l === 'hr' && typeof v === 'string' ? v : '')).length > 500) {
-        return 'Naziv "' + k + '" je predug.';
-      }
-    }
+    if (typeof data[k] !== 'string') return 'Naziv "' + k + '" nije tekst.';
+    if (data[k].length > 500) return 'Naziv "' + k + '" je predug.';
   }
   return null;
 }
 
 function cleanNazivi(data) {
   const out = {};
-  for (const k of Object.keys(data)) out[String(k).slice(0, 60)] = normLang(data[k], 500);
+  for (const k of Object.keys(data)) out[String(k).slice(0, 60)] = String(data[k]).trim();
   return out;
 }
 

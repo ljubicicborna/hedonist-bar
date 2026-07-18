@@ -124,23 +124,21 @@
     }
   })();
 
-  /* ---- marquee traka (naslovnica): pozicija se svaki frame računa iz
-     proteklog vremena, ne iz CSS `animation: infinite` -- neki mobilni
-     preglednici znaju trajno "zamrznuti" CSS animaciju nakon što karticu
-     prebaciš u pozadinu ili je traka dulje izvan vidljivog dijela
-     zaslona. rAF pristup ne može ostati "zaglavljen" jer svaki frame
-     iznova računa poziciju iz apsolutnog proteklog vremena.
-
-     ŠIRINA grupe se NE sprema u varijablu nego se čita iznova SVAKI
-     frame (getBoundingClientRect je jeftin) -- prvi pokušaj je keširao
-     širinu jednom na startu i samo je osvježavao na window "resize", što
-     izgleda dobro dok se stranica ne pokrene prije nego se web-font
-     (Poppins/Jost, font-display: swap) stigne zamijeniti s fallback
-     fonta: širina teksta se promijeni BEZ "resize" eventa, kešrandom
-     brojka postane pogrešna, i traka onda klizi po matematici koja više
-     ne odgovara stvarnom rasporedu -- vidljivo kao prazan razmak gdje
-     tekst "stane" dok se ciklus ne vrati na početak. Mjerenje svaki
-     frame briše cijelu tu klasu bugova, ne samo font-swap slučaj. ---- */
+  /* ---- marquee traka (naslovnica): pozicija je čista funkcija proteklog
+     vremena (ts % PERIOD_MS), ne akumulirano stanje -- svaki poziv
+     setPosition() sam po sebi računa TOČNU ispravnu poziciju iz
+     performance.now(), bez obzira je li prošli poziv uopće bio pozvan.
+     To znači da je moguće imati DVA neovisna mehanizma koja je zovu:
+     requestAnimationFrame za glatki 60fps pomak, PLUS jedan setInterval
+     "watchdog" svaku sekundu kao rezerva. Ako rAF petlja iz bilo kojeg
+     razloga prestane raditi (poznati mobilni-preglednik bugovi gdje se
+     animacija trajno "zamrzne" nakon pozadine kartice; ili nešto što
+     nismo uspjeli reproducirati u testiranju), watchdog je posve
+     neovisan i svejedno će je svake sekunde vratiti na ispravnu poziciju
+     -- traka stoga NIKAD ne može ostati vidljivo zaustavljena dulje od
+     otprilike sekunde, bez obzira na uzrok. Širina grupe se čita iznova
+     pri svakom pozivu (ne kešira), da ne ovisi o web-font swapu ili bilo
+     kojoj drugoj promjeni rasporeda koja ne okine "resize". ---- */
   (function marquee(){
     var track = document.querySelector('.marquee-track');
     var group = track && track.querySelector('.marquee-group');
@@ -149,15 +147,20 @@
 
     var PERIOD_MS = 32000; /* jedan puni ciklus širine jedne grupe, kao stari CSS 32s */
 
-    function frame(ts){
+    function setPosition(ts){
       var groupWidth = group.getBoundingClientRect().width;
-      if (groupWidth) {
-        var fraction = (ts % PERIOD_MS) / PERIOD_MS;
-        track.style.transform = 'translate3d(-' + (fraction * groupWidth) + 'px,0,0)';
-      }
+      if (!groupWidth) return;
+      var fraction = (ts % PERIOD_MS) / PERIOD_MS;
+      track.style.transform = 'translate3d(-' + (fraction * groupWidth) + 'px,0,0)';
+    }
+
+    function frame(ts){
+      setPosition(ts);
       requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
+
+    setInterval(function(){ setPosition(performance.now()); }, 1000);
   })();
 
   /* ---- tajni pristup CMS-u: drži (7s) logo gore lijevo na naslovnoj

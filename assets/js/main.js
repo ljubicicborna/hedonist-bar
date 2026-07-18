@@ -138,7 +138,14 @@
      -- traka stoga NIKAD ne može ostati vidljivo zaustavljena dulje od
      otprilike sekunde, bez obzira na uzrok. Širina grupe se čita iznova
      pri svakom pozivu (ne kešira), da ne ovisi o web-font swapu ili bilo
-     kojoj drugoj promjeni rasporeda koja ne okine "resize". ---- */
+     kojoj drugoj promjeni rasporeda koja ne okine "resize".
+
+     translateX (2D), NE translate3d/will-change: 3D transform stalno
+     ažuriran iz JS-a (umjesto CSS-ovog animation enginea) forsira GPU
+     compositing sloj i na nekim Windows/Chromium instalacijama pogodi
+     pravi bug u pregledniku -- sloj se i dalje glatko pomiče, ali tekst
+     na njemu prestane biti iscrtan (prijavljeno: "traka se vrti, ali
+     stane pisati"). Obična translateX izbjegava taj 3D-layer put. ---- */
   (function marquee(){
     var track = document.querySelector('.marquee-track');
     var group = track && track.querySelector('.marquee-group');
@@ -151,7 +158,7 @@
       var groupWidth = group.getBoundingClientRect().width;
       if (!groupWidth) return;
       var fraction = (ts % PERIOD_MS) / PERIOD_MS;
-      track.style.transform = 'translate3d(-' + (fraction * groupWidth) + 'px,0,0)';
+      track.style.transform = 'translateX(-' + (fraction * groupWidth) + 'px)';
     }
 
     function frame(ts){

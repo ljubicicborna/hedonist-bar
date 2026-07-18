@@ -511,17 +511,31 @@
       .catch(function(){ return fallback; });
   }
 
-  /* dok vlasnik ne otvori i ne spremi barem jednom, admin prikazuje ovaj
-     unaprijed upisan oglas — jedan klik na "Spremi promjene" ga stavi u CMS */
-  var SEED_OGLASI = { pozicije: [{
-    id: 'oglas-seed-student',
-    naslov: 'Tražimo konobara/icu — studentski posao',
-    vrsta: 'Studentski',
-    satnica: '7,50',
-    opis: 'Tražimo pouzdanu i nasmijanu osobu za rad na šanku i terasi, uglavnom navečer i vikendom. Prijašnje iskustvo je plus, ali nije nužno.',
-    datum: todayStr(),
-    aktivno: true
-  }] };
+  /* dok vlasnik ne otvori i ne spremi barem jednom, admin prikazuje ova dva
+     unaprijed upisana predloška (stalno i studentski) — oba su isključena
+     (aktivno: false) dok se stvarno ne otvara pozicija, pa se ništa od
+     ovoga ne prikazuje na stranici dok vlasnik sam ne uključi prekidač
+     "Aktivno" na onome koji odgovara i ne klikne "Spremi promjene" */
+  var SEED_OGLASI = { pozicije: [
+    {
+      id: 'oglas-seed-stalno',
+      naslov: 'Tražimo konobara/icu — stalno zaposlenje',
+      vrsta: 'Stalno',
+      satnica: '',
+      opis: 'Tražimo pouzdanu i nasmijanu osobu za rad na šanku i terasi, na stalno radno vrijeme. Prijašnje iskustvo je plus, ali nije nužno.',
+      datum: todayStr(),
+      aktivno: false
+    },
+    {
+      id: 'oglas-seed-student',
+      naslov: 'Tražimo konobara/icu — studentski posao',
+      vrsta: 'Studentski',
+      satnica: '7,50',
+      opis: 'Tražimo pouzdanu i nasmijanu osobu za rad na šanku i terasi, uglavnom navečer i vikendom. Prijašnje iskustvo je plus, ali nije nužno.',
+      datum: todayStr(),
+      aktivno: false
+    }
+  ] };
 
   /* dok vlasnik ne otvori i ne spremi barem jednom, admin prikazuje ove
      unaprijed upisane događaje — jedan klik na "Spremi promjene" ih stavi u CMS */

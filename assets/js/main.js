@@ -128,10 +128,19 @@
      proteklog vremena, ne iz CSS `animation: infinite` -- neki mobilni
      preglednici znaju trajno "zamrznuti" CSS animaciju nakon što karticu
      prebaciš u pozadinu ili je traka dulje izvan vidljivog dijela
-     zaslona (poznat bug, prijavljen: traka stane i ostane stati). rAF
-     pristup ne može ostati "zaglavljen" jer svaki frame iznova računa
-     poziciju iz apsolutnog proteklog vremena -- kad preglednik nastavi
-     pozivati rAF, traka odmah skoči na točnu poziciju, nikad ne stoji. ---- */
+     zaslona. rAF pristup ne može ostati "zaglavljen" jer svaki frame
+     iznova računa poziciju iz apsolutnog proteklog vremena.
+
+     ŠIRINA grupe se NE sprema u varijablu nego se čita iznova SVAKI
+     frame (getBoundingClientRect je jeftin) -- prvi pokušaj je keširao
+     širinu jednom na startu i samo je osvježavao na window "resize", što
+     izgleda dobro dok se stranica ne pokrene prije nego se web-font
+     (Poppins/Jost, font-display: swap) stigne zamijeniti s fallback
+     fonta: širina teksta se promijeni BEZ "resize" eventa, kešrandom
+     brojka postane pogrešna, i traka onda klizi po matematici koja više
+     ne odgovara stvarnom rasporedu -- vidljivo kao prazan razmak gdje
+     tekst "stane" dok se ciklus ne vrati na početak. Mjerenje svaki
+     frame briše cijelu tu klasu bugova, ne samo font-swap slučaj. ---- */
   (function marquee(){
     var track = document.querySelector('.marquee-track');
     var group = track && track.querySelector('.marquee-group');
@@ -139,13 +148,9 @@
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     var PERIOD_MS = 32000; /* jedan puni ciklus širine jedne grupe, kao stari CSS 32s */
-    var groupWidth = 0;
-
-    function measure(){ groupWidth = group.getBoundingClientRect().width; }
-    measure();
-    window.addEventListener('resize', measure);
 
     function frame(ts){
+      var groupWidth = group.getBoundingClientRect().width;
       if (groupWidth) {
         var fraction = (ts % PERIOD_MS) / PERIOD_MS;
         track.style.transform = 'translate3d(-' + (fraction * groupWidth) + 'px,0,0)';

@@ -1449,6 +1449,59 @@ body.veil-out.veil-leave .page-veil img{
   .gallery-grid{ grid-template-columns: repeat(2, 1fr); gap: 0.7rem; width: min(94vw, 480px); }
 }
 
+/* svaka pločica se klikom otvara uvećano -- vidi assets/js/gallery.js */
+.gallery-tile{ cursor: pointer; }
+.gallery-tile:focus-visible{ outline: 2px solid var(--azure); outline-offset: 2px; }
+
+/* ================= Galerija: uvećana fotografija (lightbox) =================
+   klik na pločicu zaustavlja izmjenu fotki u svim pločicama (assets/js/gallery.js
+   pauzira cikluse) i prikazuje trenutno vidljivu fotku preko cijelog zaslona;
+   zatvaranjem (X, klik izvan fotke ili Esc) izmjena se nastavlja. */
+.gallery-lightbox{
+  position: fixed; inset: 0; z-index: 400;
+  display: flex; align-items: center; justify-content: center;
+  padding: 2rem;
+  background: rgba(23,17,13,0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: gallery-lightbox-in 0.2s ease;
+}
+.gallery-lightbox[hidden]{ display: none; }
+.gallery-lightbox-img{
+  max-width: min(1100px, 100%); max-height: 100%;
+  width: auto; height: auto;
+  border-radius: 14px;
+  box-shadow: 0 30px 70px -25px rgba(0,0,0,0.75);
+  object-fit: contain;
+}
+.gallery-lightbox-close{
+  position: absolute; top: 1.25rem; right: 1.25rem; z-index: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(23,17,13,0.72); border: var(--edge);
+  color: rgba(244,236,219,0.85);
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+.gallery-lightbox-close:hover, .gallery-lightbox-close:focus-visible{
+  border-color: var(--azure); color: var(--azure); outline: none;
+}
+.gallery-lightbox-close svg{
+  width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round;
+}
+body.gallery-lightbox-open{ overflow: hidden; }
+@keyframes gallery-lightbox-in{
+  from{ opacity: 0; }
+  to{ opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce){
+  .gallery-lightbox{ animation: none; }
+}
+@media (max-width: 640px){
+  .gallery-lightbox{ padding: 1rem; }
+  .gallery-lightbox-close{ top: 0.75rem; right: 0.75rem; width: 40px; height: 40px; }
+}
+
 /* ================= Mobile: less scrolling, same content =================
    these sections carry desktop-scale vertical padding (6.5–9.5rem) that
    was never trimmed for phones, so the page reads as mostly empty space

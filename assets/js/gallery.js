@@ -6,28 +6,104 @@
    nasumičan izbor) i pomiče vrpcu na nju. Ritam (4.4 s drži, 0.6 s
    klizi ≈ 5 s ciklus) je isti za sve pločice — samo je taj ritam ono
    što drži prizor "skladnim" dok se svaka pločica giba neovisno i u
-   svom vlastitom trenutku. ---- */
+   svom vlastitom trenutku.
+
+   Klik na pločicu otvara trenutno vidljivu fotku preko cijelog zaslona
+   (lightbox) i pauzira izmjenu za sve pločice dok je lightbox otvoren;
+   zatvaranjem (X, klik izvan fotke ili Esc) izmjena se nastavlja.
+===================================================================== */
 (function(){
   var strips = document.querySelectorAll('.gallery-tile-strip');
   if (!strips.length) return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var HOLD_MS = 4400;
   var SLIDE_MS = 600;
+  var paused = false;
+  var timers = [];
 
-  strips.forEach(function(strip){
+  strips.forEach(function(strip){ strip._current = 0; });
+
+  function clearTimers(){
+    timers.forEach(function(id){ clearTimeout(id); });
+    timers = [];
+  }
+
+  function startCycle(strip){
     var frames = strip.children.length;
     if (frames < 2) return;
-    var current = 0;
 
     function tick(){
+      if (paused) return;
       var next;
-      do { next = Math.floor(Math.random() * frames); } while (next === current);
-      current = next;
-      strip.style.transform = 'translateY(-' + (current * 100 / frames) + '%)';
-      setTimeout(tick, HOLD_MS + SLIDE_MS);
+      do { next = Math.floor(Math.random() * frames); } while (next === strip._current);
+      strip._current = next;
+      strip.style.transform = 'translateY(-' + (strip._current * 100 / frames) + '%)';
+      timers.push(setTimeout(tick, HOLD_MS + SLIDE_MS));
     }
 
-    setTimeout(tick, Math.random() * HOLD_MS);
+    timers.push(setTimeout(tick, Math.random() * HOLD_MS));
+  }
+
+  function pauseCycling(){
+    paused = true;
+    clearTimers();
+  }
+
+  function resumeCycling(){
+    if (reduceMotion) return;
+    paused = false;
+    strips.forEach(startCycle);
+  }
+
+  if (!reduceMotion) strips.forEach(startCycle);
+
+  /* ---- lightbox ---- */
+  var overlay = document.getElementById('gallery-lightbox');
+  if (!overlay) return;
+  var lbImg = overlay.querySelector('.gallery-lightbox-img');
+  var lbClose = overlay.querySelector('.gallery-lightbox-close');
+  var lastFocused = null;
+
+  function openLightbox(tile){
+    var strip = tile.querySelector('.gallery-tile-strip');
+    if (!strip) return;
+    var imgs = strip.querySelectorAll('img');
+    var shown = imgs[strip._current || 0] || imgs[0];
+    if (!shown) return;
+
+    lbImg.src = shown.currentSrc || shown.src;
+    lbImg.alt = shown.alt || imgs[0].alt || '';
+
+    pauseCycling();
+    lastFocused = document.activeElement;
+    overlay.hidden = false;
+    document.body.classList.add('gallery-lightbox-open');
+    lbClose.focus();
+  }
+
+  function closeLightbox(){
+    if (overlay.hidden) return;
+    overlay.hidden = true;
+    document.body.classList.remove('gallery-lightbox-open');
+    lbImg.src = '';
+    resumeCycling();
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+
+  document.querySelectorAll('.gallery-tile').forEach(function(tile){
+    tile.setAttribute('tabindex', '0');
+    tile.setAttribute('role', 'button');
+    tile.setAttribute('aria-label', 'Otvori fotografiju uvećano');
+    tile.addEventListener('click', function(){ openLightbox(tile); });
+    tile.addEventListener('keydown', function(e){
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(tile); }
+    });
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeLightbox(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && !overlay.hidden) closeLightbox();
   });
 })();

@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,500&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/styles.css?v=24">
+<link rel="stylesheet" href="assets/css/styles.css?v=25">
 <script defer src="/_vercel/insights/script.js"></script>
 <script type="application/ld+json">
 {
@@ -170,6 +170,13 @@
     </div>
   </section>
 
+  <div class="gallery-lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Uvećana fotografija" hidden>
+    <button type="button" class="gallery-lightbox-close" aria-label="Zatvori uvećanu fotografiju">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <img class="gallery-lightbox-img" src="" alt="">
+  </div>
+
   <section class="reserve">
     <img class="reserve-photo" src="assets/images/gallery/whiskey-cigar.webp" alt="" aria-hidden="true">
     <div class="reserve-overlay" aria-hidden="true"></div>
@@ -211,6 +218,6 @@
 </footer>
 
 <script src="assets/js/main.js?v=13"></script>
-<script src="assets/js/gallery.js?v=2"></script>
+<script src="assets/js/gallery.js?v=3"></script>
 </body>
 </html>

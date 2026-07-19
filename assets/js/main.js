@@ -4,15 +4,15 @@
      which reads as the page scrolling by itself */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
-  /* ---- provjera dobi: Hedonist toči alkohol, pa svaki prvi posjet (dok
-     localStorage zastavica ne kaže suprotno) mora odgovoriti na pitanje
-     dobi prije ičega drugog na stranici. Ide prije kolačića namjerno —
-     ovo blokira, kolačići samo traže privolu. "Ne" ne izbacuje posjetitelja
-     s domene — upisuje '0' i dodaje .age-restricted na <html>, što CSS
-     (styles.css) koristi da sakrije kategorije s alkoholom/duhanom u
-     katalogu (assets/js/cjenik.js dodatno isključuje te kategorije i
-     pokoju alkoholnu stavku izvan njih iz rezultata pretrage). ---- */
+  /* ---- provjera dobi: prikazuje se SAMO na cjenik.html (ne pri ulasku na
+     naslovnicu) — tek kad posjetitelj otvori katalog s alkoholnim pićima,
+     dok kolačići traže privolu svugdje, već pri ulasku na stranicu. "Ne" ne
+     izbacuje posjetitelja s cjenika — upisuje '0' i dodaje .age-restricted
+     na <html>, što CSS (styles.css) koristi da sakrije kategorije s
+     alkoholom/duhanom u katalogu (assets/js/cjenik.js dodatno isključuje te
+     kategorije i pokoju alkoholnu stavku izvan njih iz rezultata pretrage). ---- */
   (function ageGate(){
+    if (!/\/cjenik(?:\.html)?$/.test(location.pathname)) return;
     var KEY = 'hedonistAgeVerified';
     var status = localStorage.getItem(KEY);
     if (status === '1') return;
@@ -58,8 +58,9 @@
     });
   })();
 
-  /* ---- kolačići: banner traži privolu prije nego se učita Google Analytics.
-     Vercel Analytics (script tag u <head>) je bez kolačića pa radi uvijek;
+  /* ---- kolačići: prvi upit koji posjetitelj vidi pri ulasku na stranicu
+     (naslovnica ili bilo koja druga) — banner traži privolu prije nego se
+     učita Google Analytics. Vercel Analytics (script tag u <head>) je bez kolačića pa radi uvijek;
      GA4 se učita tek nakon "Prihvaćam", i samo ako je GA_MEASUREMENT_ID
      postavljen na Vercelu (vidi /api/ga.js) — dok nije, gumb i dalje radi,
      samo se ništa ne učita. ---- */

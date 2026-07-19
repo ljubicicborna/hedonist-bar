@@ -202,7 +202,17 @@
      ispravi i pokrivenost i poziciju, kao rezerva ako rAF ikad prestane
      raditi. translateX (2D, ne translate3d) i bez will-change: transform
      -- izbjegava se forsiranje GPU compositing sloja koji je na nekim
-     Windows/Chromium instalacijama gubio iscrtavanje teksta. ---- */
+     Windows/Chromium instalacijama gubio iscrtavanje teksta.
+
+     Širina grupe se NE čita s getBoundingClientRect() svaki rAF tick --
+     to je sinkroni layout read, 60x/sekundi, i na slabijim mobitelima
+     (gdje glavna nit dijeli vrijeme s touch-scroll rukovanjem) upravo to
+     uzrokuje vidljivo zapinjanje trake. Umjesto toga širina se izmjeri
+     samo pri ensureCoverage() (init, resize, watchdog) i cachira; rAF
+     petlja samo čita cached broj. Traka se i pauzira IntersectionObserverom
+     dok je izvan ekrana, da ne troši glavnu nit dok korisnik skrola dalje
+     niz stranicu -- pozicija ostaje čista funkcija vremena pa nastavak
+     nikad ne "skoči". ---- */
   (function marquee(){
     var container = document.querySelector('.marquee');
     var track = document.querySelector('.marquee-track');
@@ -211,9 +221,12 @@
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
     var PERIOD_MS = 32000; /* jedan puni ciklus širine jedne grupe, kao stari CSS 32s */
+    var groupWidth = 0;
+    var visible = true;
+    var rafId = null;
 
     function ensureCoverage(){
-      var groupWidth = firstGroup.getBoundingClientRect().width;
+      groupWidth = firstGroup.getBoundingClientRect().width;
       if (!groupWidth) return;
       var needed = container.getBoundingClientRect().width + groupWidth;
       var guard = 0;
@@ -224,7 +237,6 @@
     }
 
     function setPosition(ts){
-      var groupWidth = firstGroup.getBoundingClientRect().width;
       if (!groupWidth) return;
       var fraction = (ts % PERIOD_MS) / PERIOD_MS;
       track.style.transform = 'translateX(-' + (fraction * groupWidth) + 'px)';
@@ -235,11 +247,19 @@
 
     function frame(ts){
       setPosition(ts);
-      requestAnimationFrame(frame);
+      rafId = visible ? requestAnimationFrame(frame) : null;
     }
-    requestAnimationFrame(frame);
 
-    setInterval(function(){ ensureCoverage(); setPosition(performance.now()); }, 1000);
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function(entries){
+        visible = entries[0].isIntersecting;
+        if (visible && rafId === null) rafId = requestAnimationFrame(frame);
+      }).observe(container);
+    }
+
+    rafId = requestAnimationFrame(frame);
+
+    setInterval(function(){ ensureCoverage(); if (visible) setPosition(performance.now()); }, 1000);
   })();
 
   /* ---- tajni pristup CMS-u: drži (7s) logo gore lijevo na naslovnoj

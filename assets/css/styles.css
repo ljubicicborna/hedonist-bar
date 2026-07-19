@@ -1397,9 +1397,7 @@ body.veil-out.veil-leave .page-veil img{
 }
 .price-item-row{ display: flex; align-items: baseline; gap: 0.75rem; padding: 0.55rem 0 0.55rem 1.75rem; }
 .price-item.has-detail .price-item-row{ cursor: pointer; border-radius: 6px; transition: background-color 0.2s ease; }
-.price-item.has-detail .price-item-row:hover,
 .price-item.has-detail .price-item-row:focus-visible{ background: rgba(53,180,238,0.07); outline: none; }
-.price-item.has-detail:hover::before,
 .price-item.is-open::before{ background-color: var(--azure); }
 /* every row reserves the chevron slot so price columns line up whether
    or not the item expands; only expandable rows actually show it */
@@ -1413,8 +1411,17 @@ body.veil-out.veil-leave .page-veil img{
 .price-item.has-detail .price-item-row::after{
   background-color: rgba(244,236,219,0.35);
 }
-.price-item.has-detail .price-item-row:hover::after{ background-color: var(--azure); }
 .price-item.is-open .price-item-row::after{ transform: rotate(180deg); background-color: var(--azure); }
+/* :hover gated to real pointers -- touchscreens never fire a mouseleave,
+   so on tap these would stick "highlighted" after the row closes again
+   (no mouse ever leaves to clear the state). scoping to (hover: hover)
+   means touch devices only ever see the .is-open state above, which the
+   toggle() click handler in cjenik.js always clears correctly. */
+@media (hover: hover){
+  .price-item.has-detail .price-item-row:hover{ background: rgba(53,180,238,0.07); }
+  .price-item.has-detail:hover::before{ background-color: var(--azure); }
+  .price-item.has-detail .price-item-row:hover::after{ background-color: var(--azure); }
+}
 
 .price-item-name{ flex: 1; }
 .price-item-name strong{ font-weight: 500; color: var(--cream); }

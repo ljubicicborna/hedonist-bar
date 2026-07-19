@@ -4,6 +4,55 @@
      which reads as the page scrolling by itself */
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
+  /* ---- provjera dobi: Hedonist toči alkohol, pa svaki prvi posjet (dok
+     localStorage zastavica ne kaže suprotno) mora potvrditi punoljetnost
+     prije ičega drugog na stranici. Ide prije kolačića namjerno — ovo
+     blokira, kolačići samo traže privolu. "Ne" odvodi s domene umjesto
+     da samo zatvori zaslon, jer zatvaranje bez odgovora ne bi ništa
+     riješilo (sadržaj bi ostao vidljiv/dostupan). ---- */
+  (function ageGate(){
+    var KEY = 'hedonistAgeVerified';
+    if (localStorage.getItem(KEY) === '1') return;
+
+    document.body.classList.add('age-gate-active');
+
+    var gate = document.createElement('div');
+    gate.className = 'age-gate';
+    gate.setAttribute('role', 'alertdialog');
+    gate.setAttribute('aria-modal', 'true');
+    gate.setAttribute('aria-labelledby', 'age-gate-title');
+    gate.innerHTML =
+      '<div class="age-gate-card">' +
+        '<img class="age-gate-mark" src="assets/images/monogram.png" alt="" aria-hidden="true" width="76" height="76">' +
+        '<p class="age-gate-eyebrow"><span class="dot" aria-hidden="true"></span>Prije nego uđete</p>' +
+        '<h2 class="age-gate-title" id="age-gate-title">Imate li 18 ili više godina?</h2>' +
+        '<p class="age-gate-copy">Hedonist je bar koji toči alkoholna pića. Ulaskom na stranicu potvrđujete da ste punoljetni.</p>' +
+        '<div class="age-gate-actions">' +
+          '<button type="button" class="btn btn-gold" data-age="yes">Da, imam 18 ili više godina</button>' +
+          '<button type="button" class="btn btn-outline" data-age="no">Ne, izađi</button>' +
+        '</div>' +
+        '<p class="age-gate-note">Pogledajte našu <a href="privatnost.html">politiku privatnosti</a>.</p>' +
+      '</div>';
+    document.body.appendChild(gate);
+    requestAnimationFrame(function(){ gate.classList.add('is-visible'); });
+
+    var yesBtn = gate.querySelector('[data-age="yes"]');
+    if (yesBtn) yesBtn.focus();
+
+    gate.addEventListener('click', function(e){
+      var btn = e.target.closest('[data-age]');
+      if (!btn) return;
+      if (btn.getAttribute('data-age') === 'yes') {
+        localStorage.setItem(KEY, '1');
+        gate.classList.remove('is-visible');
+        document.body.classList.remove('age-gate-active');
+        setTimeout(function(){ if (gate.parentNode) gate.parentNode.removeChild(gate); }, 350);
+      } else {
+        window.location.href = 'https://www.google.com';
+      }
+    });
+  })();
+
   /* ---- kolačići: banner traži privolu prije nego se učita Google Analytics.
      Vercel Analytics (script tag u <head>) je bez kolačića pa radi uvijek;
      GA4 se učita tek nakon "Prihvaćam", i samo ako je GA_MEASUREMENT_ID

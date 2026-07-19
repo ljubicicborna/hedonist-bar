@@ -1173,6 +1173,38 @@ body.age-gate-active{ overflow: hidden; }
   .age-gate, .age-gate-card{ transition: none; }
 }
 
+/* posjetitelj koji je na upitu odgovorio "Ne, nemam 18" i dalje smije
+   pregledavati stranicu -- html.age-restricted (main.js) samo skriva
+   kategorije s alkoholom/duhanom u katalogu (id-jevi odgovaraju onima
+   koje generira i cjenik.js build(), pa pravilo radi i na statičnom i
+   na CMS-obnovljenom markupu) i njihove pilule u ljepljivoj navigaciji. */
+html.age-restricted #pivo,
+html.age-restricted #vino,
+html.age-restricted #zestoko,
+html.age-restricted #kokteli,
+html.age-restricted #trgovacka,
+html.age-restricted .price-nav-inner a[href="#pivo"],
+html.age-restricted .price-nav-inner a[href="#vino"],
+html.age-restricted .price-nav-inner a[href="#zestoko"],
+html.age-restricted .price-nav-inner a[href="#kokteli"],
+html.age-restricted .price-nav-inner a[href="#trgovacka"]{
+  display: none;
+}
+/* pokoja alkoholna stavka (kuhano vino, Baileys coffee...) živi unutar
+   kategorije koja inače ostaje vidljiva -- cjenik.js označi te stavke s
+   [data-contains-alcohol] pri svakoj izgradnji popisa, bez obzira na
+   trenutno stanje dobi, pa ovo pravilo radi reaktivno čim se
+   .age-restricted doda na <html>, kao i pravila za cijele kategorije. */
+html.age-restricted .price-item[data-contains-alcohol]{
+  display: none;
+}
+/* statična, uvijek u markupu (vidi obrazloženje uz cjenik.js
+   tagAlcoholItems) -- skrivena po zadanome, CSS je otkriva reaktivno
+   čim se .age-restricted doda na <html>, bez obzira kad se to dogodi
+   naspram bilo kojeg fetch-a. */
+.price-notice p.price-notice-restricted{ display: none; margin: 0.6rem 0 0; color: var(--gold-soft); }
+html.age-restricted .price-notice p.price-notice-restricted{ display: block; }
+
 /* ================= Prijelaz među stranicama ================= */
 .page-veil{
   position: fixed; inset: 0; z-index: 300;

@@ -16,6 +16,36 @@
   var navInner = document.querySelector('.price-nav-inner');
   if (!sectionInner) return;
 
+  /* mora se poklapati s html.age-restricted pravilima u styles.css --
+     ako netko na 18+ upitu (main.js) odgovori "ne", te kategorije ostaju
+     u DOM-u (CSS ih samo sakriva) ali ih ovdje ipak isključujemo iz
+     pretrage, inače bi brojač rezultata prijavio pogotke unutar
+     kategorije koju posjetitelj fizički ne može vidjeti. */
+  var RESTRICTED_IDS = ['pivo', 'vino', 'zestoko', 'kokteli', 'trgovacka'];
+  /* pokoja alkoholna stavka živi izvan tih pet kategorija -- npr. kuhano
+     vino i Baileys coffee su svrstani pod "Kave i topli napici" jer se
+     poslužuju kao topli napitak, ne kao piće iz bara. CMS podaci nemaju
+     poseban "sadrži alkohol" flag pa se ovo ručno održava; ako se doda
+     nova alkoholna stavka izvan pet restringiranih kategorija, ime joj
+     treba dodati ovdje da bude skrivena za "nemam 18". */
+  var RESTRICTED_ITEM_NAMES = ['Baileys coffee', 'Baileys coffee bez kofeina', 'Kuhano vino crno', 'Kuhano vino bijelo', 'Kuhani Gin'];
+  function isAgeRestricted(){
+    return document.documentElement.classList.contains('age-restricted');
+  }
+  /* obilježava alkoholne stavke izvan restringiranih kategorija sa
+     [data-contains-alcohol] BEZ OBZIRA na trenutno stanje dobi -- CSS
+     (html.age-restricted [data-contains-alcohol]) ih onda skriva
+     reaktivno, čim se .age-restricted doda na <html>, umjesto da ovisi
+     o tome je li ova funkcija pozvana prije ili poslije odgovora na
+     18+ upit (main.js). */
+  function tagAlcoholItems(){
+    document.querySelectorAll('.price-item').forEach(function(item){
+      var strong = item.querySelector('.price-item-name strong');
+      if (strong && RESTRICTED_ITEM_NAMES.indexOf(strong.textContent.trim()) !== -1) {
+        item.setAttribute('data-contains-alcohol', '');
+      }
+    });
+  }
   function esc(s){
     return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
@@ -94,6 +124,8 @@
     var categories = document.querySelectorAll('.price-category');
     var navLinks = document.querySelectorAll('.price-nav-inner a');
     if (!categories.length) return;
+
+    tagAlcoholItems();
 
     /* svaka stavka sa sastojcima postaje klikabilni red s detaljem */
     document.querySelectorAll('.price-item').forEach(function(item){
@@ -243,8 +275,13 @@
         categories.forEach(function(d){ d.open = true; });
       }
 
+      var restricted = isAgeRestricted();
       var matches = 0;
       items.forEach(function(item){
+        var cat = item.closest('.price-category');
+        var isRestrictedCategory = cat && RESTRICTED_IDS.indexOf(cat.id) !== -1;
+        var isRestrictedItem = item.hasAttribute('data-contains-alcohol');
+        if (restricted && (isRestrictedCategory || isRestrictedItem)) { item.hidden = true; return; }
         var hit = norm(item.textContent).indexOf(q) !== -1;
         item.hidden = !hit;
         if (hit) matches++;

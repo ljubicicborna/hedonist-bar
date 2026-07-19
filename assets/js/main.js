@@ -5,14 +5,18 @@
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
 
   /* ---- provjera dobi: Hedonist toči alkohol, pa svaki prvi posjet (dok
-     localStorage zastavica ne kaže suprotno) mora potvrditi punoljetnost
-     prije ičega drugog na stranici. Ide prije kolačića namjerno — ovo
-     blokira, kolačići samo traže privolu. "Ne" odvodi s domene umjesto
-     da samo zatvori zaslon, jer zatvaranje bez odgovora ne bi ništa
-     riješilo (sadržaj bi ostao vidljiv/dostupan). ---- */
+     localStorage zastavica ne kaže suprotno) mora odgovoriti na pitanje
+     dobi prije ičega drugog na stranici. Ide prije kolačića namjerno —
+     ovo blokira, kolačići samo traže privolu. "Ne" ne izbacuje posjetitelja
+     s domene — upisuje '0' i dodaje .age-restricted na <html>, što CSS
+     (styles.css) koristi da sakrije kategorije s alkoholom/duhanom u
+     katalogu (assets/js/cjenik.js dodatno isključuje te kategorije i
+     pokoju alkoholnu stavku izvan njih iz rezultata pretrage). ---- */
   (function ageGate(){
     var KEY = 'hedonistAgeVerified';
-    if (localStorage.getItem(KEY) === '1') return;
+    var status = localStorage.getItem(KEY);
+    if (status === '1') return;
+    if (status === '0') { document.documentElement.classList.add('age-restricted'); return; }
 
     document.body.classList.add('age-gate-active');
 
@@ -26,10 +30,10 @@
         '<img class="age-gate-mark" src="assets/images/monogram.png" alt="" aria-hidden="true" width="76" height="76">' +
         '<p class="age-gate-eyebrow"><span class="dot" aria-hidden="true"></span>Prije nego uđete</p>' +
         '<h2 class="age-gate-title" id="age-gate-title">Imate li 18 ili više godina?</h2>' +
-        '<p class="age-gate-copy">Hedonist je bar koji toči alkoholna pića. Ulaskom na stranicu potvrđujete da ste punoljetni.</p>' +
+        '<p class="age-gate-copy">Hedonist je bar koji toči alkoholna pića. Ako ste punoljetni, vidjet ćete cijelu ponudu; ako niste, alkohol i cigarete/cigare bit će skriveni iz kataloga.</p>' +
         '<div class="age-gate-actions">' +
           '<button type="button" class="btn btn-gold" data-age="yes">Da, imam 18 ili više godina</button>' +
-          '<button type="button" class="btn btn-outline" data-age="no">Ne, izađi</button>' +
+          '<button type="button" class="btn btn-outline" data-age="no">Ne, nemam 18 godina</button>' +
         '</div>' +
         '<p class="age-gate-note">Pogledajte našu <a href="privatnost.html">politiku privatnosti</a>.</p>' +
       '</div>';
@@ -42,14 +46,15 @@
     gate.addEventListener('click', function(e){
       var btn = e.target.closest('[data-age]');
       if (!btn) return;
-      if (btn.getAttribute('data-age') === 'yes') {
-        localStorage.setItem(KEY, '1');
-        gate.classList.remove('is-visible');
-        document.body.classList.remove('age-gate-active');
-        setTimeout(function(){ if (gate.parentNode) gate.parentNode.removeChild(gate); }, 350);
+      if (btn.getAttribute('data-age') === 'no') {
+        localStorage.setItem(KEY, '0');
+        document.documentElement.classList.add('age-restricted');
       } else {
-        window.location.href = 'https://www.google.com';
+        localStorage.setItem(KEY, '1');
       }
+      gate.classList.remove('is-visible');
+      document.body.classList.remove('age-gate-active');
+      setTimeout(function(){ if (gate.parentNode) gate.parentNode.removeChild(gate); }, 350);
     });
   })();
 

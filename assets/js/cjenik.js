@@ -164,14 +164,14 @@
       detail.appendChild(icon);
 
       var content = document.createElement('div');
-      if (note) {
-        var noteEl = document.createElement('p');
-        noteEl.className = 'price-item-note';
-        noteEl.textContent = note;
-        content.appendChild(noteEl);
-      }
       var list = document.createElement('ul');
       list.className = 'price-item-ingredients';
+      if (note) {
+        var noteLi = document.createElement('li');
+        noteLi.className = 'price-item-note';
+        noteLi.textContent = note;
+        list.appendChild(noteLi);
+      }
       parts.forEach(function(p){
         var li = document.createElement('li');
         li.textContent = p;

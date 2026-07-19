@@ -1475,6 +1475,64 @@ body.veil-out.veil-leave .page-veil img{
 }
 .footer-legal a{ color: rgba(244,236,219,0.55); text-decoration: underline; }
 
+/* ================= Pitanja (FAQ) =================
+   Built as a second "menu" -- accordion groups with the same gold-circle
+   drink glyphs used on the price list, because that's already the site's
+   own grammar for "here's the ponuda, by category". Repurposed here for
+   questions instead of drinks: same shape, same restraint. */
+.faq-section{ background: var(--panel); padding: 4.5rem 0 6rem; }
+.faq-inner{ max-width: 760px; margin: 0 auto; padding: 0 1.75rem; }
+.faq-lede{ max-width: 56ch; color: rgba(244,236,219,0.7); font-size: 1rem; line-height: 1.7; margin: 0 0 2.75rem; }
+.faq-groups{ display: flex; flex-direction: column; gap: 1rem; }
+.faq-group{
+  border: var(--edge); border-radius: 14px; background: var(--panel-2);
+  overflow: hidden;
+}
+.faq-group-summary{
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: 1.3rem 1.6rem; cursor: pointer; list-style: none;
+}
+.faq-group-summary::-webkit-details-marker{ display: none; }
+.faq-group-title{ font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; color: var(--cream); margin: 0; }
+.faq-group-chevron{
+  flex: none; width: 15px; height: 15px; background-color: var(--gold);
+  -webkit-mask: var(--icon-chevron) center / contain no-repeat; mask: var(--icon-chevron) center / contain no-repeat;
+  transition: transform 0.3s ease;
+}
+.faq-group[open] .faq-group-chevron{ transform: rotate(180deg); }
+.faq-group-body{
+  padding: 0.35rem 1.6rem 1.6rem; display: flex; flex-direction: column;
+  border-top: var(--edge);
+}
+.faq-item{ display: flex; gap: 1.1rem; align-items: flex-start; padding-top: 1.6rem; }
+.faq-item + .faq-item{ border-top: 1px solid rgba(201,160,99,0.12); }
+.faq-item-icon{
+  position: relative; flex: none; width: 34px; height: 34px; border-radius: 50%; margin-top: 0.1rem;
+  background: rgba(201,160,99,0.1); border: 1px solid rgba(201,160,99,0.28);
+}
+.faq-item-icon::before{
+  content: ''; position: absolute; inset: 8px; background-color: var(--gold-soft);
+  -webkit-mask: var(--icon, none) center / contain no-repeat; mask: var(--icon, none) center / contain no-repeat;
+}
+.faq-item-body{ min-width: 0; padding-bottom: 1.6rem; }
+.faq-question{ font-family: var(--font-display); font-size: 1.02rem; font-weight: 600; color: var(--cream); margin: 0 0 0.4rem; }
+.faq-answer{ margin: 0; color: rgba(244,236,219,0.75); font-size: 0.94rem; line-height: 1.65; }
+.faq-answer a{ color: var(--azure); text-decoration: underline; }
+
+.faq-cta{
+  margin-top: 1.5rem; padding: 2.1rem 1.9rem; border-radius: 14px;
+  background: linear-gradient(155deg, rgba(201,160,99,0.14), rgba(201,160,99,0.03));
+  border: var(--edge); text-align: center;
+}
+.faq-cta h2{ font-family: var(--font-display); font-size: 1.25rem; font-weight: 600; margin: 0 0 0.6rem; color: var(--gold-soft); }
+.faq-cta p{ max-width: 46ch; margin: 0 auto 1.4rem; color: rgba(244,236,219,0.75); font-size: 0.94rem; line-height: 1.65; }
+
+@media (max-width: 640px){
+  .faq-group-summary{ padding: 1.1rem 1.25rem; }
+  .faq-group-body{ padding: 0.15rem 1.25rem 1.25rem; }
+  .faq-item{ gap: 0.85rem; }
+}
+
 .price-item--signature::before{ background-color: var(--azure); }
 
 /* Click-to-expand detail: name + bigger glyph + composition, broken out. */

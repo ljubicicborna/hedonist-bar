@@ -21,39 +21,36 @@
   var track = section.querySelector('.daynight-track');
   var STORAGE_KEY = 'hedonistDayNight';
 
-  /* video s kavom se ne vrti u krug: krene 8 s prije kraja, odsvira do
-     zadnjeg kadra (gotov latte art) i tu ostane kao fotografija —
-     loop atributa u HTML-u više nema, pa "ended" jednostavno stane.
+  /* video s kavom se ne vrti u krug: prikazuje samo zadnjih ~8 s (gotov
+     latte art) i tu ostane kao fotografija — loop atributa u HTML-u
+     nema, pa "ended" jednostavno stane na zadnjem kadru.
 
-     Mjereno na produkciji: sam preload="metadata" + autoplay + seek-na-
-     -rep čim stignu metapodaci ionako natjera Chromium da povuče skoro
-     CIJELI 2.6MB fajl (dvaput preklopljeno, ~4MB ukupno) -- to je
-     poznato ponašanje browsera oko velikih <video> raspona, ne nešto
-     što se lako popravi timingom seeka. Umjesto da se time bavimo,
-     izbjegnut je veći problem: taj fetch se prije pokretao NA SVAKOM
-     posjetu početnoj, čak i za nekoga tko nikad ne dogura scrollom do
-     sekcije "Dan i noć". <source> nosi samo data-src (preload="none",
-     video ostaje na poster slici) dok sekcija stvarno ne uđe u
-     viewport -- tek tada se src postavi i video.load() pokrene, pa se
-     bilo koja mrežna cijena plaća najviše jednom, i samo za posjetitelje
-     koji tu sekciju stvarno vide. */
+     Ta točka (19.25 s od ukupno 27.25 s, pročitano izravno iz mvhd
+     atoma) je zadana kao HTML5 Media Fragment u samom URL-u
+     (#t=19.25), NE postavljanjem video.currentTime nakon 'loadedmetadata'
+     -- ono je isprobano i na produkciji je mjereno GORE, ne bolje: Chromium
+     je zbog seeka odmah po metapodacima znao povući ~12MB za 2.6MB fajl
+     (višestruko preklopljeni Range zahtjevi) i video bi na kraju ostao
+     zaustavljen NEreproduciran (play() nakon 'seeked' se pouzdano ne bi
+     dogodio pod stvarnim mrežnim uvjetima). Fragment u URL-u je
+     ugrađena, puno stabilnija platforma-native funkcija za točno ovaj
+     slučaj — preglednik cilja taj raspon od PRVOG zahtjeva, nema
+     naknadnog seeka koji bi se s bilo čime sudario.
+
+     <source> nosi samo data-src (preload="none", video ostaje na
+     poster slici) dok sekcija stvarno ne uđe u viewport -- tek tada se
+     src postavi i video.load() pokrene, pa se mrežna cijena plaća
+     najviše jednom, i samo za posjetitelje koji tu sekciju stvarno
+     vide. */
   var video = section.querySelector('video.daynight-pane-media');
   if (video) {
-    var TAIL_SECONDS = 8;
-    function startFromTail(){
-      if (isFinite(video.duration) && video.duration > TAIL_SECONDS) {
-        video.addEventListener('seeked', function(){ video.play().catch(function(){}); }, { once: true });
-        try { video.currentTime = video.duration - TAIL_SECONDS; return; } catch (e) {}
-      }
-      video.play().catch(function(){});
-    }
     function loadVideo(){
       var source = video.querySelector('source[data-src]');
       if (!source) return;
       source.src = source.getAttribute('data-src');
       source.removeAttribute('data-src');
-      video.addEventListener('loadedmetadata', startFromTail, { once: true });
       video.load();
+      video.play().catch(function(){});
     }
     if ('IntersectionObserver' in window) {
       var videoObserver = new IntersectionObserver(function(entries){

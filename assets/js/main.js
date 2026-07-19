@@ -196,23 +196,25 @@
      prozora i svake sekunde (watchdog), pa čak ni naknadno maksimiziran
      ili prebačen na širi monitor prozor ne probije pokrivenost.
 
-     Pozicija je čista funkcija proteklog vremena (ts % PERIOD_MS), ne
-     akumulirano stanje -- requestAnimationFrame vozi glatki 60fps pomak,
-     a neovisan setInterval "watchdog" svaku sekundu nezavisno provjeri i
-     ispravi i pokrivenost i poziciju, kao rezerva ako rAF ikad prestane
-     raditi. translateX (2D, ne translate3d) i bez will-change: transform
-     -- izbjegava se forsiranje GPU compositing sloja koji je na nekim
-     Windows/Chromium instalacijama gubio iscrtavanje teksta.
-
-     Širina grupe se NE čita s getBoundingClientRect() svaki rAF tick --
-     to je sinkroni layout read, 60x/sekundi, i na slabijim mobitelima
-     (gdje glavna nit dijeli vrijeme s touch-scroll rukovanjem) upravo to
-     uzrokuje vidljivo zapinjanje trake. Umjesto toga širina se izmjeri
-     samo pri ensureCoverage() (init, resize, watchdog) i cachira; rAF
-     petlja samo čita cached broj. Traka se i pauzira IntersectionObserverom
-     dok je izvan ekrana, da ne troši glavnu nit dok korisnik skrola dalje
-     niz stranicu -- pozicija ostaje čista funkcija vremena pa nastavak
-     nikad ne "skoči". ---- */
+     I dalje "šteka" na slabijim mobitelima jer i sam ČIN pisanja
+     style.transform 60x/sekundi s glavne niti sudjeluje u istoj utrci za
+     glavnu nit kao touch-scroll -- nema mjerenja koje to popravi, jedini
+     stvarni izlaz je maknuti pomak s glavne niti u potpunosti. Traka sad
+     vozi pravu CSS @keyframes animaciju (assets/css/styles.css,
+     .marquee-track), koju preglednikov compositor vrti sam za sebe, bez
+     ijednog JS poziva po frameu -- JS ovdje samo klonira grupe za
+     pokrivenost širine i upiše --marquee-w custom property (širinu jedne
+     grupe u pikselima, cilj animacije). To vraća točno onu vrstu
+     "zamrzavanja" koju je originalni rAF pristup izbjegavao (neki mobilni
+     preglednici trajno pauziraju CSS infinite animaciju nakon što je tab
+     bio u pozadini ili je traka dugo bila izvan ekrana, i sama se ne
+     oporavlja) -- zato ispod postoji eksplicitan "restart" (ukloni pa
+     odmah vrati animation, što silom pokrene iznova) okinut i na
+     visibilitychange (povratak iz pozadine) i na IntersectionObserver
+     (povratak u vidno polje nakon duljeg izbivanja). translateX (2D, ne
+     translate3d) i bez will-change: transform u CSS-u -- izbjegava se
+     forsiranje GPU compositing sloja koji je na nekim Windows/Chromium
+     instalacijama gubio iscrtavanje teksta. ---- */
   (function marquee(){
     var container = document.querySelector('.marquee');
     var track = document.querySelector('.marquee-track');
@@ -220,13 +222,8 @@
     if (!container || !track || !firstGroup) return;
     if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-    var PERIOD_MS = 32000; /* jedan puni ciklus širine jedne grupe, kao stari CSS 32s */
-    var groupWidth = 0;
-    var visible = true;
-    var rafId = null;
-
     function ensureCoverage(){
-      groupWidth = firstGroup.getBoundingClientRect().width;
+      var groupWidth = firstGroup.getBoundingClientRect().width;
       if (!groupWidth) return;
       var needed = container.getBoundingClientRect().width + groupWidth;
       var guard = 0;
@@ -234,32 +231,32 @@
         track.appendChild(firstGroup.cloneNode(true));
         guard++;
       }
+      track.style.setProperty('--marquee-w', groupWidth + 'px');
     }
 
-    function setPosition(ts){
-      if (!groupWidth) return;
-      var fraction = (ts % PERIOD_MS) / PERIOD_MS;
-      track.style.transform = 'translateX(-' + (fraction * groupWidth) + 'px)';
+    function restart(){
+      track.classList.add('marquee-restart');
+      void track.offsetWidth; /* forsira reflow, tek onda uklanjanje ispod stvarno ponovno pokrene animaciju */
+      track.classList.remove('marquee-restart');
     }
 
     ensureCoverage();
     window.addEventListener('resize', ensureCoverage);
 
-    function frame(ts){
-      setPosition(ts);
-      rafId = visible ? requestAnimationFrame(frame) : null;
-    }
+    document.addEventListener('visibilitychange', function(){
+      if (!document.hidden) restart();
+    });
 
     if ('IntersectionObserver' in window) {
+      var wasVisible = true;
       new IntersectionObserver(function(entries){
-        visible = entries[0].isIntersecting;
-        if (visible && rafId === null) rafId = requestAnimationFrame(frame);
+        var isVisible = entries[0].isIntersecting;
+        if (isVisible && !wasVisible) restart();
+        wasVisible = isVisible;
       }).observe(container);
     }
 
-    rafId = requestAnimationFrame(frame);
-
-    setInterval(function(){ ensureCoverage(); if (visible) setPosition(performance.now()); }, 1000);
+    setInterval(ensureCoverage, 4000); /* watchdog: hvata širinu grupe ako se promijeni (font/slika kasno učitani) */
   })();
 
   /* ---- tajni pristup CMS-u: drži (7s) logo gore lijevo na naslovnoj

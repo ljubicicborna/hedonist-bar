@@ -1555,12 +1555,8 @@ body.veil-out.veil-leave .page-veil img{
   background: rgba(244,236,219,0.06); border: 1px solid rgba(201,160,99,0.2);
   border-radius: 999px; padding: 0.3em 0.85em;
 }
-/* napomena (npr. "pakiranje od 23 komada") — ista zaobljena pločica kao
-   i sastojci, samo malo istaknutija tipografija; bez plave boje. */
-.price-item-ingredients li.price-item-note{
-  color: var(--gold-soft); font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
-  border-color: rgba(201,160,99,0.35);
-}
+/* napomena (npr. "pakiranje od 23 komada") izgleda jednako kao i pločice
+   sa sastojcima — bez posebnog stila. */
 
 @media (max-width: 700px){
   .price-items{ grid-template-columns: 1fr; }

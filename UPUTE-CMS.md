@@ -5,12 +5,22 @@ putuje s njim — nema vanjskih servisa, ništa se ne plaća, radi na bilo kojem
 
 ## Što se može uređivati
 
-- **Katalog ponude** — kategorije, grupe, stavke (naziv + sastojci/napomena), ikone.
-- **Tekstovi** — opisi na početnoj (Misija-vizija, Katalog, Po danu, Atmosfera), uvod na
-  katalogu, tekstovi na Zapošljavanju.
-- **Događaji** — kartice u sekciji "Novosti" na početnoj (npr. Music Night, Party Night).
+U panelu (`/admin.html`) gore biraš stranicu/sekciju. Uredivo je **sve** što se mijenja:
 
-Naslovi, raspored, animacije i fotografije su dio dizajna (koda) — ne uređuju se ovdje.
+- **Katalog ponude** — kategorije, grupe, stavke (naziv + sastojci/napomena), ikone.
+- **Tekstovi** — svi tekstovi na svim stranicama (naslovi, opisi, uvodi, adresa…).
+- **Događaji** — kartice u sekciji "Novosti" na početnoj (npr. Music Night, Party Night).
+- **Slike** — sve fotografije na stranicama (hero, atmosfera, sekcije) + **učitavanje** novih.
+- **Galerija** — pločice galerije (2 fotke svaka) + učitavanje novih.
+- **Pitanja (FAQ)** — grupe i pitanja/odgovori na stranici Pitanja.
+- **Kontakt i mreže** — e-mail i linkovi Instagrama/Facebooka (primjenjuju se svugdje).
+- **Radno vrijeme** — po danima (pokreće i "otvoreno sada" i Google podatke).
+- **SEO** — naslov i opis svake stranice za Google i dijeljenje.
+
+Samo raspored i animacije (kako se stvari miču) su dio dizajna/koda — to nije "sadržaj".
+
+**Učitavanje slika** radi izravno samo na hostingu s PHP-om. Na hostingu bez PHP-a (kao GitHub
+Pages) sliku prvo ručno staviš u `assets/images/` pa u polju upišeš njenu putanju.
 
 ## Kako radi spremanje (dvije situacije)
 

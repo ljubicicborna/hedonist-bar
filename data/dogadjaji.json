@@ -1,0 +1,18 @@
+{
+  "dogadjaji": [
+    {
+      "id": "dogadjaj-petak",
+      "dan": "Petak",
+      "naziv": "Music Night",
+      "opis": "Ex-Yu glazba cijelu večer",
+      "aktivno": true
+    },
+    {
+      "id": "dogadjaj-subota",
+      "dan": "Subota",
+      "naziv": "Party Night",
+      "opis": "House zvuk do kasno u noć",
+      "aktivno": true
+    }
+  ]
+}

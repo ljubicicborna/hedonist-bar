@@ -65,6 +65,8 @@ textarea{ resize: vertical; min-height: 84px; }
 .login-sub{ color: rgba(244,236,219,0.6); margin: 0.4rem 0 2rem; }
 .login form{ width: min(320px, 100%); display: grid; gap: 0.8rem; }
 .form-err{ color: #e08b8b; margin: 0.2rem 0 0; font-size: 0.92rem; }
+.login-note{ color: rgba(244,236,219,0.5); font-size: 0.8rem; line-height: 1.5; margin: 1.2rem 0 0; }
+.login-note code{ color: rgba(244,236,219,0.7); }
 
 /* ---- gornja traka ---- */
 .topbar{

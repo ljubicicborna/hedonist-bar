@@ -403,6 +403,22 @@
     });
   }
 
+  /* ---- CMS tekstovi: elementi s data-cms="ključ" dobiju sadržaj uređen na
+     /admin.html (spremljen u data/tekstovi.json); ako datoteka ne postoji
+     ili se ne učita, ostaje statični tekst iz HTML-a ---- */
+  var cmsEls = document.querySelectorAll('[data-cms]');
+  if (cmsEls.length) {
+    fetch('data/tekstovi.json')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(t){
+        cmsEls.forEach(function(el){
+          var v = t[el.getAttribute('data-cms')];
+          if (typeof v === 'string' && v) el.textContent = v;
+        });
+      })
+      .catch(function(){ /* rezerva: statični tekst */ });
+  }
+
   /* ---- prijelaz među stranicama: zavjesa s monogramom prekrije ekran
      prije odlaska, a nova stranica se otvori već pokrivena pa se
      zavjesa digne — klasično "bijelo učitavanje" se nikad ne vidi ---- */

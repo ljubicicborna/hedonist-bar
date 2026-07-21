@@ -1,0 +1,1656 @@
+{
+  "kategorije": [
+    {
+      "id": "kave",
+      "naziv": "Kave i topli napici",
+      "grupe": [
+        {
+          "naziv": "Kave",
+          "ikona": "coffee",
+          "stavke": [
+            {
+              "naziv": "Kava",
+              "opis": "espresso kava"
+            },
+            {
+              "naziv": "Kava mlijeko mala",
+              "opis": "espresso kava, mlijeko"
+            },
+            {
+              "naziv": "Kava mlijeko velika",
+              "opis": "dupli espresso, mlijeko"
+            },
+            {
+              "naziv": "Kava šlag mala",
+              "opis": "espresso kava, mlijeko, šlag"
+            },
+            {
+              "naziv": "Kava šlag velika",
+              "opis": "dupli espresso, mlijeko, šlag"
+            },
+            {
+              "naziv": "Melange",
+              "opis": "espresso kava, vruće mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Cappuccino veliki",
+              "opis": "dupli espresso, mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Bijela kava",
+              "opis": "espresso kava, veća količina toplog mlijeka"
+            },
+            {
+              "naziv": "Late macchiato",
+              "opis": "espresso kava, vruće mlijeko, gusta mliječna pjena"
+            },
+            {
+              "naziv": "Ledena kava",
+              "opis": "espresso kava, mlijeko, led"
+            },
+            {
+              "naziv": "Baileys coffee",
+              "opis": "espresso kava, Baileys irish cream liker, šlag"
+            },
+            {
+              "naziv": "Kava s biljnim mlijekom velika",
+              "opis": "zobeno, bademovo ili sojino — dupli espresso, biljno mlijeko"
+            },
+            {
+              "naziv": "Kava s biljnim mlijekom mala",
+              "opis": "zobeno, bademovo ili sojino — espresso kava, biljno mlijeko"
+            },
+            {
+              "naziv": "Bijela kava s biljnim mlijekom",
+              "opis": "zobeno, bademovo ili sojino — espresso kava, veća količina biljnog mlijeka"
+            },
+            {
+              "naziv": "Cappuccino s biljnim mlijekom",
+              "opis": "zobeno, bademovo ili sojino — espresso kava, biljno mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Dupli espresso",
+              "opis": "dvostruka doza espresso kave"
+            },
+            {
+              "naziv": "Ledeni cappuccino",
+              "opis": "espresso kava, mlijeko, led kockice, mliječna pjena"
+            },
+            {
+              "naziv": "Pumpkin Spiced Latte",
+              "opis": "espresso kava, mlijeko, sirup bundeva-korijandar, cimet"
+            },
+            {
+              "naziv": "Pumpkin Spiced Latte",
+              "opis": "biljno mlijeko"
+            },
+            {
+              "naziv": "Gingerbread Latte",
+              "opis": "espresso kava, mlijeko, sirup medenjak, cimet, klinčić"
+            },
+            {
+              "naziv": "Gingerbread Latte",
+              "opis": "biljno mlijeko"
+            },
+            {
+              "naziv": "Ledena kava sa biljnim mlijekom",
+              "opis": "zobeno, bademovo ili sojino — espresso kava, biljno mlijeko, led"
+            }
+          ]
+        },
+        {
+          "naziv": "Kave bez kofeina",
+          "ikona": "coffee",
+          "stavke": [
+            {
+              "naziv": "Kava bez kofeina",
+              "opis": "espresso kava bez kofeina (decaf)"
+            },
+            {
+              "naziv": "Kava s mlijekom bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko"
+            },
+            {
+              "naziv": "Kava s šlagom bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko, šlag"
+            },
+            {
+              "naziv": "Cappuccino bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Bijela kava bez kofeina",
+              "opis": "espresso kava bez kofeina, veća količina toplog mlijeka"
+            },
+            {
+              "naziv": "Kava bez kofeina s biljnim mlijekom",
+              "opis": "zobeno, bademovo ili sojino mlijeko"
+            },
+            {
+              "naziv": "Late macchiato bez kofeina",
+              "opis": "espresso kava bez kofeina, vruće mlijeko, gusta mliječna pjena"
+            },
+            {
+              "naziv": "Baileys coffee bez kofeina",
+              "opis": "espresso kava bez kofeina, Baileys irish cream liker, šlag"
+            },
+            {
+              "naziv": "Kava bez kofeina s mlijekom mala",
+              "opis": "espresso kava bez kofeina, mlijeko"
+            }
+          ]
+        },
+        {
+          "naziv": "Topli napici",
+          "ikona": "coffee",
+          "stavke": [
+            {
+              "naziv": "Čaj s limunom i medom",
+              "opis": "kamilica, menta, šipak, zeleni, višnja, divlja jagoda, voćni mix, jabuka-limun, ginger-limun, crni čaj, zeleni jasmin, zeleni limun-menta, bijeli, vanilija-karamel"
+            },
+            {
+              "naziv": "Topla čokolada",
+              "opis": "kuhano mlijeko, tamna čokolada, šlag"
+            },
+            {
+              "naziv": "Kakao",
+              "opis": "kuhano mlijeko, kakao prah, šećer"
+            },
+            {
+              "naziv": "Nescafe classic",
+              "opis": "instant kava Nescafé, vruća voda, mlijeko po želji"
+            },
+            {
+              "naziv": "Nescafe frappe",
+              "opis": "instant kava Nescafé, hladna voda, led, mliječna pjena"
+            },
+            {
+              "naziv": "Cappuccino vrećica",
+              "opis": "vanilija, čokolada, irish, clasic, lješnjak, kokos, bajadera, pistacio"
+            },
+            {
+              "naziv": "Kuhano vino crno",
+              "opis": "crno vino, cimet, klinčić, naranča, med"
+            },
+            {
+              "naziv": "Kuhano vino bijelo",
+              "opis": "bijelo vino, cimet, klinčić, limun, med"
+            },
+            {
+              "naziv": "Kuhani Gin",
+              "opis": "gin, jabučni sok, cimet, klinčić, naranča"
+            },
+            {
+              "naziv": "Topla čokolada Bijela",
+              "opis": "kuhano mlijeko, bijela čokolada, šlag"
+            },
+            {
+              "naziv": "Topla čokolada Raffaelo",
+              "opis": "kuhano mlijeko, bijela čokolada, kokos, mljeveni lješnjak"
+            },
+            {
+              "naziv": "Topla čokolada Lješnjak",
+              "opis": "kuhano mlijeko, čokolada, lješnjak pasta"
+            },
+            {
+              "naziv": "Matcha Latte",
+              "opis": "matcha, mlijeko"
+            },
+            {
+              "naziv": "Matcha",
+              "opis": "biljno mlijeko — sojino, bademovo ili zobeno"
+            }
+          ]
+        },
+        {
+          "naziv": "Topli napici to go",
+          "ikona": "coffee",
+          "stavke": [
+            {
+              "naziv": "Kava",
+              "opis": "espresso kava"
+            },
+            {
+              "naziv": "Kava mlijeko mala",
+              "opis": "espresso kava, mlijeko"
+            },
+            {
+              "naziv": "Kava mlijeko velika",
+              "opis": "dupli espresso, mlijeko"
+            },
+            {
+              "naziv": "Kava šlag mala",
+              "opis": "espresso kava, mlijeko, šlag"
+            },
+            {
+              "naziv": "Kava šlag velika",
+              "opis": "dupli espresso, mlijeko, šlag"
+            },
+            {
+              "naziv": "Melange",
+              "opis": "espresso kava, vruće mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Ledeni cappuccino",
+              "opis": "espresso kava, mlijeko, led kockice, mliječna pjena"
+            },
+            {
+              "naziv": "Cappuccino veliki",
+              "opis": "dupli espresso, mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Bijela kava",
+              "opis": "espresso kava, veća količina toplog mlijeka"
+            },
+            {
+              "naziv": "Late macchiato",
+              "opis": "espresso kava, vruće mlijeko, gusta mliječna pjena"
+            },
+            {
+              "naziv": "Kava bez kofeina",
+              "opis": "espresso kava bez kofeina (decaf)"
+            },
+            {
+              "naziv": "Kava s mlijekom bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko"
+            },
+            {
+              "naziv": "Kava s šlagom bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko, šlag"
+            },
+            {
+              "naziv": "Cappuccino bez kofeina",
+              "opis": "espresso kava bez kofeina, mlijeko, mliječna pjena"
+            },
+            {
+              "naziv": "Bijela kava bez kofeina",
+              "opis": "espresso kava bez kofeina, veća količina toplog mlijeka"
+            },
+            {
+              "naziv": "Čaj s limunom i medom",
+              "opis": "kamilica, menta, šipak, zeleni, višnja, divlja jagoda, voćni mix, jabuka-borovnica, ginger-limun, crni čaj, zeleni jasmin, zeleni limun-menta, bijeli, vanilija-karamel"
+            },
+            {
+              "naziv": "Topla čokolada",
+              "opis": "kuhano mlijeko, tamna čokolada, šlag"
+            },
+            {
+              "naziv": "Kakao",
+              "opis": "kuhano mlijeko, kakao prah, šećer"
+            },
+            {
+              "naziv": "Nescafe classic",
+              "opis": "instant kava Nescafé, vruća voda, mlijeko po želji"
+            },
+            {
+              "naziv": "Nescafe frappe",
+              "opis": "instant kava Nescafé, hladna voda, led, mliječna pjena"
+            },
+            {
+              "naziv": "Cappuccino vrećica",
+              "opis": "vanilija, čokolada, irish, clasic, lješnjak"
+            },
+            {
+              "naziv": "Latte macchiato bez kofeina",
+              "opis": "espresso kava bez kofeina, vruće mlijeko, gusta mliječna pjena"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "bezalkoholno",
+      "naziv": "Bezalkoholna pića",
+      "grupe": [
+        {
+          "naziv": "Gazirana pića",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Jamnica 0,33l",
+              "opis": "prirodna gazirana mineralna voda"
+            },
+            {
+              "naziv": "Jamnica sensation 0,25l",
+              "opis": "gazirana aromatizirana voda, prirodna aroma voća"
+            },
+            {
+              "naziv": "Hidra iso citrus 0,5l",
+              "opis": "izotonična voda, minerali, prirodna aroma citrusa"
+            },
+            {
+              "naziv": "Hidra iso orange 0,5l",
+              "opis": "izotonična voda, minerali, prirodna aroma naranče"
+            },
+            {
+              "naziv": "Romerquelle limunska trava 0,33l",
+              "opis": "prirodna mineralna voda, CO2, prirodna aroma limunske trave"
+            },
+            {
+              "naziv": "Coca cola 0,25l",
+              "opis": "gazirana voda, šećer, boja karamel E150d, prirodne arome, fosforna kiselina, kofein"
+            },
+            {
+              "naziv": "Coca cola zero 0,25l",
+              "opis": "gazirana voda, boja karamel E150d, zaslađivači (aspartam, acesulfam K), prirodne arome, fosforna kiselina, kofein"
+            },
+            {
+              "naziv": "Cockta 0,25l",
+              "opis": "gazirana voda, šećer, biljni ekstrakti (šipak i dr.), prirodne arome"
+            },
+            {
+              "naziv": "Cockta free 0,25l",
+              "opis": "gazirana voda, zaslađivači, biljni ekstrakti (šipak i dr.), prirodne arome"
+            },
+            {
+              "naziv": "Fanta 0,25l",
+              "opis": "gazirana voda, šećer, sok naranče, prirodne arome, bojilo"
+            },
+            {
+              "naziv": "Sprite 0,25l",
+              "opis": "gazirana voda, šećer, prirodna aroma limuna i limete"
+            },
+            {
+              "naziv": "Orangina 0,25l",
+              "opis": "gazirana voda, sok naranče s pulpom, šećer, prirodne arome"
+            },
+            {
+              "naziv": "Schweppes bitter lemon 0,25l",
+              "opis": "gazirana voda, šećer, ekstrakt limuna, kinin"
+            },
+            {
+              "naziv": "Schweppes tangerine 0,25l",
+              "opis": "gazirana voda, šećer, prirodna aroma mandarine"
+            },
+            {
+              "naziv": "Schweppes tonic water 0,25l",
+              "opis": "gazirana voda, šećer, kinin, limunska kiselina"
+            },
+            {
+              "naziv": "Schweppes Pink Grapefruit 0,25l",
+              "opis": "gazirana voda, šećer, prirodna aroma ružičastog grejpa"
+            },
+            {
+              "naziv": "Red bull 0,25l",
+              "opis": "gazirana voda, šećer, kofein, taurin, vitamini B skupine"
+            },
+            {
+              "naziv": "Somersby 0,33l",
+              "opis": "jabučni cider, prirodna aroma jagode i limete"
+            },
+            {
+              "naziv": "Thomas Henry Botanical tonic 0,2l",
+              "opis": "gazirana voda, šećer od trske, kinin, botanički ekstrakti (kora kininovca, biljke)"
+            },
+            {
+              "naziv": "Thomas Henry Ultimate grapefruit tonic 0,2l",
+              "opis": "gazirana voda, šećer od trske, sok grejpa, kinin"
+            }
+          ]
+        },
+        {
+          "naziv": "Negazirana pića",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Jana 0,33l",
+              "opis": "negazirana prirodna izvorska voda"
+            },
+            {
+              "naziv": "Jana ledeni čaj 0,33l",
+              "opis": "šumsko voće"
+            },
+            {
+              "naziv": "Jana ledeni čaj 0,33l",
+              "opis": "breskva"
+            },
+            {
+              "naziv": "Jana vitamin 0,33l",
+              "opis": "limun"
+            },
+            {
+              "naziv": "Prirodni sok Pago 0,2l",
+              "opis": "marelica"
+            },
+            {
+              "naziv": "Prirodni sok Pago 0,2l",
+              "opis": "jabuka 100%"
+            },
+            {
+              "naziv": "Prirodni sok Pago 0,2l",
+              "opis": "jagoda"
+            },
+            {
+              "naziv": "Prirodni sok Pago 0,2l",
+              "opis": "crni ribiz"
+            },
+            {
+              "naziv": "Prirodni sok Pago 0,2l",
+              "opis": "naranča 100%"
+            }
+          ]
+        },
+        {
+          "naziv": "Cedevita",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Cedevita",
+              "opis": "limun, naranča, limeta, bazga, grejp, ananas-mango"
+            }
+          ]
+        },
+        {
+          "naziv": "Svježi prirodni sokovi",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Svježe cijeđena limunada 0,3l",
+              "opis": "svježe cijeđeni limun, voda, šećer, list mente"
+            },
+            {
+              "naziv": "Svježe cijeđena naranča 0,3l",
+              "opis": "svježe cijeđen sok naranče"
+            },
+            {
+              "naziv": "Svježe cijeđena naranča 0,5l",
+              "opis": "svježe cijeđen sok naranče"
+            },
+            {
+              "naziv": "Limunada s okusom 0,3l",
+              "opis": "bazga, malina, mojito, lubenica ili jagoda"
+            }
+          ]
+        },
+        {
+          "naziv": "Svježi voćni mixevi",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Red oxidation 0,3l",
+              "opis": "crveni grejp, naranča"
+            },
+            {
+              "naziv": "Red oxidation 0,5l",
+              "opis": "crveni grejp, naranča"
+            },
+            {
+              "naziv": "Good morning 0,3l",
+              "opis": "naranča, limun"
+            },
+            {
+              "naziv": "Good morning 0,5l",
+              "opis": "naranča, limun"
+            },
+            {
+              "naziv": "Spicy mix 0,3l",
+              "opis": "jabuka, naranča, limun, đumbir"
+            },
+            {
+              "naziv": "Spicy mix 0,5l",
+              "opis": "jabuka, naranča, limun, đumbir"
+            },
+            {
+              "naziv": "Refresh mix 0,3l",
+              "opis": "jabuka, ananas"
+            },
+            {
+              "naziv": "Refresh mix 0,5l",
+              "opis": "jabuka, ananas"
+            },
+            {
+              "naziv": "Carrot mix 0,3l",
+              "opis": "jabuka, mrkva, naranča"
+            },
+            {
+              "naziv": "Carrot mix 0,5l",
+              "opis": "jabuka, naranča, mrkva"
+            },
+            {
+              "naziv": "Sour mix 0,3l",
+              "opis": "grejp, limun, naranča, mrkva, đumbir"
+            },
+            {
+              "naziv": "Sour mix 0,5l",
+              "opis": "grejp, limun, naranča, mrkva, đumbir"
+            },
+            {
+              "naziv": "Proteinski shake 0,5l",
+              "opis": "čokolada supreme, lješnjak čokolada ili jagoda — s vodom"
+            },
+            {
+              "naziv": "Proteinski shake 0,5l",
+              "opis": "čokolada supreme, lješnjak čokolada ili jagoda — s mlijekom"
+            },
+            {
+              "naziv": "Proteinski shake 0,5l",
+              "opis": "čokolada supreme, lješnjak čokolada ili jagoda — s bademovim mlijekom"
+            }
+          ]
+        },
+        {
+          "naziv": "Svježi voćni mixevi to go",
+          "ikona": "juice",
+          "stavke": [
+            {
+              "naziv": "Svježe cijeđena limunada 0,3l",
+              "opis": "svježe cijeđeni limun, voda, šećer, list mente"
+            },
+            {
+              "naziv": "Svježe cijeđena naranča 0,3l",
+              "opis": "svježe cijeđen sok naranče"
+            },
+            {
+              "naziv": "Red oxidation 0,3l",
+              "opis": "crveni grejp, naranča"
+            },
+            {
+              "naziv": "Good morning 0,3l",
+              "opis": "naranča, limun"
+            },
+            {
+              "naziv": "Spicy mix 0,3l",
+              "opis": "jabuka, naranča, limun, đumbir"
+            },
+            {
+              "naziv": "Refresh mix 0,3l",
+              "opis": "jabuka, ananas"
+            },
+            {
+              "naziv": "Sour mix 0,3l",
+              "opis": "grejp, limun, naranča, mrkva, đumbir"
+            },
+            {
+              "naziv": "Carrot mix 0,3l",
+              "opis": "jabuka, mrkva, naranča"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pivo",
+      "naziv": "Pivo i cider",
+      "grupe": [
+        {
+          "naziv": "Pivo u boci",
+          "ikona": "beer",
+          "stavke": [
+            {
+              "naziv": "Osječko 0,5l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Osječko crni radler 0,5l",
+              "opis": "svijetlo i crno pivo, voda, ječmeni slad, hmelj, prirodni sok naranče"
+            },
+            {
+              "naziv": "Osječko Premium pivo 0,33l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Vukovarsko 0,5l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Krušovice 0,5l",
+              "opis": "češki pilsner — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Staropramen 0,5l",
+              "opis": "češki lager — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Tuborg 0,5l",
+              "opis": "danski pilsner — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Karlovačko 0,5l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Heineken 0,33l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac A-yeast"
+            },
+            {
+              "naziv": "Heineken Silver 0,33l",
+              "opis": "lakša verzija, manje alkohola — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Heineken bezalkoholno 0,33l",
+              "opis": "bezalkoholno (do 0,03%) — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Paulaner weissbier 0,5l",
+              "opis": "nefiltrirano pšenično pivo — voda, pšenični i ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Corona 0,33l",
+              "opis": "meksički lager — voda, kukuruz, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Budweiser 0,5l",
+              "opis": "američki lager — voda, ječmeni slad, rižin sladić, hmelj, kvasac"
+            },
+            {
+              "naziv": "Carlsberg 0,33l",
+              "opis": "danski pilsner — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Tomislav crno pivo 0,5l",
+              "opis": "crni lager — voda, tamni ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Madri pivo 0,4l",
+              "opis": "španjolski lager — voda, ječmeni slad, hmelj, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "Točeno pivo",
+          "ikona": "beer",
+          "stavke": [
+            {
+              "naziv": "Točeni Heineken 0,25l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Heineken 0,5l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Grimbergen blonde 0,3l",
+              "opis": "belgijsko opatijsko pivo (blonde) — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Grimbergen blonde 0,5l",
+              "opis": "belgijsko opatijsko pivo (blonde) — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Zlatni medvjed 0,3l",
+              "opis": "pilsner — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Zlatni medvjed 0,5l",
+              "opis": "pilsner — voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točena Grička vještica 0,3l",
+              "opis": "doppelbock — voda, tamni ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točena Grička vještica 0,5l",
+              "opis": "doppelbock — voda, tamni ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni American pale ale 0,3l",
+              "opis": "American pale ale, pivovara Beckers — voda, ječmeni slad, aromatični hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni American pale ale 0,5l",
+              "opis": "American pale ale, pivovara Beckers — voda, ječmeni slad, aromatični hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Paulaner 0,3l",
+              "opis": "voda, pšenični i ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Paulaner 0,5l",
+              "opis": "voda, pšenični i ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Baltazar 0,3l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Baltazar 0,5l",
+              "opis": "voda, ječmeni slad, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Guinness 0,25l",
+              "opis": "irski stout — voda, ječmeni slad, pečeni ječam, hmelj, kvasac"
+            },
+            {
+              "naziv": "Točeni Guinness 0,5l",
+              "opis": "irski stout — voda, ječmeni slad, pečeni ječam, hmelj, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "Cider",
+          "ikona": "cider",
+          "stavke": [
+            {
+              "naziv": "Somersby 0,33l",
+              "opis": "jabučni cider, prirodna aroma jabuke"
+            },
+            {
+              "naziv": "Somersby 0,33l",
+              "opis": "jabučni cider, prirodna aroma borovnice"
+            },
+            {
+              "naziv": "Somersby 0,33l",
+              "opis": "jabučni cider, prirodna aroma kruške"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "vino",
+      "naziv": "Vino",
+      "grupe": [
+        {
+          "naziv": "Kvalitetna vina",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Belje graševina 0,187l",
+              "opis": "graševina, kvalitetno bijelo vino, Belje, Podunavlje"
+            },
+            {
+              "naziv": "Belje Merlot 0,187l",
+              "opis": "merlot, kvalitetno crno vino, Belje, Podunavlje"
+            }
+          ]
+        },
+        {
+          "naziv": "Vrhunska vina — bijela",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Belje graševina vrhunska 0,10l",
+              "opis": "graševina, vrhunsko bijelo vino, Belje, Podunavlje"
+            },
+            {
+              "naziv": "Belje graševina vrhunska 0,75l",
+              "opis": "graševina, vrhunsko bijelo vino, Belje, Podunavlje"
+            },
+            {
+              "naziv": "Graševina Josić 0,10l",
+              "opis": "graševina, vrhunsko bijelo vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Graševina Josić 0,75l",
+              "opis": "graševina, vrhunsko bijelo vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Traminac Josić 0,10l",
+              "opis": "traminac, vrhunsko bijelo vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Traminac Josić 0,75l",
+              "opis": "traminac, vrhunsko bijelo vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Muškat žuti Vetos 0,10l",
+              "opis": "muškat žuti, vrhunsko bijelo vino, vinarija Vetos"
+            },
+            {
+              "naziv": "Muškat žuti Vetos 0,50l",
+              "opis": "muškat žuti, vrhunsko bijelo vino, vinarija Vetos"
+            },
+            {
+              "naziv": "Chardonnay Vetos 0,10l",
+              "opis": "chardonnay, vrhunsko bijelo vino, vinarija Vetos"
+            },
+            {
+              "naziv": "Chardonnay Vetos 0,75l",
+              "opis": "chardonnay, vrhunsko bijelo vino, vinarija Vetos"
+            },
+            {
+              "naziv": "Graševina Trs. No 5 0,10l",
+              "opis": "graševina, vrhunsko bijelo vino, vinarija Trs, No 5"
+            },
+            {
+              "naziv": "Graševina Trs. No 5 0,75l",
+              "opis": "graševina, vrhunsko bijelo vino, vinarija Trs, No 5"
+            },
+            {
+              "naziv": "Sinergo Bijeli Dika 0,10l",
+              "opis": "kupaža bijelih sorti, vrhunsko bijelo vino, vinarija Dika"
+            },
+            {
+              "naziv": "Sinergo Bijeli Dika 0,75l",
+              "opis": "kupaža bijelih sorti, vrhunsko bijelo vino, vinarija Dika"
+            }
+          ]
+        },
+        {
+          "naziv": "Vrhunska vina — crna",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Belje cabernet vrhunsko 0,10l",
+              "opis": "cabernet sauvignon, vrhunsko crno vino, Belje, Podunavlje"
+            },
+            {
+              "naziv": "Belje cabernet vrhunsko 0,75l",
+              "opis": "cabernet sauvignon, vrhunsko crno vino, Belje, Podunavlje"
+            },
+            {
+              "naziv": "Korlat syrah 0,10l",
+              "opis": "syrah, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Korlat syrah 0,75l",
+              "opis": "syrah, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Korlat merlot 0,10l",
+              "opis": "merlot, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Korlat merlot 0,75l",
+              "opis": "merlot, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Korlat cuvée „supreme\" 0,10l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Korlat, linija Supreme"
+            },
+            {
+              "naziv": "Korlat cuvée „supreme\" 0,75l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Korlat, linija Supreme"
+            },
+            {
+              "naziv": "Korlat merlot „boutique\" 0,10l",
+              "opis": "merlot, vrhunsko crno vino, vinarija Korlat, linija Boutique"
+            },
+            {
+              "naziv": "Korlat merlot „boutique\" 0,75l",
+              "opis": "merlot, vrhunsko crno vino, vinarija Korlat, linija Boutique"
+            },
+            {
+              "naziv": "Korlat cabernet sauvignon 0,10l",
+              "opis": "cabernet sauvignon, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Korlat cabernet sauvignon 0,75l",
+              "opis": "cabernet sauvignon, vrhunsko crno vino, vinarija Korlat"
+            },
+            {
+              "naziv": "Dingač vino Matuško 0,10l",
+              "opis": "plavac mali, vrhunsko crno vino, poluotok Pelješac, vinarija Matuško"
+            },
+            {
+              "naziv": "Dingač vino Matuško 0,75l",
+              "opis": "plavac mali, vrhunsko crno vino, poluotok Pelješac, vinarija Matuško"
+            },
+            {
+              "naziv": "Cuvée Josić 0,10l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Cuvée Josić 0,75l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Cuvée Miraz 0,10l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Miraz"
+            },
+            {
+              "naziv": "Cuvée Miraz 0,75l",
+              "opis": "kupaža crnih sorti, vrhunsko crno vino, vinarija Miraz"
+            },
+            {
+              "naziv": "Grand Cuvée Josić 0,10l",
+              "opis": "kupaža vrhunskih crnih sorti, izborno crno vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Grand Cuvée Josić 0,70l",
+              "opis": "kupaža vrhunskih crnih sorti, izborno crno vino, vinarija Josić, Zmajevac"
+            }
+          ]
+        },
+        {
+          "naziv": "Rosé vina",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Rosé Josić 0,10l",
+              "opis": "kupaža crnih sorti, rosé vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Rosé Josić 0,75l",
+              "opis": "kupaža crnih sorti, rosé vino, vinarija Josić, Zmajevac"
+            },
+            {
+              "naziv": "Rosé Dika 0,10l",
+              "opis": "kupaža crnih sorti, rosé vino, vinarija Dika"
+            },
+            {
+              "naziv": "Rosé Dika 0,75l",
+              "opis": "kupaža crnih sorti, rosé vino, vinarija Dika"
+            }
+          ]
+        },
+        {
+          "naziv": "Pjenušava vina",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Nice To See You 0,10l",
+              "opis": "kupaža bijelih sorti, pjenušavo vino, karbonizacija"
+            },
+            {
+              "naziv": "Nice To See You 0,75l",
+              "opis": "kupaža bijelih sorti, pjenušavo vino, karbonizacija"
+            }
+          ]
+        },
+        {
+          "naziv": "Desertna aromatizirana vina",
+          "ikona": "wine",
+          "stavke": [
+            {
+              "naziv": "Martini bianco 0,1l",
+              "opis": "vermut — bijelo vino, biljni ekstrakti i začini, karamel, prirodne arome"
+            },
+            {
+              "naziv": "Martini rosso 0,1l",
+              "opis": "vermut — crno vino, biljni ekstrakti i začini, karamel, prirodne arome"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "zestoko",
+      "naziv": "Žestoka pića",
+      "grupe": [
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Gin Sax",
+              "opis": "hrvatski gin — žitni alkohol, borovica, botanici"
+            },
+            {
+              "naziv": "Sax Strawberry gin",
+              "opis": "hrvatski gin — žitni alkohol, borovica, prirodna aroma jagode"
+            },
+            {
+              "naziv": "Bombay Sapphire",
+              "opis": "žitni alkohol, borovica, limunova kora, korijander, angelika, kasija, badem, kubeba papar, likorica, orisov korijen, raj zrno"
+            },
+            {
+              "naziv": "Bulldog",
+              "opis": "mak, lavanda, komorač, dragun — žitni alkohol, borovica, botanici"
+            },
+            {
+              "naziv": "Tanqueray Sevilla",
+              "opis": "žitni alkohol, borovica, sicilijanski limun, gorka sevillanska naranča"
+            },
+            {
+              "naziv": "Tanqueray 10",
+              "opis": "žitni alkohol, borovica, svježi citrusi (grejp, limun, limeta), kamilica"
+            },
+            {
+              "naziv": "Hendrick's",
+              "opis": "žitni alkohol, borovica, destilat ružinih latica, destilat krastavca"
+            },
+            {
+              "naziv": "Botanist",
+              "opis": "žitni alkohol, borovica, 22 divlja botanika s otoka Islay"
+            },
+            {
+              "naziv": "Gin Sul",
+              "opis": "portugalski gin — žitni alkohol, borovica, list rikule, limunova kora"
+            },
+            {
+              "naziv": "Iguana gin",
+              "opis": "žitni alkohol, borovica, citrusi, botanici"
+            },
+            {
+              "naziv": "Lady's Choice Shimmer",
+              "opis": "žitni alkohol, borovica, botanici, jestivi zlatni listići"
+            },
+            {
+              "naziv": "Gin The Artisan",
+              "opis": "žitni alkohol, borovica, ručno birani botanici"
+            },
+            {
+              "naziv": "Old Pilot's Gin",
+              "opis": "hrvatski gin — žitni alkohol, borovica, botanici"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Glenfiddich 12yo",
+              "opis": "single malt, odležano 12 godina u hrastovim bačvama — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Glenfiddich 15yo solera",
+              "opis": "single malt, dozrijevanje solera sustavom, 15 godina — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Aberfeldy",
+              "opis": "highland single malt — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Dalwhinnie 15yo",
+              "opis": "highland single malt, odležano 15 godina — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Oban 14yo",
+              "opis": "highland single malt, odležano 14 godina — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Aberlour 12yo",
+              "opis": "speyside single malt, odležano u sherry bačvama — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Lagavulin",
+              "opis": "islay single malt, izraženo dimljen okus (treset) — ječmeni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Johnnie Walker Red",
+              "opis": "blended scotch whisky — ječmeni i žitni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Johnnie Walker Blonde",
+              "opis": "blended scotch whisky — ječmeni i žitni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Monkey Shoulder",
+              "opis": "blended malt od tri speyside single malta — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Johnnie Walker Green",
+              "opis": "blended malt, 15 godina — ječmeni i žitni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Johnnie Walker Blue",
+              "opis": "blended scotch whisky, premium selekcija rijetkih viskija — ječmeni i žitni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Chivas Regal",
+              "opis": "blended scotch whisky, 12 godina — ječmeni i žitni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Drambuie",
+              "opis": "viski liker — škotski viski, med, biljke i začini"
+            },
+            {
+              "naziv": "Johnnie Walker Black",
+              "opis": "blended scotch whisky, 12 godina — ječmeni i žitni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Johnnie Walker Gold",
+              "opis": "blended scotch whisky, 18 godina — ječmeni i žitni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Bushmills",
+              "opis": "irski single malt — ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Tullamore Dew XO Rum Cask",
+              "opis": "blended irish whiskey, dozrijevano u bačvama od ruma — žitni i ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Jameson",
+              "opis": "blended irish whiskey, trostruka destilacija — žitni i ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Jameson 18y",
+              "opis": "blended irish whiskey, odležano 18 godina — žitni i ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Singleton",
+              "opis": "single malt škotski viski — ječmeni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Woodford Reserve",
+              "opis": "bourbon — kukuruz, raž, ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Four Roses",
+              "opis": "bourbon — kukuruz, raž, ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Bulleit Rye",
+              "opis": "rye whiskey — raž, kukuruz, ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Jack Daniel's",
+              "opis": "tennessee whiskey, filtrirano kroz javorov ugljen — kukuruz, raž, ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Jack Daniel's Honey",
+              "opis": "tennessee whiskey liker — kukuruz, raž, ječmeni slad, voda, kvasac, med"
+            },
+            {
+              "naziv": "Gentleman Jack",
+              "opis": "tennessee whiskey, dvostruko filtrirano kroz javorov ugljen — kukuruz, raž, ječmeni slad, voda, kvasac"
+            },
+            {
+              "naziv": "Jack Daniel's Single Barrel",
+              "opis": "tennessee whiskey iz jedne bačve — kukuruz, raž, ječmeni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Nikka Lux Whiskey",
+              "opis": "japanski blended whisky — ječmeni i žitni slad, voda, kvasac"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Smirnoff",
+              "opis": "žitni alkohol (pšenica, kukuruz), voda, filtrirano kroz aktivni ugljen"
+            },
+            {
+              "naziv": "Štrukani Smirnoff",
+              "opis": "Smirnoff vodka servirana ohlađena, protresena (\"štrukana\") — žitni alkohol, voda, led"
+            },
+            {
+              "naziv": "Finlandia",
+              "opis": "finska vodka — ječam, glacijalna izvorska voda"
+            },
+            {
+              "naziv": "Gorbatschow",
+              "opis": "njemačka vodka — žitni alkohol, voda"
+            },
+            {
+              "naziv": "Grey Goose",
+              "opis": "francuska pšenica, izvorska voda iz regije Cognac"
+            },
+            {
+              "naziv": "Old Pilot's Vodka",
+              "opis": "hrvatska vodka — žitni alkohol, voda"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Sierra Tequila Silver",
+              "opis": "blanco tequila — 100% plava agava (Weber), voda"
+            },
+            {
+              "naziv": "Sierra Tequila Reposado",
+              "opis": "tequila odležana u hrastovim bačvama — 100% plava agava, voda"
+            },
+            {
+              "naziv": "Sierra Milenario Fumado",
+              "opis": "dimljena (fumado) tequila — 100% plava agava, voda"
+            },
+            {
+              "naziv": "Mezcal Marca Negra 50%",
+              "opis": "meksički mezcal, 50% vol. — pečena agava (espadín), voda"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Badel domaći rum",
+              "opis": "hrvatski rum — melasa šećerne trske, voda, kvasac"
+            },
+            {
+              "naziv": "Captain Morgan Spiced Gold",
+              "opis": "začinjeni rum — melasa šećerne trske, voda, začini, karamel"
+            },
+            {
+              "naziv": "Captain Morgan Dark Rum",
+              "opis": "tamni rum — melasa šećerne trske, voda, karamel"
+            },
+            {
+              "naziv": "Bacardi 8",
+              "opis": "zlatni rum, odležano 8 godina — melasa šećerne trske, voda"
+            },
+            {
+              "naziv": "La Hechicera",
+              "opis": "kolumbijski premium rum — melasa šećerne trske, voda"
+            },
+            {
+              "naziv": "Diplomatico Reserva Exclusiva",
+              "opis": "venezuelanski rum, blend odležan do 12 godina — melasa šećerne trske, voda"
+            },
+            {
+              "naziv": "Zacapa 23yo",
+              "opis": "gvatemalski rum, solera sustav, 23 godine — sok šećerne trske (prvi otisak), voda"
+            },
+            {
+              "naziv": "Zacapa XO",
+              "opis": "gvatemalski rum, solera sustav, dozrijevanje u bačvama od konjaka — sok šećerne trske, voda"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Badel Prima Black",
+              "opis": "hrvatski brandy — grožđana rakija (brandy), voda, karamel"
+            },
+            {
+              "naziv": "Metaxa 12",
+              "opis": "grčki brandy, 12 zvjezdica — grožđana rakija, muškatno vino, mediteransko bilje i začini"
+            },
+            {
+              "naziv": "Martell VS",
+              "opis": "francuski konjak — grožđe Ugni Blanc, voda"
+            },
+            {
+              "naziv": "Remy Martin VSOP",
+              "opis": "francuski konjak — grožđe iz regije Cognac, voda"
+            },
+            {
+              "naziv": "Hennessy",
+              "opis": "francuski konjak — grožđe iz regije Cognac, voda"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Badel medica",
+              "opis": "medica — grožđana rakija, med, začinsko bilje"
+            },
+            {
+              "naziv": "Badel orahovac",
+              "opis": "orahovac — grožđana rakija, zeleni orasi"
+            },
+            {
+              "naziv": "Badel višnjevača",
+              "opis": "višnjevača — grožđana rakija, sok i pulpa višnje"
+            },
+            {
+              "naziv": "Jedna kajsija",
+              "opis": "voćna rakija od marelice (kajsije)"
+            },
+            {
+              "naziv": "Jedna travarica",
+              "opis": "travarica — grožđana rakija, mješavina ljekovitog bilja"
+            },
+            {
+              "naziv": "Jedna dunja",
+              "opis": "voćna rakija od dunje"
+            },
+            {
+              "naziv": "Jedna šljivovica",
+              "opis": "šljivovica — voćna rakija od šljive"
+            },
+            {
+              "naziv": "Korlat aronija",
+              "opis": "voćna rakija — grožđana rakija, aronija"
+            },
+            {
+              "naziv": "Korlat loza barrique",
+              "opis": "komovica (loza), odležana u hrastovoj bačvi (barrique)"
+            },
+            {
+              "naziv": "Korlat teranino",
+              "opis": "grožđana rakija od sorte teran"
+            },
+            {
+              "naziv": "Korlat šipak-ruža",
+              "opis": "grožđana rakija, šipak, ružine latice"
+            },
+            {
+              "naziv": "Korlat smokva",
+              "opis": "voćna rakija — grožđana rakija, smokva"
+            },
+            {
+              "naziv": "Roner Williams Reserva Premium",
+              "opis": "tirolska voćna rakija — rakija od kruške Williams, dozrijevana"
+            }
+          ]
+        },
+        {
+          "naziv": "",
+          "ikona": "spirit",
+          "stavke": [
+            {
+              "naziv": "Pelinkovac",
+              "opis": "hrvatski gorki liker — grožđana rakija, pelin i ljekovito bilje"
+            },
+            {
+              "naziv": "Štrukani pelinkovac",
+              "opis": "servirano ohlađeno, protreseno (\"štrukano\") — pelinkovac, led"
+            },
+            {
+              "naziv": "Pelinkovac antique",
+              "opis": "starija, koncentriranija receptura — grožđana rakija, pelin, biljni ekstrakti"
+            },
+            {
+              "naziv": "Pelinkovac antique štrukani",
+              "opis": "servirano ohlađeno, protreseno — pelinkovac antique, led"
+            },
+            {
+              "naziv": "Pelinkovac Summer",
+              "opis": "lakša, ljetna varijanta — pelinkovac, prirodne arome citrusa"
+            },
+            {
+              "naziv": "Ramazzotti amaro",
+              "opis": "talijanski gorki liker (amaro) — biljni ekstrakti, korijenje, cvijeće, agrumi"
+            },
+            {
+              "naziv": "Campari",
+              "opis": "talijanski bitter — biljni i voćni ekstrakti, kora naranče"
+            },
+            {
+              "naziv": "Jägermeister",
+              "opis": "njemački bitter liker — 56 začina i biljaka, karamel"
+            },
+            {
+              "naziv": "Jägermeister scharf",
+              "opis": "pikantnija varijanta — Jägermeister, ljuta paprika chili"
+            },
+            {
+              "naziv": "Baileys",
+              "opis": "irish cream liker — irski viski, vrhnje, kakao"
+            },
+            {
+              "naziv": "Tia Maria",
+              "opis": "kavni liker — rum, kava arabica, vanilija"
+            },
+            {
+              "naziv": "Coffee Cream Liquer",
+              "opis": "kavni kremasti liker — vrhnje, kava, alkoholna baza"
+            },
+            {
+              "naziv": "Bajadera Cream Liker",
+              "opis": "liker inspiriran bombonima Bajadera — vrhnje, lješnjak, kakao"
+            },
+            {
+              "naziv": "Grand Marnier",
+              "opis": "francuski liker — konjak, esencija gorke naranče (bigarade)"
+            },
+            {
+              "naziv": "Malibu",
+              "opis": "kokosov liker — bijeli rum, ekstrakt kokosa"
+            },
+            {
+              "naziv": "Limoncello Palini",
+              "opis": "talijanski limunov liker — alkohol, kora limuna, šećer, voda"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "kokteli",
+      "naziv": "Kokteli",
+      "grupe": [
+        {
+          "naziv": "",
+          "ikona": "cocktail",
+          "stavke": [
+            {
+              "naziv": "Monkey Old Fashioned",
+              "opis": "Monkey Shoulder whiskey, old fashion bitter"
+            },
+            {
+              "naziv": "Long Island Iced Tea",
+              "opis": "white rum, Smirnoff vodka, Finsbury gin, tequila gold reposado, triple sec liker, Coca Cola"
+            },
+            {
+              "naziv": "Lavender Gin Fizz",
+              "opis": "Iguana gin, sirup lavanda, limun"
+            },
+            {
+              "naziv": "Moscow Mule",
+              "opis": "Smirnoff vodka, Thomas Henry ginger beer, limeta"
+            },
+            {
+              "naziv": "Cuba Libre",
+              "opis": "Old Pascas, Coca Cola, liker limeta"
+            },
+            {
+              "naziv": "Shiney Girl",
+              "opis": "vodka, liker lubenica, sok od limete, mineralna soda"
+            },
+            {
+              "naziv": "Zombie",
+              "opis": "rum, cherry liker, grenadina, sok od naranče"
+            },
+            {
+              "naziv": "White Russian",
+              "opis": "vodka, Kahlua, vrhnje"
+            },
+            {
+              "naziv": "Mai Tai",
+              "opis": "white rum, dark rum, triple sec liker, sok od naranče"
+            },
+            {
+              "naziv": "Tropical GT",
+              "opis": "Finsbury gin, TH pink grapefruit, Giffard mango"
+            },
+            {
+              "naziv": "Forbidden Love",
+              "opis": "Finsbury gin, Giffard rose, Schweppes berry"
+            },
+            {
+              "naziv": "Strawberry Fields",
+              "opis": "Finsbury strawberry, Giffard elderflower, fresh lemon juice, Schweppes berry"
+            },
+            {
+              "naziv": "Aperol Spritz",
+              "opis": "Aperol, mineralna soda, Freixenet Carta Nevada"
+            },
+            {
+              "naziv": "Mojito",
+              "opis": "white rum, menta, mineralna voda, smeđi šećer"
+            },
+            {
+              "naziv": "Sex on the Beach",
+              "opis": "Smirnoff vodka, liker breskva, sirup grenadina, sok od naranče"
+            },
+            {
+              "naziv": "Tequila Sunrise",
+              "opis": "tequila silver, grenadina, sok od naranče"
+            },
+            {
+              "naziv": "Cabana",
+              "opis": "Jack Daniel's, triple sec, strawberry pire, limeta"
+            },
+            {
+              "naziv": "Whiskey Sour",
+              "opis": "Tullamore Dew, egg white sirup, limun"
+            },
+            {
+              "naziv": "Negroni",
+              "opis": "gin, Campari, Martini Rosso"
+            },
+            {
+              "naziv": "Blue Hawaiian",
+              "opis": "Malibu, sok od ananasa, blue curaçao, limunov sok"
+            },
+            {
+              "naziv": "Tropical Dream",
+              "opis": "Malibu, sirup od kokosa, sok od ananasa, sirup od banane"
+            },
+            {
+              "naziv": "Hugo Spritz",
+              "opis": "Giffard elderflower, mineralna soda, Freixenet Carta Nevada"
+            },
+            {
+              "naziv": "Comfortable Pirate",
+              "opis": "vodka, rum, blue curaçao, sok od ananasa"
+            },
+            {
+              "naziv": "Dark Storm",
+              "opis": "Old Pascas dark rum, limun, cimet, TH ginger beer"
+            },
+            {
+              "naziv": "Cosmopolitan",
+              "opis": "vodka, triple sec, sok od brusnice, limeta"
+            },
+            {
+              "naziv": "Amaretto Sour",
+              "opis": "Amaretto, egg white sirup, limun"
+            },
+            {
+              "naziv": "Pina Colada",
+              "opis": "rum, coconut sirup, coconut pire, sok od ananasa"
+            },
+            {
+              "naziv": "Blue Lagoon",
+              "opis": "Sprite, vodka, limun, blue sirup"
+            },
+            {
+              "naziv": "Limoncello Spritz",
+              "opis": "Limoncello, pjenušac, mineralna soda, list mente"
+            },
+            {
+              "naziv": "Cranberry Spritz",
+              "opis": "bezalkoholni koktel — Sprite, brusnica, pire od jagode"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "trgovacka",
+      "naziv": "Trgovačka roba",
+      "grupe": [
+        {
+          "naziv": "Cigarete",
+          "ikona": "cigarette",
+          "stavke": [
+            {
+              "naziv": "Marlboro Red",
+              "opis": "duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Marlboro Red 23",
+              "opis": "pakiranje od 23 komada — duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Marlboro Gold",
+              "opis": "svjetlija duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Marlboro Gold 23",
+              "opis": "pakiranje od 23 komada — svjetlija duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Marlboro Touch",
+              "opis": "svjetlija duhanska mješavina, tanji format, filter"
+            },
+            {
+              "naziv": "Marlboro Fine Touch",
+              "opis": "svjetlija duhanska mješavina, tanji format, filter s aromom"
+            },
+            {
+              "naziv": "Chesterfield Blue",
+              "opis": "duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Chesterfield Tuned Aqua",
+              "opis": "duhanska mješavina, filter s kapsulom mentola"
+            },
+            {
+              "naziv": "Philip Morris Blue",
+              "opis": "duhanska mješavina, filter"
+            },
+            {
+              "naziv": "Terea Russet",
+              "opis": "duhanski uložak za uređaje za grijanje duhana (IQOS)"
+            },
+            {
+              "naziv": "Terea Silver",
+              "opis": "duhanski uložak za uređaje za grijanje duhana (IQOS)"
+            },
+            {
+              "naziv": "Terea Turquoise",
+              "opis": "duhanski uložak za uređaje za grijanje duhana (IQOS), s aromom mentola"
+            }
+          ]
+        },
+        {
+          "naziv": "Cigare i cigarilosi",
+          "ikona": "cigar",
+          "stavke": [
+            {
+              "naziv": "Primeros by Davidoff Dominican",
+              "opis": "duhanski listovi iz Dominikanske Republike"
+            },
+            {
+              "naziv": "Davidoff Escurio Petit Robusto",
+              "opis": "duhanska mješavina iz više zemalja podrijetla (Nikaragva, Kamerun i dr.)"
+            },
+            {
+              "naziv": "Oliva",
+              "opis": "duhanski listovi iz Nikaragve"
+            },
+            {
+              "naziv": "Romeo Y Julieta Mille Fleurs",
+              "opis": "kubanski duhanski listovi"
+            },
+            {
+              "naziv": "Romeo y Julieta No. 3 Tubos",
+              "opis": "kubanski duhanski listovi, u zaštitnoj tubi"
+            },
+            {
+              "naziv": "Montecristo No. 4",
+              "opis": "kubanski duhanski listovi"
+            },
+            {
+              "naziv": "Romeo y Julieta Petit Royales Tubos",
+              "opis": "kubanski duhanski listovi, u zaštitnoj tubi"
+            },
+            {
+              "naziv": "Partagás Serie D No. 4 Tubos",
+              "opis": "kubanski duhanski listovi, u zaštitnoj tubi"
+            },
+            {
+              "naziv": "Montecristo No. 2",
+              "opis": "kubanski duhanski listovi, torpedo format"
+            },
+            {
+              "naziv": "Cohiba Siglo II",
+              "opis": "kubanski duhanski listovi"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

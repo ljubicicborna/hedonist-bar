@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /save.php
 
 # AI / answer- and generative-engine crawlers — explicitly welcome, same access as everyone else.
 User-agent: GPTBot

@@ -1,7 +1,7 @@
 /* =====================================================================
    NOVOSTI (početna) — tjedni događaji (npr. Music Night, Party Night).
-   Statična stranica: događaji su fiksni u DOGADJAJI ispod. Ako se mijenjaju,
-   uredi ih ovdje.
+   Uređuju se na /admin.html (spremljeno u data/dogadjaji.json). Ako se
+   datoteka ne učita, koristi se REZERVA ispod.
 ===================================================================== */
 (function(){
   var esc = function(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
@@ -21,14 +21,17 @@
     return GIG_FALLBACK;
   }
 
-  var DOGADJAJI = [
+  var REZERVA = [
     { dan: 'Petak', naziv: 'Music Night', opis: 'Ex-Yu glazba cijelu večer', aktivno: true },
     { dan: 'Subota', naziv: 'Party Night', opis: 'House zvuk do kasno u noć', aktivno: true }
   ];
 
   var homeGigs = document.getElementById('home-gigs');
-  if (homeGigs) {
-    var active = DOGADJAJI.filter(function(d){ return d.aktivno; });
+  if (!homeGigs) return;
+
+  function render(list){
+    var active = list.filter(function(d){ return d.aktivno; });
+    if (!active.length) return;
     homeGigs.innerHTML = active.map(function(d){
       return '' +
         '<div class="home-night">' +
@@ -39,4 +42,10 @@
         '</div>';
     }).join('');
   }
+
+  render(REZERVA);
+  fetch('data/dogadjaji.json')
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+    .then(function(data){ if (data && Array.isArray(data.dogadjaji) && data.dogadjaji.length) render(data.dogadjaji); })
+    .catch(function(){ /* rezerva već iscrtana */ });
 })();

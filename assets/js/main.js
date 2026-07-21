@@ -419,6 +419,21 @@
       .catch(function(){ /* rezerva: statični tekst */ });
   }
 
+  /* ---- CMS slike: elementi s data-cms-img="slot" dobiju sliku uređenu na
+     /admin.html (spremljeno u data/slike.json); rezerva je src iz HTML-a ---- */
+  var imgEls = document.querySelectorAll('[data-cms-img]');
+  if (imgEls.length) {
+    fetch('data/slike.json')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(s){
+        imgEls.forEach(function(el){
+          var v = s[el.getAttribute('data-cms-img')];
+          if (typeof v === 'string' && v && el.getAttribute('src') !== v) el.setAttribute('src', v);
+        });
+      })
+      .catch(function(){ /* rezerva: statična slika */ });
+  }
+
   /* ---- prijelaz među stranicama: zavjesa s monogramom prekrije ekran
      prije odlaska, a nova stranica se otvori već pokrivena pa se
      zavjesa digne — klasično "bijelo učitavanje" se nikad ne vidi ---- */

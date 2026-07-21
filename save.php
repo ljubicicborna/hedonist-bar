@@ -39,6 +39,51 @@ if ($action === 'login') {
   exit;
 }
 
+if ($action === 'upload') {
+  if (!pw_ok($given, $PASSWORD)) {
+    http_response_code(401);
+    echo json_encode(['error' => 'unauthorized']);
+    exit;
+  }
+  $name = isset($body['filename']) ? basename((string)$body['filename']) : '';
+  $content = isset($body['content']) ? (string)$body['content'] : '';
+  if ($name === '' || $content === '') {
+    http_response_code(400);
+    echo json_encode(['error' => 'no-file']);
+    exit;
+  }
+  /* skini "data:...;base64," prefiks ako postoji */
+  $comma = strpos($content, ',');
+  if (strpos($content, 'base64') !== false && $comma !== false) {
+    $content = substr($content, $comma + 1);
+  }
+  $bytes = base64_decode($content, true);
+  if ($bytes === false) {
+    http_response_code(400);
+    echo json_encode(['error' => 'bad-image']);
+    exit;
+  }
+  $ext = strtolower(pathinfo($name, PATHINFO_EXTENSION));
+  $okExt = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'avif'];
+  if (!in_array($ext, $okExt, true)) {
+    http_response_code(400);
+    echo json_encode(['error' => 'bad-type']);
+    exit;
+  }
+  $safe = preg_replace('/[^a-zA-Z0-9._-]/', '-', pathinfo($name, PATHINFO_FILENAME));
+  $file = $safe . '-' . time() . '.' . $ext;
+  $dir = __DIR__ . '/assets/images/cms';
+  if (!is_dir($dir)) { @mkdir($dir, 0775, true); }
+  $ok = @file_put_contents($dir . '/' . $file, $bytes);
+  if ($ok === false) {
+    http_response_code(500);
+    echo json_encode(['error' => 'write-failed']);
+  } else {
+    echo json_encode(['ok' => true, 'url' => 'assets/images/cms/' . $file]);
+  }
+  exit;
+}
+
 if ($action === 'save') {
   if (!pw_ok($given, $PASSWORD)) {
     http_response_code(401);
@@ -46,7 +91,7 @@ if ($action === 'save') {
     exit;
   }
   $vrsta = isset($body['vrsta']) ? $body['vrsta'] : '';
-  $allowed = ['cjenik', 'tekstovi', 'dogadjaji'];
+  $allowed = ['cjenik', 'tekstovi', 'dogadjaji', 'slike', 'galerija'];
   if (!in_array($vrsta, $allowed, true)) {
     http_response_code(400);
     echo json_encode(['error' => 'unknown-vrsta']);

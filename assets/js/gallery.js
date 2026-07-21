@@ -13,6 +13,35 @@
    zatvaranjem (X, klik izvan fotke ili Esc) izmjena se nastavlja.
 ===================================================================== */
 (function(){
+  var grid = document.querySelector('.gallery-grid');
+  if (!grid) return;
+
+  function esc(s){ return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+  function tileHTML(tile){
+    var imgs = (tile.slike || []).filter(function(im){ return im && im.src; });
+    if (!imgs.length) return '';
+    return '<div class="gallery-tile"><div class="gallery-tile-strip">' +
+      imgs.map(function(im, i){
+        return '<img src="' + esc(im.src) + '" alt="' + esc(im.alt || '') + '"' +
+          (i > 0 ? ' aria-hidden="true"' : '') + ' loading="lazy">';
+      }).join('') +
+      '</div></div>';
+  }
+
+  /* galerija se uređuje na /admin.html (spremljeno u data/galerija.json);
+     ako se ne učita, ostaje statična galerija iz galerija.html */
+  fetch('data/galerija.json')
+    .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+    .then(function(d){
+      if (d && Array.isArray(d.ploce) && d.ploce.length) {
+        var html = d.ploce.map(tileHTML).join('');
+        if (html) grid.innerHTML = html;
+      }
+    })
+    .catch(function(){ /* rezerva: statična galerija */ })
+    .then(init);
+
+  function init(){
   var strips = document.querySelectorAll('.gallery-tile-strip');
   if (!strips.length) return;
 
@@ -106,4 +135,5 @@
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape' && !overlay.hidden) closeLightbox();
   });
+  }
 })();

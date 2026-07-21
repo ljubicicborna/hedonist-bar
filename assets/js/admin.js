@@ -12,20 +12,38 @@
 ===================================================================== */
 (function(){
   var SAVE = 'save.php';
-  var VRSTE = ['cjenik', 'tekstovi', 'dogadjaji'];
+  var VRSTE = ['cjenik', 'tekstovi', 'dogadjaji', 'slike', 'galerija'];
 
   var saveMode = 'export';       /* 'php' (izravno spremanje) ili 'export' (preuzimanje) */
   var adminPassword = '';
 
-  var state = { cjenik: null, tekstovi: null, dogadjaji: null };
-  var dirty = { cjenik: false, tekstovi: false, dogadjaji: false };
+  var state = { cjenik: null, tekstovi: null, dogadjaji: null, slike: null, galerija: null };
+  var dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false };
 
   var loginView = document.getElementById('login-view');
   var appView = document.getElementById('app-view');
   var catsEl = document.getElementById('cjenik-cats');
   var dogadjajiEl = document.getElementById('dogadjaji');
+  var slikeEl = document.getElementById('slike-slots');
+  var galerijaEl = document.getElementById('galerija-tiles');
   var saveBtn = document.getElementById('save');
   var statusEl = document.getElementById('save-status');
+
+  /* ljudski nazivi za slotove slika (data-cms-img) */
+  var SLOT_LABELS = {
+    'pocetna-hero': 'Početna — glavna (hero) fotka',
+    'pocetna-noc': 'Početna — "Po noći" fotka',
+    'atmosfera-1': 'Početna — Atmosfera 1', 'atmosfera-2': 'Početna — Atmosfera 2',
+    'atmosfera-3': 'Početna — Atmosfera 3', 'atmosfera-4': 'Početna — Atmosfera 4',
+    'atmosfera-5': 'Početna — Atmosfera 5', 'atmosfera-6': 'Početna — Atmosfera 6',
+    'pocetna-posjeti': 'Početna — "Posjeti nas" fotka',
+    'pocetna-rezervacija': 'Početna — "Rezervacija" fotka',
+    'cjenik-hero': 'Katalog — hero fotka',
+    'lokacija-hero': 'Lokacija — hero fotka',
+    'lokacija-posjeti': 'Lokacija — donja fotka',
+    'zaposlenje-hero': 'Zapošljavanje — hero fotka',
+    'pitanja-hero': 'Pitanja — hero fotka'
+  };
 
   var TEKST_POLJA = {
     cjenik: [
@@ -54,7 +72,7 @@
     statusEl.textContent = text;
     statusEl.className = 'save-status' + (cls ? ' ' + cls : '');
   }
-  function anyDirty(){ return dirty.cjenik || dirty.tekstovi || dirty.dogadjaji; }
+  function anyDirty(){ return dirty.cjenik || dirty.tekstovi || dirty.dogadjaji || dirty.slike || dirty.galerija; }
   function markDirty(vrsta){
     dirty[vrsta] = true;
     saveBtn.disabled = false;
@@ -66,7 +84,7 @@
   var viewLink = document.getElementById('view-link');
   function showPanel(){
     var page = pagePick.value;
-    ['cjenik', 'pocetna', 'zaposlenje'].forEach(function(p){
+    ['cjenik', 'pocetna', 'zaposlenje', 'slike', 'galerija'].forEach(function(p){
       var el = document.getElementById('panel-' + p);
       if (el) el.hidden = p !== page;
     });
@@ -137,6 +155,102 @@
       var first = cards[cards.length - 1].querySelector('input[data-f="dan"]');
       if (first) first.focus();
     }
+  });
+
+  /* ================= SLIKE + GALERIJA ================= */
+  function pickFile(cb){
+    var inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*';
+    inp.onchange = function(){ if (inp.files[0]) cb(inp.files[0]); };
+    inp.click();
+  }
+  function uploadImage(file, done){
+    if (saveMode !== 'php') {
+      alert('Na hostingu bez PHP-a ne mogu učitati sliku umjesto tebe.\n\nUploadaj sliku ručno u mapu assets/images/ na hostingu, pa upiši njenu putanju (npr. assets/images/moja-slika.jpg) u polje.');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e){
+      setStatus('Učitavam sliku…');
+      fetch(SAVE, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'upload', filename: file.name, content: e.target.result, password: adminPassword }) })
+        .then(function(r){ return r.json(); })
+        .then(function(j){ if (j && j.ok && j.url) { setStatus('Slika učitana ✓', 'is-ok'); done(j.url); } else { alert('Upload nije uspio: ' + ((j && j.error) || '')); } })
+        .catch(function(){ alert('Upload nije uspio (nema veze s poslužiteljem).'); });
+    };
+    reader.readAsDataURL(file);
+  }
+
+  function renderSlike(){
+    slikeEl.innerHTML = Object.keys(state.slike).map(function(slot){
+      var url = state.slike[slot];
+      return '<article class="slika-card" data-slot="' + esc(slot) + '">' +
+        '<div class="slika-head"><strong>' + esc(SLOT_LABELS[slot] || slot) + '</strong></div>' +
+        (url ? '<div class="slika-preview"><img src="' + esc(url) + '" alt=""></div>' : '') +
+        '<div class="field"><label>Putanja slike</label><input data-slot-url value="' + esc(url) + '" placeholder="assets/images/..."></div>' +
+        '<button type="button" class="btn-mini slot-upload">Promijeni sliku (učitaj s računala)</button>' +
+      '</article>';
+    }).join('') || '<p class="hint">Nema definiranih slika.</p>';
+  }
+  slikeEl.addEventListener('input', function(e){
+    var card = e.target.closest('.slika-card');
+    if (!card || !e.target.hasAttribute('data-slot-url')) return;
+    state.slike[card.getAttribute('data-slot')] = e.target.value;
+    markDirty('slike');
+  });
+  slikeEl.addEventListener('click', function(e){
+    var btn = e.target.closest('.slot-upload'); if (!btn) return;
+    var slot = btn.closest('.slika-card').getAttribute('data-slot');
+    pickFile(function(file){ uploadImage(file, function(url){ state.slike[slot] = url; markDirty('slike'); renderSlike(); }); });
+  });
+
+  function renderGalerija(){
+    galerijaEl.innerHTML = state.galerija.ploce.map(function(t, i){
+      var f = t.slike[0] || { src: '', alt: '' };
+      var b = t.slike[1] || { src: '', alt: '' };
+      return '<article class="slika-card" data-i="' + i + '">' +
+        '<div class="slika-head"><strong>Pločica ' + (i + 1) + '</strong>' +
+          '<button type="button" class="artist-del" data-del-tile="' + i + '">Obriši</button></div>' +
+        '<div class="tile-two">' +
+          '<div>' + (f.src ? '<div class="slika-preview"><img src="' + esc(f.src) + '" alt=""></div>' : '') +
+            '<div class="field"><label>Fotka 1 — putanja</label><input data-t="0" data-tf="src" value="' + esc(f.src) + '" placeholder="assets/images/..."></div>' +
+            '<div class="field"><label>Fotka 1 — opis (alt)</label><input data-t="0" data-tf="alt" value="' + esc(f.alt) + '"></div>' +
+            '<button type="button" class="btn-mini tile-upload" data-t="0">Promijeni fotku 1</button></div>' +
+          '<div>' + (b.src ? '<div class="slika-preview"><img src="' + esc(b.src) + '" alt=""></div>' : '') +
+            '<div class="field"><label>Fotka 2 — putanja</label><input data-t="1" data-tf="src" value="' + esc(b.src) + '" placeholder="assets/images/..."></div>' +
+            '<button type="button" class="btn-mini tile-upload" data-t="1">Promijeni fotku 2</button></div>' +
+        '</div></article>';
+    }).join('') || '<p class="hint">Nema pločica — dodaj prvu gumbom ispod.</p>';
+  }
+  galerijaEl.addEventListener('input', function(e){
+    var card = e.target.closest('.slika-card');
+    var tf = e.target.getAttribute('data-tf');
+    if (!card || !tf) return;
+    var i = Number(card.getAttribute('data-i')), ti = Number(e.target.getAttribute('data-t'));
+    if (!state.galerija.ploce[i].slike[ti]) state.galerija.ploce[i].slike[ti] = { src: '', alt: '' };
+    state.galerija.ploce[i].slike[ti][tf] = e.target.value;
+    markDirty('galerija');
+  });
+  galerijaEl.addEventListener('click', function(e){
+    var del = e.target.closest('[data-del-tile]');
+    if (del) {
+      var di = Number(del.getAttribute('data-del-tile'));
+      if (!confirm('Obrisati pločicu ' + (di + 1) + '?')) return;
+      state.galerija.ploce.splice(di, 1); markDirty('galerija'); renderGalerija(); return;
+    }
+    var up = e.target.closest('.tile-upload'); if (!up) return;
+    var card = up.closest('.slika-card');
+    var i = Number(card.getAttribute('data-i')), ti = Number(up.getAttribute('data-t'));
+    pickFile(function(file){ uploadImage(file, function(url){
+      if (!state.galerija.ploce[i].slike[ti]) state.galerija.ploce[i].slike[ti] = { src: '', alt: '' };
+      state.galerija.ploce[i].slike[ti].src = url; markDirty('galerija'); renderGalerija();
+    }); });
+  });
+  document.getElementById('add-tile').addEventListener('click', function(){
+    state.galerija.ploce.push({ slike: [{ src: '', alt: '' }, { src: '', alt: '' }] });
+    markDirty('galerija'); renderGalerija();
+    var cards = galerijaEl.querySelectorAll('.slika-card');
+    if (cards.length) cards[cards.length - 1].scrollIntoView({ block: 'center' });
   });
 
   /* ================= KATALOG (cjenik) ================= */
@@ -287,6 +401,18 @@
           naziv: String(d.naziv || '').trim(), opis: String(d.opis || '').trim(), aktivno: !!d.aktivno };
       }) };
     }
+    if (vrsta === 'slike') {
+      var o = {};
+      Object.keys(state.slike).forEach(function(k){ o[k] = String(state.slike[k] || '').trim(); });
+      return o;
+    }
+    if (vrsta === 'galerija') {
+      return { ploce: state.galerija.ploce.map(function(t){
+        return { slike: (t.slike || []).map(function(im){
+          return { src: String(im.src || '').trim(), alt: String(im.alt || '').trim() };
+        }).filter(function(im){ return im.src; }) };
+      }).filter(function(t){ return t.slike.length; }) };
+    }
     /* tekstovi */
     var out = {};
     Object.keys(state.tekstovi).forEach(function(k){ out[k] = String(state.tekstovi[k]).trim(); });
@@ -359,14 +485,20 @@
     return Promise.all([
       getJSON('data/cjenik.json', { kategorije: [] }),
       getJSON('data/tekstovi.json', {}),
-      getJSON('data/dogadjaji.json', { dogadjaji: [] })
+      getJSON('data/dogadjaji.json', { dogadjaji: [] }),
+      getJSON('data/slike.json', {}),
+      getJSON('data/galerija.json', { ploce: [] })
     ]).then(function(res){
       state.cjenik = { kategorije: (res[0] && res[0].kategorije) || [] };
       state.tekstovi = (res[1] && typeof res[1] === 'object') ? res[1] : {};
       state.dogadjaji = { dogadjaji: (res[2] && res[2].dogadjaji) || [] };
+      state.slike = (res[3] && typeof res[3] === 'object') ? res[3] : {};
+      state.galerija = { ploce: (res[4] && res[4].ploce) || [] };
       renderCjenik(-1);
       renderTexts();
       renderDogadjaji();
+      renderSlike();
+      renderGalerija();
       showPanel();
       loginView.hidden = true;
       appView.hidden = false;
@@ -380,7 +512,7 @@
   /* ================= PRIJAVA ================= */
   document.getElementById('logout').addEventListener('click', function(){
     if (anyDirty() && !confirm('Imaš nespremljene promjene — svejedno se odjaviti?')) return;
-    dirty = { cjenik: false, tekstovi: false, dogadjaji: false };
+    dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false };
     adminPassword = '';
     location.reload();
   });

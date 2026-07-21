@@ -196,8 +196,11 @@ textarea{ resize: vertical; min-height: 84px; }
   background: var(--panel); border: var(--edge); border-radius: 14px; padding: 1rem;
   display: grid; gap: 0.7rem;
 }
-.slika-preview{ margin: 0.5rem 0; border-radius: 10px; overflow: hidden; }
+.slika-preview{ margin: 0.5rem 0; border-radius: 10px; overflow: hidden; max-height: 220px; }
 .slika-preview img{ display: block; max-width: 100%; height: auto; }
+.slika-head{ display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.tile-two{ display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 640px){ .tile-two{ grid-template-columns: 1fr; } }
 
 /* ---- traka za spremanje ---- */
 .savebar{

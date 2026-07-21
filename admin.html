@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&family=Jost:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/css/admin.css?v=5">
+<link rel="stylesheet" href="assets/css/admin.css?v=6">
 </head>
 <body>
 
@@ -47,10 +47,25 @@
       <option value="cjenik">Katalog ponude</option>
       <option value="pocetna">Početna</option>
       <option value="zaposlenje">Zapošljavanje</option>
+      <option value="slike">Slike</option>
+      <option value="galerija">Galerija</option>
     </select>
   </nav>
 
   <main class="wrap">
+
+    <!-- SLIKE PO STRANICAMA -->
+    <div class="panel" id="panel-slike" hidden>
+      <p class="hint">Fotografije na stranicama (hero, atmosfera, sekcije). Klikni "Promijeni sliku" da učitaš novu s računala, ili upiši putanju do postojeće slike.</p>
+      <div id="slike-slots" class="slike-cards"></div>
+    </div>
+
+    <!-- GALERIJA -->
+    <div class="panel" id="panel-galerija" hidden>
+      <p class="hint">Fotografije u galeriji. Svaka pločica izmjenjuje dvije fotke. Prva ima opis (alt) za pristupačnost i SEO.</p>
+      <div id="galerija-tiles" class="slike-cards"></div>
+      <button id="add-tile" class="btn-add" type="button">+ Dodaj pločicu</button>
+    </div>
 
     <!-- KATALOG -->
     <div class="panel" id="panel-cjenik" hidden>
@@ -88,6 +103,6 @@
   </div>
 </div>
 
-<script src="assets/js/admin.js?v=6"></script>
+<script src="assets/js/admin.js?v=7"></script>
 </body>
 </html>

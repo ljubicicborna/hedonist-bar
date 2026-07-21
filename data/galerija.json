@@ -1,0 +1,148 @@
+{
+  "ploce": [
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/monogram-bottles-disco.jpg",
+          "alt": "Hedonist znak, boce i disco rasvjeta u pozadini."
+        },
+        {
+          "src": "assets/images/gallery/mason-jars-sun.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/terrace-facade.jpg",
+          "alt": "Terasa Hedonista danju, ispred zgrade na Vukovarskoj."
+        },
+        {
+          "src": "assets/images/gallery/terrace-people.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/whiskey-lineup.webp",
+          "alt": "Niz Johnnie Walker viski boca poredanih na stolu."
+        },
+        {
+          "src": "assets/images/gallery/latte-art.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/novosti-pouring-shots.jpg",
+          "alt": "Barmen toči piće u čašice pod šarenim svjetlima bara."
+        },
+        {
+          "src": "assets/images/gallery/bartender-crafting.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/martini-lineup.jpg",
+          "alt": "Martini čaše na šanku pod plavim svjetlom."
+        },
+        {
+          "src": "assets/images/gallery/cocktail-flight.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/dj-set-motion.jpg",
+          "alt": "DJ mikser s vučenim svjetlosnim tragovima u Hedonistu navečer."
+        },
+        {
+          "src": "assets/images/gallery/live-music-bw.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/whiskey-cigar-smoke.jpg",
+          "alt": "Čaša viskija i cigara s dimom, u toplom svjetlu bara."
+        },
+        {
+          "src": "assets/images/gallery/interior-wide-empty.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/latte-art-cup.jpg",
+          "alt": "Ruke drže šalicu kave s latte-art uzorkom."
+        },
+        {
+          "src": "assets/images/gallery/kava-priprema-poster.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/hero-bar.webp",
+          "alt": "Šank s reljefnom metalnom oplatom i osvijetljenim Hedonist znakom."
+        },
+        {
+          "src": "assets/images/gallery/terrace-day.webp",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/cocktail-row.jpg",
+          "alt": "Niz raznobojnih koktela na šanku, sa slamkama i limunom."
+        },
+        {
+          "src": "assets/images/gallery/beer-tap-badges.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/beer-lineup.jpg",
+          "alt": "Niz čaša piva različitih vrsta poredanih na šanku."
+        },
+        {
+          "src": "assets/images/gallery/bar-interior-glow.jpg",
+          "alt": ""
+        }
+      ]
+    },
+    {
+      "slike": [
+        {
+          "src": "assets/images/gallery/disco-ball-bar.jpg",
+          "alt": "Disco kugla iznad šanka, noćna atmosfera Hedonista."
+        },
+        {
+          "src": "assets/images/gallery/novosti-purple-glasses.jpg",
+          "alt": ""
+        }
+      ]
+    }
+  ]
+}

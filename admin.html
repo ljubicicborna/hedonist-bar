@@ -51,10 +51,24 @@
       <option value="slike">Slike</option>
       <option value="galerija">Galerija</option>
       <option value="faq">Pitanja (FAQ)</option>
+      <option value="kontakt">Kontakt i mreže</option>
+      <option value="seo">SEO (naslovi i opisi)</option>
     </select>
   </nav>
 
   <main class="wrap">
+
+    <!-- KONTAKT -->
+    <div class="panel" id="panel-kontakt" hidden>
+      <p class="hint">E-mail i linkovi društvenih mreža. Primjenjuju se na cijeloj stranici (podnožje, forma za posao, kontakt).</p>
+      <div id="kontakt-fields"></div>
+    </div>
+
+    <!-- SEO -->
+    <div class="panel" id="panel-seo" hidden>
+      <p class="hint">Naslov i opis stranice za Google i dijeljenje na društvenim mrežama. Naslov ~50-60 znakova, opis ~150-160.</p>
+      <div id="seo-fields"></div>
+    </div>
 
     <!-- LOKACIJA -->
     <div class="panel" id="panel-lokacija" hidden>
@@ -121,6 +135,6 @@
   </div>
 </div>
 
-<script src="assets/js/admin.js?v=9"></script>
+<script src="assets/js/admin.js?v=11"></script>
 </body>
 </html>

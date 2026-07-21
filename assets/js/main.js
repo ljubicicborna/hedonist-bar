@@ -419,6 +419,53 @@
       .catch(function(){ /* rezerva: statični tekst */ });
   }
 
+  /* ---- CMS SEO: naslov i opis stranice (data/nazivi.json) uređeni na
+     /admin.html; rezerva su vrijednosti iz <head>-a ---- */
+  (function(){
+    var path = location.pathname.replace(/\/+$/, '');
+    var file = path.split('/').pop() || 'index.html';
+    var page = file.replace('.html', '') || 'index';
+    if (page === '') page = 'index';
+    fetch('data/nazivi.json')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(n){
+        var d = n[page]; if (!d) return;
+        function setMeta(sel, val){ var el = document.querySelector(sel); if (el && val) el.setAttribute('content', val); }
+        if (d.title) {
+          document.title = d.title;
+          setMeta('meta[property="og:title"]', d.title);
+          setMeta('meta[name="twitter:title"]', d.title);
+        }
+        if (d.description) {
+          setMeta('meta[name="description"]', d.description);
+          setMeta('meta[property="og:description"]', d.description);
+          setMeta('meta[name="twitter:description"]', d.description);
+        }
+      })
+      .catch(function(){ /* rezerva: statični <head> */ });
+  })();
+
+  /* ---- CMS kontakt: društvene mreže i e-mail (data/kontakt.json) ---- */
+  var linkEls = document.querySelectorAll('[data-cms-link]');
+  var formEls = document.querySelectorAll('[data-cms-form="email"]');
+  if (linkEls.length || formEls.length) {
+    fetch('data/kontakt.json')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(k){
+        linkEls.forEach(function(el){
+          var t = el.getAttribute('data-cms-link');
+          if (t === 'email' && k.email) {
+            el.setAttribute('href', 'mailto:' + k.email);
+            if (/@/.test(el.textContent)) el.textContent = k.email;
+          } else if (k[t]) {
+            el.setAttribute('href', k[t]);
+          }
+        });
+        if (k.email) formEls.forEach(function(f){ f.setAttribute('action', 'https://formsubmit.co/' + k.email); });
+      })
+      .catch(function(){ /* rezerva: statični linkovi */ });
+  }
+
   /* ---- CMS slike: elementi s data-cms-img="slot" dobiju sliku uređenu na
      /admin.html (spremljeno u data/slike.json); rezerva je src iz HTML-a ---- */
   var imgEls = document.querySelectorAll('[data-cms-img]');

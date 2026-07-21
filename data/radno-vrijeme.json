@@ -1,0 +1,11 @@
+{
+  "dani": [
+    { "d": 1, "dan": "Ponedjeljak", "open": "07:00", "close": "23:00" },
+    { "d": 2, "dan": "Utorak", "open": "07:00", "close": "23:00" },
+    { "d": 3, "dan": "Srijeda", "open": "07:00", "close": "23:00" },
+    { "d": 4, "dan": "Četvrtak", "open": "07:00", "close": "00:00" },
+    { "d": 5, "dan": "Petak", "open": "07:00", "close": "00:00" },
+    { "d": 6, "dan": "Subota", "open": "08:00", "close": "00:00" },
+    { "d": 0, "dan": "Nedjelja", "open": "08:00", "close": "23:00" }
+  ]
+}

@@ -12,19 +12,28 @@
 ===================================================================== */
 (function(){
   var SAVE = 'save.php';
-  var VRSTE = ['cjenik', 'tekstovi', 'dogadjaji', 'slike', 'galerija', 'faq', 'nazivi', 'kontakt'];
+  var VRSTE = ['cjenik', 'tekstovi', 'dogadjaji', 'slike', 'galerija', 'faq', 'nazivi', 'kontakt', 'radno-vrijeme'];
 
   var saveMode = 'export';       /* 'php' (izravno spremanje) ili 'export' (preuzimanje) */
   var adminPassword = '';
 
-  var state = { cjenik: null, tekstovi: null, dogadjaji: null, slike: null, galerija: null, faq: null, nazivi: null, kontakt: null };
-  var dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false, faq: false, nazivi: false, kontakt: false };
+  var state = { cjenik: null, tekstovi: null, dogadjaji: null, slike: null, galerija: null, faq: null, nazivi: null, kontakt: null, 'radno-vrijeme': null };
+  var dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false, faq: false, nazivi: false, kontakt: false, 'radno-vrijeme': false };
 
   var SEO_PAGES = [
     ['index', 'Početna'], ['cjenik', 'Katalog ponude'], ['galerija', 'Galerija'],
     ['lokacija', 'Lokacija'], ['zaposlenje', 'Zapošljavanje'], ['pitanja', 'Pitanja']
   ];
   var KONTAKT_POLJA = [ ['email', 'E-mail'], ['instagram', 'Instagram (link)'], ['facebook', 'Facebook (link)'] ];
+  var DEFAULT_DANI = [
+    { d: 1, dan: 'Ponedjeljak', open: '07:00', close: '23:00' },
+    { d: 2, dan: 'Utorak', open: '07:00', close: '23:00' },
+    { d: 3, dan: 'Srijeda', open: '07:00', close: '23:00' },
+    { d: 4, dan: 'Četvrtak', open: '07:00', close: '00:00' },
+    { d: 5, dan: 'Petak', open: '07:00', close: '00:00' },
+    { d: 6, dan: 'Subota', open: '08:00', close: '00:00' },
+    { d: 0, dan: 'Nedjelja', open: '08:00', close: '23:00' }
+  ];
 
   var loginView = document.getElementById('login-view');
   var appView = document.getElementById('app-view');
@@ -35,6 +44,7 @@
   var faqEl = document.getElementById('faq-groups');
   var seoEl = document.getElementById('seo-fields');
   var kontaktEl = document.getElementById('kontakt-fields');
+  var radnoEl = document.getElementById('radno-fields');
   var saveBtn = document.getElementById('save');
   var statusEl = document.getElementById('save-status');
 
@@ -66,7 +76,7 @@
     statusEl.textContent = text;
     statusEl.className = 'save-status' + (cls ? ' ' + cls : '');
   }
-  function anyDirty(){ return dirty.cjenik || dirty.tekstovi || dirty.dogadjaji || dirty.slike || dirty.galerija || dirty.faq || dirty.nazivi || dirty.kontakt; }
+  function anyDirty(){ return dirty.cjenik || dirty.tekstovi || dirty.dogadjaji || dirty.slike || dirty.galerija || dirty.faq || dirty.nazivi || dirty.kontakt || dirty['radno-vrijeme']; }
   function markDirty(vrsta){
     dirty[vrsta] = true;
     saveBtn.disabled = false;
@@ -78,7 +88,7 @@
   var viewLink = document.getElementById('view-link');
   function showPanel(){
     var page = pagePick.value;
-    ['cjenik', 'pocetna', 'zaposlenje', 'lokacija', 'slike', 'galerija', 'faq', 'seo', 'kontakt'].forEach(function(p){
+    ['cjenik', 'pocetna', 'zaposlenje', 'lokacija', 'slike', 'galerija', 'faq', 'seo', 'kontakt', 'radno'].forEach(function(p){
       var el = document.getElementById('panel-' + p);
       if (el) el.hidden = p !== page;
     });
@@ -247,6 +257,25 @@
     markDirty('galerija'); renderGalerija();
     var cards = galerijaEl.querySelectorAll('.slika-card');
     if (cards.length) cards[cards.length - 1].scrollIntoView({ block: 'center' });
+  });
+
+  /* ================= RADNO VRIJEME ================= */
+  function renderRadno(){
+    var dani = state['radno-vrijeme'].dani;
+    radnoEl.innerHTML = dani.map(function(x, i){
+      return '<article class="slika-card" data-rd="' + i + '">' +
+        '<div class="slika-head"><strong>' + esc(x.dan) + '</strong></div>' +
+        '<div class="tile-two">' +
+          '<div class="field"><label>Otvara</label><input type="time" data-rf="open" value="' + esc(x.open) + '"></div>' +
+          '<div class="field"><label>Zatvara</label><input type="time" data-rf="close" value="' + esc(x.close) + '"></div>' +
+        '</div></article>';
+    }).join('');
+  }
+  radnoEl.addEventListener('input', function(e){
+    var card = e.target.closest('[data-rd]'); var f = e.target.getAttribute('data-rf');
+    if (!card || !f) return;
+    state['radno-vrijeme'].dani[Number(card.getAttribute('data-rd'))][f] = e.target.value;
+    markDirty('radno-vrijeme');
   });
 
   /* ================= KONTAKT ================= */
@@ -518,6 +547,11 @@
       KONTAKT_POLJA.forEach(function(row){ kc[row[0]] = String(state.kontakt[row[0]] || '').trim(); });
       return kc;
     }
+    if (vrsta === 'radno-vrijeme') {
+      return { dani: state['radno-vrijeme'].dani.map(function(x){
+        return { d: x.d, dan: String(x.dan || '').trim(), open: String(x.open || '').trim(), close: String(x.close || '').trim() };
+      }) };
+    }
     /* tekstovi */
     var out = {};
     Object.keys(state.tekstovi).forEach(function(k){ out[k] = String(state.tekstovi[k]).trim(); });
@@ -596,7 +630,8 @@
       getJSON('data/faq.json', { grupe: [] }),
       getJSON('data/tekstovi-meta.json', {}),
       getJSON('data/nazivi.json', {}),
-      getJSON('data/kontakt.json', {})
+      getJSON('data/kontakt.json', {}),
+      getJSON('data/radno-vrijeme.json', { dani: [] })
     ]).then(function(res){
       state.cjenik = { kategorije: (res[0] && res[0].kategorije) || [] };
       state.tekstovi = (res[1] && typeof res[1] === 'object') ? res[1] : {};
@@ -607,6 +642,7 @@
       TEKST_META = (res[6] && typeof res[6] === 'object') ? res[6] : {};
       state.nazivi = (res[7] && typeof res[7] === 'object') ? res[7] : {};
       state.kontakt = (res[8] && typeof res[8] === 'object') ? res[8] : {};
+      state['radno-vrijeme'] = { dani: (res[9] && res[9].dani && res[9].dani.length) ? res[9].dani : DEFAULT_DANI };
       renderCjenik(-1);
       renderTexts();
       renderDogadjaji();
@@ -615,6 +651,7 @@
       renderFaq(-1);
       renderNazivi();
       renderKontakt();
+      renderRadno();
       showPanel();
       loginView.hidden = true;
       appView.hidden = false;
@@ -628,7 +665,7 @@
   /* ================= PRIJAVA ================= */
   document.getElementById('logout').addEventListener('click', function(){
     if (anyDirty() && !confirm('Imaš nespremljene promjene — svejedno se odjaviti?')) return;
-    dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false, faq: false, nazivi: false, kontakt: false };
+    dirty = { cjenik: false, tekstovi: false, dogadjaji: false, slike: false, galerija: false, faq: false, nazivi: false, kontakt: false, 'radno-vrijeme': false };
     adminPassword = '';
     location.reload();
   });

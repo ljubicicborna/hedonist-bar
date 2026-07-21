@@ -343,64 +343,81 @@
     if (current && current.tagName === 'DETAILS') current.open = true;
   }
 
-  /* ---- live "open now / closed" status, computed from real hours ---- */
+  /* ---- radno vrijeme (uređivo na /admin.html → data/radno-vrijeme.json):
+     pokreće "otvoreno sada" widget, ispis radnog vremena i strukturirane
+     podatke. Ako se datoteka ne učita, koristi se ugrađeni raspored. ---- */
   var statusEl = document.getElementById('live-status');
-  if (statusEl) {
-    var HOURS = {
-      0: { open: 480, close: 1380 },  // Ned 8–23
-      1: { open: 420, close: 1380 },  // Pon 7–23
-      2: { open: 420, close: 1380 },  // Uto 7–23
-      3: { open: 420, close: 1380 },  // Sri 7–23
-      4: { open: 420, close: 1440 },  // Čet 7–0
-      5: { open: 420, close: 1440 },  // Pet 7–0
-      6: { open: 480, close: 1440 }   // Sub 8–0
+  var hoursListEl = document.querySelector('.hours-list');
+  if (statusEl || hoursListEl) {
+    var FALLBACK_HOURS = {
+      0: { open: 480, close: 1380 }, 1: { open: 420, close: 1380 }, 2: { open: 420, close: 1380 },
+      3: { open: 420, close: 1380 }, 4: { open: 420, close: 1440 }, 5: { open: 420, close: 1440 },
+      6: { open: 480, close: 1440 }
     };
     var DAY_NAMES = ['nedjelju', 'ponedjeljak', 'utorak', 'srijedu', 'četvrtak', 'petak', 'subotu'];
+    var DAY_EN = { 1: 'Monday', 2: 'Tuesday', 3: 'Wednesday', 4: 'Thursday', 5: 'Friday', 6: 'Saturday', 0: 'Sunday' };
 
+    function toMin(t){ var p = String(t || '').split(':'); return (parseInt(p[0], 10) || 0) * 60 + (parseInt(p[1], 10) || 0); }
     function formatMinutes(min) {
       if (min % 1440 === 0) return 'ponoć';
       var h = Math.floor(min / 60) % 24, m = min % 60;
       return m === 0 ? h + 'h' : h + ':' + (m < 10 ? '0' + m : m) + 'h';
     }
+    function fmtHour(t){ var m = toMin(t); if (m % 1440 === 0) return '00'; var h = Math.floor(m / 60), mm = m % 60; return mm === 0 ? String(h) : h + ':' + (mm < 10 ? '0' + mm : mm); }
+    function pad(t){ var m = toMin(t); var h = Math.floor(m / 60), mm = m % 60; return (h < 10 ? '0' + h : h) + ':' + (mm < 10 ? '0' + mm : mm); }
 
-    function renderStatus() {
-      var now = new Date();
-      var day = now.getDay();
-      var minutes = now.getHours() * 60 + now.getMinutes();
-      var today = HOURS[day];
-      var isOpen = today && minutes >= today.open && minutes < today.close;
-      var label, detail;
-
-      if (isOpen) {
-        detail = 'zatvaramo u ' + formatMinutes(today.close);
-        label = 'Otvoreno sada';
-      } else {
-        var nextDay = day, nextOpen, when;
-        if (today && minutes < today.open) {
-          nextOpen = today.open; when = 'danas';
-        } else {
-          for (var i = 1; i <= 7; i++) {
-            var d = (day + i) % 7;
-            if (HOURS[d]) { nextDay = d; nextOpen = HOURS[d].open; when = i === 1 ? 'sutra' : ('u ' + DAY_NAMES[d]); break; }
+    function initHours(HOURS, dani) {
+      if (statusEl) {
+        function renderStatus() {
+          var now = new Date(), day = now.getDay(), minutes = now.getHours() * 60 + now.getMinutes();
+          var today = HOURS[day];
+          var isOpen = today && minutes >= today.open && minutes < today.close;
+          var label, detail;
+          if (isOpen) { detail = 'zatvaramo u ' + formatMinutes(today.close); label = 'Otvoreno sada'; }
+          else {
+            var nextOpen, when;
+            if (today && minutes < today.open) { nextOpen = today.open; when = 'danas'; }
+            else { for (var i = 1; i <= 7; i++) { var d = (day + i) % 7; if (HOURS[d]) { nextOpen = HOURS[d].open; when = i === 1 ? 'sutra' : ('u ' + DAY_NAMES[d]); break; } } }
+            detail = 'otvaramo ' + when + ' u ' + formatMinutes(nextOpen); label = 'Zatvoreno';
           }
+          statusEl.classList.toggle('is-open', !!isOpen);
+          statusEl.innerHTML = '<span class="live-status-dot" aria-hidden="true"></span><span>' + label + ' <strong>· ' + detail + '</strong></span>';
         }
-        detail = 'otvaramo ' + when + ' u ' + formatMinutes(nextOpen);
-        label = 'Zatvoreno';
+        renderStatus();
+        setInterval(renderStatus, 60000);
       }
 
-      statusEl.classList.toggle('is-open', !!isOpen);
-      statusEl.innerHTML = '<span class="live-status-dot" aria-hidden="true"></span><span>' + label + ' <strong>· ' + detail + '</strong></span>';
+      /* ispis radnog vremena po danima (ako je uređeno kroz CMS) */
+      if (hoursListEl && dani && dani.length) {
+        hoursListEl.innerHTML = dani.map(function(x){
+          return '<div data-days="' + x.d + '"><dt>' + (x.dan || '') + '</dt><dd>' + fmtHour(x.open) + ' – ' + fmtHour(x.close) + ' h</dd></div>';
+        }).join('');
+      }
+      var todayNum = new Date().getDay();
+      document.querySelectorAll('.hours-list > div[data-days]').forEach(function(row){
+        if (row.getAttribute('data-days').split(',').map(Number).indexOf(todayNum) !== -1) row.classList.add('is-today');
+      });
+
+      /* strukturirani podaci (openingHoursSpecification) */
+      if (dani && dani.length) {
+        var spec = dani.map(function(x){ return { '@type': 'OpeningHoursSpecification', dayOfWeek: DAY_EN[x.d], opens: pad(x.open), closes: pad(x.close) }; });
+        document.querySelectorAll('script[type="application/ld+json"]').forEach(function(sc){
+          if (sc.textContent.indexOf('"BarOrPub"') === -1) return;
+          try { var j = JSON.parse(sc.textContent); j.openingHoursSpecification = spec; sc.textContent = JSON.stringify(j); } catch (e) {}
+        });
+      }
     }
 
-    renderStatus();
-    setInterval(renderStatus, 60000);
-
-    /* ---- highlight today's row in the hours list ---- */
-    var todayNum = new Date().getDay();
-    document.querySelectorAll('.hours-list > div[data-days]').forEach(function(row){
-      var days = row.getAttribute('data-days').split(',').map(Number);
-      if (days.indexOf(todayNum) !== -1) row.classList.add('is-today');
-    });
+    fetch('data/radno-vrijeme.json')
+      .then(function(r){ if (!r.ok) throw 0; return r.json(); })
+      .then(function(d){
+        if (d && Array.isArray(d.dani) && d.dani.length) {
+          var H = {};
+          d.dani.forEach(function(x){ var c = toMin(x.close); H[x.d] = { open: toMin(x.open), close: c === 0 ? 1440 : c }; });
+          initHours(H, d.dani);
+        } else { initHours(FALLBACK_HOURS, null); }
+      })
+      .catch(function(){ initHours(FALLBACK_HOURS, null); });
   }
 
   /* ---- CMS tekstovi: elementi s data-cms="ključ" dobiju sadržaj uređen na

@@ -8,13 +8,26 @@
    cijeli projekt i radi. Ako hosting NEMA PHP, /admin.html se automatski
    prebaci na "preuzmi datoteku pa je ručno uploadaj".
 
-   POSTAVI LOZINKU: promijeni vrijednost $PASSWORD ispod prije objave.
+   LOZINKA NIJE OVDJE (da ne bude u javnom GitHub repou). Čita se iz:
+     1) datoteke cms-lozinka.php (koja se NE stavlja na GitHub — vidi
+        cms-lozinka.example.php za oblik), ili
+     2) env varijable CMS_LOZINKA (ako je hosting podržava).
+   Napravi cms-lozinka.php na hostingu s tvojom lozinkom.
    ===================================================================== */
 
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
-$PASSWORD = 'promijeni-me';   // <-- OVDJE upiši svoju lozinku za uređivanje
+$PASSWORD = getenv('CMS_LOZINKA');
+if (!$PASSWORD && is_file(__DIR__ . '/cms-lozinka.php')) {
+  $PASSWORD = (string) (include __DIR__ . '/cms-lozinka.php');
+}
+$PASSWORD = is_string($PASSWORD) ? trim($PASSWORD) : '';
+if ($PASSWORD === '') {
+  http_response_code(500);
+  echo json_encode(['error' => 'Lozinka nije postavljena — napravi datoteku cms-lozinka.php na hostingu.']);
+  exit;
+}
 
 $raw = file_get_contents('php://input');
 $body = json_decode($raw, true);

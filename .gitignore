@@ -1,6 +1,7 @@
 .env
 credentials.json
 token.json
+cms-lozinka.php
 .tmp/
 node_modules/
 

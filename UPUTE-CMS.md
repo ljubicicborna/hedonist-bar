@@ -29,8 +29,11 @@ Panel sam prepozna gdje je postavljen:
 ### 1. Hosting s PHP-om (npr. cPanel / shared hosting) — **preporučeno**
 - Otvoriš `/admin.html`, upišeš lozinku, urediš i klikneš **Spremi promjene**.
 - Izmjena se **odmah** upiše u `data/*.json` na hostingu i vidljiva je na stranici.
-- **Prije objave postavi lozinku:** otvori datoteku **`save.php`** i promijeni red
-  `$PASSWORD = 'promijeni-me';` u svoju lozinku.
+- **Lozinka:** NIJE u kodu (da ne bude javna na GitHubu). `save.php` je čita iz datoteke
+  **`cms-lozinka.php`**. Ta datoteka se ne stavlja na GitHub — kad prebaciš projekt na PHP
+  hosting, provjeri da je `cms-lozinka.php` tamo (ima primjer u `cms-lozinka.example.php`:
+  preimenuj ga u `cms-lozinka.php` i upiši svoju lozinku). Lozinku možeš promijeniti bilo
+  kad — samo uredi tu datoteku.
 
 ### 2. Hosting bez PHP-a (npr. GitHub Pages)
 - Panel radi u **načinu izvoza**: urediš normalno, a klik na **Spremi promjene**
